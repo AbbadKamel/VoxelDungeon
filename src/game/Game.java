@@ -13,8 +13,9 @@ import org.newdawn.slick.util.ResourceLoader;
 
 public class Game {
 
-    private final static int width = 800, height = 600;
-    private final static int frameRate = 90;
+    private final static int width = 800;
+    private final static int height = 600;
+    private final static int FRAME_RATE = 60;
     private Camera camera;
     private Texture texureWhite;
     private Texture texureFloor;
@@ -32,7 +33,7 @@ public class Game {
             game.render();
             game.update();
             Display.update();
-            Display.sync(frameRate);
+            Display.sync(FRAME_RATE);
         }
         Display.destroy();
         System.exit(0);
@@ -76,22 +77,23 @@ public class Game {
 
     public void update() {
         camera.update();
-
     }
 
     public void initialize3D() {
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-
-        GLU.gluPerspective((float) 100, width / height, 0.001f, 1000);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-        GL11.glClearDepth(1.0f);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
+        GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
+        GL11.glClearColor(0.0f,0.0f,0.0f,0.0f); // BG color.
+        GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
+        GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
+        GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
+        GL11.glMatrixMode(GL11.GL_PROJECTION); // Sets matrix mode to displaying pixels.
+        GL11.glLoadIdentity(); // Loads the above matrix mode.
+        
+        // Sets default perspective location.
+        GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,100.0f);
+        
+        GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
+        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
     }
 
     public void clearScreen() {
