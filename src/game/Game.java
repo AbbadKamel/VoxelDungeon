@@ -16,6 +16,7 @@ public class Game {
     private final static int FRAME_RATE = 60;
     private Camera camera;
     private Texture textureFloor;
+    private Chunk testingChunk = new Chunk();
 
     public static void main(String[] args) {
         try {
@@ -47,7 +48,8 @@ public class Game {
     private void init() throws IOException {
         this.initialize3D();
         ResourceLibrary.init();
-        textureFloor = ResourceLibrary.getDirt();
+        //textureFloor = ResourceLibrary.getDirt();
+        testingChunk.makeChunk();
     }
     
     public void update() {
@@ -57,74 +59,7 @@ public class Game {
     public void render() {
         clearScreen();
         camera.translatePostion();
-
-        textureFloor.bind();
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(0.0f,0.0f);
-        GL11.glVertex3f(-1.0f,-1.0f,1.0f);
-        GL11.glTexCoord2d(1.0f,0.0f);
-        GL11.glVertex3f(1.0f,-1.0f,1.0f);
-        GL11.glTexCoord2d(1.0f,1.0f);
-        GL11.glVertex3f(1.0f,1.0f,1.0f);
-        GL11.glTexCoord2d(0.0f,1.0f);
-        GL11.glVertex3f(-1.0f,1.0f,1.0f);
-        GL11.glEnd();
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(1.0f,0.0f);
-        GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
-        GL11.glTexCoord2d(1.0f,1.0f);
-        GL11.glVertex3f(-1.0f,1.0f,-1.0f);
-        GL11.glTexCoord2d(0.0f,1.0f);
-        GL11.glVertex3f(1.0f,1.0f,-1.0f);
-        GL11.glTexCoord2d(0.0f,0.0f);
-        GL11.glVertex3f(1.0f,-1.0f,-1.0f);
-        GL11.glEnd();
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(0.0f,1.0f);
-        GL11.glVertex3f(-1.0f,1.0f,-1.0f);
-        GL11.glTexCoord2d(0.0f,0.0f);
-        GL11.glVertex3f(-1.0f,1.0f,1.0f);
-        GL11.glTexCoord2d(1.0f,0.0f);
-        GL11.glVertex3f(1.0f,1.0f,1.0f);
-        GL11.glTexCoord2d(1.0f,1.0f);
-        GL11.glVertex3f(1.0f,1.0f,-1.0f);
-        GL11.glEnd();
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(1.0f,1.0f);
-        GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
-        GL11.glTexCoord2d(0.0f,1.0f);
-        GL11.glVertex3f(1.0f,-1.0f,-1.0f);
-        GL11.glTexCoord2d(0.0f,0.0f);
-        GL11.glVertex3f(1.0f,-1.0f,1.0f);
-        GL11.glTexCoord2d(1.0f,0.0f);
-        GL11.glVertex3f(-1.0f,-1.0f,1.0f);
-        GL11.glEnd();
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(1.0f,0.0f);
-        GL11.glVertex3f(1.0f,-1.0f,-1.0f);
-        GL11.glTexCoord2d(1.0f,1.0f);
-        GL11.glVertex3f(1.0f,1.0f,-1.0f);
-        GL11.glTexCoord2d(0.0f,1.0f);
-        GL11.glVertex3f(1.0f,1.0f,1.0f);
-        GL11.glTexCoord2d(0.0f,0.0f);
-        GL11.glVertex3f(1.0f,-1.0f,1.0f);
-        GL11.glEnd();
-
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(0.0f,0.0f);
-        GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
-        GL11.glTexCoord2d(1.0f,0.0f);
-        GL11.glVertex3f(-1.0f,-1.0f,1.0f);
-        GL11.glTexCoord2d(1.0f,1.0f);
-        GL11.glVertex3f(-1.0f,1.0f,1.0f);
-        GL11.glTexCoord2d(0.0f,1.0f);
-        GL11.glVertex3f(-1.0f,1.0f,-1.0f);
-        GL11.glEnd();
+        testingChunk.render();
     }
 
     public void clearScreen() {

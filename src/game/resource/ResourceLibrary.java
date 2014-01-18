@@ -15,4 +15,15 @@ public class ResourceLibrary {
         dirt = Loader.createTexture("dirt");
         stone = Loader.createTexture("stone");
     }
+
+    public static Texture getTextureByName(String name) {
+        switch (name) {
+            case "dirt":
+                return dirt;
+            case "stone":
+                return stone;
+            default:
+                return null;
+        }
+    }
 }
