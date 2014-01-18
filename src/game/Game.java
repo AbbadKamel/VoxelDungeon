@@ -19,7 +19,7 @@ public class Game {
 
     public static void main(String[] args) {
         try {
-            Display.setDisplayMode(new DisplayMode(width, height));
+            Display.setDisplayMode(new DisplayMode(width,height));
             Display.create();
         } catch (LWJGLException e) {
             System.out.println(e);
@@ -60,17 +60,70 @@ public class Game {
 
         textureFloor.bind();
         GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(0,0);
-        GL11.glVertex3f(0,0,0);
+        GL11.glTexCoord2d(0.0f,0.0f);
+        GL11.glVertex3f(-1.0f,-1.0f,1.0f);
+        GL11.glTexCoord2d(1.0f,0.0f);
+        GL11.glVertex3f(1.0f,-1.0f,1.0f);
+        GL11.glTexCoord2d(1.0f,1.0f);
+        GL11.glVertex3f(1.0f,1.0f,1.0f);
+        GL11.glTexCoord2d(0.0f,1.0f);
+        GL11.glVertex3f(-1.0f,1.0f,1.0f);
+        GL11.glEnd();
 
-        GL11.glTexCoord2f(1,0);
-        GL11.glVertex3f(10,0,0);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(1.0f,0.0f);
+        GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
+        GL11.glTexCoord2d(1.0f,1.0f);
+        GL11.glVertex3f(-1.0f,1.0f,-1.0f);
+        GL11.glTexCoord2d(0.0f,1.0f);
+        GL11.glVertex3f(1.0f,1.0f,-1.0f);
+        GL11.glTexCoord2d(0.0f,0.0f);
+        GL11.glVertex3f(1.0f,-1.0f,-1.0f);
+        GL11.glEnd();
 
-        GL11.glTexCoord2f(1,1);
-        GL11.glVertex3f(10,0,10);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(0.0f,1.0f);
+        GL11.glVertex3f(-1.0f,1.0f,-1.0f);
+        GL11.glTexCoord2d(0.0f,0.0f);
+        GL11.glVertex3f(-1.0f,1.0f,1.0f);
+        GL11.glTexCoord2d(1.0f,0.0f);
+        GL11.glVertex3f(1.0f,1.0f,1.0f);
+        GL11.glTexCoord2d(1.0f,1.0f);
+        GL11.glVertex3f(1.0f,1.0f,-1.0f);
+        GL11.glEnd();
 
-        GL11.glTexCoord2f(0,1);
-        GL11.glVertex3f(0,0,10);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(1.0f,1.0f);
+        GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
+        GL11.glTexCoord2d(0.0f,1.0f);
+        GL11.glVertex3f(1.0f,-1.0f,-1.0f);
+        GL11.glTexCoord2d(0.0f,0.0f);
+        GL11.glVertex3f(1.0f,-1.0f,1.0f);
+        GL11.glTexCoord2d(1.0f,0.0f);
+        GL11.glVertex3f(-1.0f,-1.0f,1.0f);
+        GL11.glEnd();
+
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(1.0f,0.0f);
+        GL11.glVertex3f(1.0f,-1.0f,-1.0f);
+        GL11.glTexCoord2d(1.0f,1.0f);
+        GL11.glVertex3f(1.0f,1.0f,-1.0f);
+        GL11.glTexCoord2d(0.0f,1.0f);
+        GL11.glVertex3f(1.0f,1.0f,1.0f);
+        GL11.glTexCoord2d(0.0f,0.0f);
+        GL11.glVertex3f(1.0f,-1.0f,1.0f);
+        GL11.glEnd();
+
+
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(0.0f,0.0f);
+        GL11.glVertex3f(-1.0f,-1.0f,-1.0f);
+        GL11.glTexCoord2d(1.0f,0.0f);
+        GL11.glVertex3f(-1.0f,-1.0f,1.0f);
+        GL11.glTexCoord2d(1.0f,1.0f);
+        GL11.glVertex3f(-1.0f,1.0f,1.0f);
+        GL11.glTexCoord2d(0.0f,1.0f);
+        GL11.glVertex3f(-1.0f,1.0f,-1.0f);
         GL11.glEnd();
     }
 
@@ -83,7 +136,7 @@ public class Game {
         GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
         GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
         GL11.glClearColor(0.0f,0.0f,0.0f,0.0f); // BG color.
-        GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
+        GL11.glClearDepth(1.0); // Buffer depth,allows objects to draw over things behind them.
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
         GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
         GL11.glMatrixMode(GL11.GL_PROJECTION); // Sets matrix mode to displaying pixels.

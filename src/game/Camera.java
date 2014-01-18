@@ -10,8 +10,12 @@ public class Camera {
     private Vector3f vector = new Vector3f();
     private Vector3f rotation = new Vector3f();
     private Vector3f vectorPrevious = new Vector3f();
-    private boolean moveForward = false, moveBackward = false;
-    private boolean strafeLeft = false, strafeRight = false;
+    private boolean moveForward = false;
+    private boolean moveBackward = false;
+    private boolean strafeLeft = false;
+    private boolean strafeRight = false;
+    private boolean moveUp = false;
+    private boolean moveDown = false;
     private static final float speed = 0.3f;
     private Game game;
 
@@ -43,14 +47,21 @@ public class Camera {
             vector.x += (float) (Math.sin((-rotation.y + 90) * Math.PI / 180) * speed);
             vector.z += (float) (Math.cos((-rotation.y + 90) * Math.PI / 180) * speed);
         }
+        if (moveUp) {
+            vector.y += (float) (speed);
+        }
+        if (moveDown) {
+            vector.y -= (float) (speed);
+        }
     }
 
     public void translatePostion() {
-        //This is the code that changes 3D perspective to the camera's perspective.
+        // This is the code that changes 3D perspective to the camera's perspective.
         GL11.glRotatef(rotation.x, 1, 0, 0);
         GL11.glRotatef(rotation.y, 0, 1, 0);
         GL11.glRotatef(rotation.z, 0, 0, 1);
-        //-vector.y-2.4f means that your y is your feet, and y+2.4 is your head.
+        
+        // -vector.y-2.4f means that your y is your feet, and y+2.4 is your head.
         GL11.glTranslatef(-vector.x, -vector.y - 2.4f, -vector.z);
     }
 
@@ -66,6 +77,8 @@ public class Camera {
         moveBackward = Keyboard.isKeyDown(Keyboard.KEY_S);
         strafeLeft = Keyboard.isKeyDown(Keyboard.KEY_A);
         strafeRight = Keyboard.isKeyDown(Keyboard.KEY_D);
+        moveUp = Keyboard.isKeyDown(Keyboard.KEY_SPACE);
+        moveDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
         //Mouse Input for looking around...
         if (Mouse.isGrabbed()) {
