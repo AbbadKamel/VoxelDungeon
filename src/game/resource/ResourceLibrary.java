@@ -5,12 +5,11 @@ import org.newdawn.slick.opengl.Texture;
 
 public class ResourceLibrary {
     
-    public static Texture dirt = null;
-    public static Texture stone = null;
+    private static Texture dirt = null;
+    private static Texture stone = null;
     
-    public Texture getDirt() { return dirt; }
-    
-    public Texture getStone() { return stone; }
+    public static Texture getDirt() { return dirt; }
+    public static Texture getStone() { return stone; }
     
     public static void init() throws IOException {
         dirt = Loader.createTexture("dirt");

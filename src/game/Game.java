@@ -15,8 +15,7 @@ public class Game {
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
     private Camera camera;
-    private Texture texureWhite;
-    private Texture texureFloor;
+    private Texture textureFloor;
 
     public static void main(String[] args) {
         try {
@@ -48,6 +47,7 @@ public class Game {
     private void init() throws IOException {
         this.initialize3D();
         ResourceLibrary.init();
+        textureFloor = ResourceLibrary.getDirt();
     }
     
     public void update() {
@@ -58,7 +58,7 @@ public class Game {
         clearScreen();
         camera.translatePostion();
 
-        texureFloor.bind();
+        textureFloor.bind();
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glTexCoord2f(0,0);
         GL11.glVertex3f(0,0,0);
