@@ -1,5 +1,6 @@
 package game;
 
+import game.resource.ResourceLibrary;
 import java.io.IOException;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -7,9 +8,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.opengl.renderer.SGL;
-import org.newdawn.slick.util.ResourceLoader;
 
 public class Game {
 
@@ -28,7 +26,11 @@ public class Game {
             System.out.println(e);
         }
         Game game = new Game();
-        game.initialize3D();
+        try {
+            game.init();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
         while (!Display.isCloseRequested()) {
             game.render();
             game.update();
@@ -41,20 +43,17 @@ public class Game {
 
     public Game() {
         camera = new Camera(this);
-        try {
-            loadTextures();
-        } catch (IOException e) {
-            System.out.println("Failed to load textures.");
-        }
     }
-
-    private void loadTextures() throws IOException {
-        texureWhite = TextureLoader.getTexture("JPG",
-                ResourceLoader.getResourceAsStream("resources/white.jpg"),SGL.GL_NEAREST);
-        texureFloor = TextureLoader.getTexture("JPG",
-                ResourceLoader.getResourceAsStream("resources/floor.jpg"),SGL.GL_NEAREST);
+    
+    private void init() throws IOException {
+        this.initialize3D();
+        ResourceLibrary.init();
     }
-
+    
+    public void update() {
+        camera.update();
+    }
+    
     public void render() {
         clearScreen();
         camera.translatePostion();
@@ -75,8 +74,9 @@ public class Game {
         GL11.glEnd();
     }
 
-    public void update() {
-        camera.update();
+    public void clearScreen() {
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glLoadIdentity();
     }
 
     public void initialize3D() {
@@ -94,10 +94,5 @@ public class Game {
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
-    }
-
-    public void clearScreen() {
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glLoadIdentity();
     }
 }
