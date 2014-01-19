@@ -7,16 +7,19 @@ public class ResourceLibrary {
     
     private static Texture dirt = null;
     private static Texture stone = null;
-    private static Texture grass = null;
+    private static Texture Grass_side = null;
+    private static Texture grass_top = null;
     
     public static Texture getDirt() { return dirt; }
     public static Texture getStone() { return stone; }
-    public static Texture getGrass() { return grass; }
+    public static Texture getGrass_side() { return Grass_side; }
+    public static Texture getGrass_top() { return grass_top; }
     
     public static void init() throws IOException {
         dirt = Loader.createTexture("dirt");
         stone = Loader.createTexture("stone");
-        grass = Loader.createTexture("grass_top");
+        Grass_side = Loader.createTexture("Grass_side");
+        grass_top = Loader.createTexture("grass_top");
     }
 
     public static Texture getTextureByName(String name) throws IOException {
@@ -25,8 +28,10 @@ public class ResourceLibrary {
                 return dirt;
             case "stone":
                 return stone;
-            case "grass":
-                return grass;
+            case "Grass_side":
+                return Grass_side;
+            case "grass_top":
+                return grass_top;
             case "blank":
                 return null;
             default:

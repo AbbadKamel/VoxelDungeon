@@ -126,11 +126,12 @@ public class Chunk {
         blocks[i][j][k] = block;
     }
     
-    public void render() {
+    public void render() throws IOException {
         for(int i=0;i<SIZE;i++)
             for (int j=0;j<SIZE;j++)
                 for (int k=0;k<HEIGHT;k++)
                     blocks[i][j][k].render(i+16*px,j+16*py,k);
+                    
     }
     
     public boolean isBlock(int x, int y, int z) {
