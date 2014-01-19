@@ -77,7 +77,7 @@ public class Chunk {
                     d = (3*d*d) - (2*d*d*d);
 
                     double avg = ((a+b+c+d)/4);
-                    height[i][j] = (int) avg;
+                    height[i][j] = (int) (avg+1);
                 }
             }
         } else if(r==1) {          
@@ -87,21 +87,21 @@ public class Chunk {
                     double y = Math.abs(j-7);
                     double avg = ((1/(x+0.25)) + (1/(y+0.25)))/2;
                     if (x<1 && y<1) {
-                        height[i][j] = (int) (8*Math.random()+1);
+                        height[i][j] = (int) (12*Math.random()+1);
                     } else if (x<2 && y<2) {
-                        height[i][j] = (int) (8*Math.random()+1);
+                        height[i][j] = (int) (11*Math.random()+1);
                     } else if (x<3 && y<3) {
-                        height[i][j] = (int) (7*Math.random()+1);
+                        height[i][j] = (int) (10*Math.random()+1);
                     } else if (x<4 && y<4) {
-                        height[i][j] = (int) (5*Math.random()+1);
+                        height[i][j] = (int) (8*Math.random()+1);
                     } else if (x<5 && y<5) {
-                        height[i][j] = (int) (3*Math.random()+1);
+                        height[i][j] = (int) (5*Math.random()+1);
                     } else if (x<6 && y<6) {
-                        height[i][j] = (int) (2*Math.random()+1);
+                        height[i][j] = (int) (3*Math.random()+1);
                     } else if (x<7 && y<7) {
                         height[i][j] = (int) (2*Math.random()+1);
                     } else                 {
-                        height[i][j] = 0;
+                        height[i][j] = (int) (1*Math.random()+1);
                     }
 
                 }
