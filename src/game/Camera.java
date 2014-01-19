@@ -24,37 +24,41 @@ public class Camera {
     public static float getCamZ() { return cameraPos.y; }
 
     public Camera(Game game) {
+        vector.x = 32;
+        vector.y = 8;
+        vector.z = 32;
         Mouse.setGrabbed(true);
     }
 
-    public void update() {
+    public void update(int delta) {
         updatePrevious();
         input();
-        updateVector();
+        updateVector(delta);
     }
 
-    public void updateVector() {
+    public void updateVector(int delta) {
+        double speedMultiplier = delta/20.0;
         if (moveForward) {
-            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
-            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
+            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
+            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
         }
         if (moveBackward) {
-            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
-            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
+            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
+            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
         }
         if (strafeLeft) {
-            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed);
-            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed);
+            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed)*speedMultiplier;
+            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed)*speedMultiplier;
         }
         if (strafeRight) {
-            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed);
-            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed);
+            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed)*speedMultiplier;
+            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed)*speedMultiplier;
         }
         if (moveUp) {
-            vector.y += (float) (speed);
+            vector.y += (float) (speed)*speedMultiplier;
         }
         if (moveDown) {
-            vector.y -= (float) (speed);
+            vector.y -= (float) (speed)*speedMultiplier;
         }
     }
 

@@ -1,6 +1,7 @@
 package game;
 
 import game.resource.ResourceLibrary;
+import game.world.World;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class Game {
     public ArrayList<Float> vertices = new ArrayList<Float>();
     public ArrayList<Float> colorVertices = new ArrayList<Float>();
 
-
     public static void main(String[] args) {
         try {
             Display.setDisplayMode(new DisplayMode(width,height));
@@ -31,17 +31,22 @@ public class Game {
         } catch (LWJGLException e) {
             System.out.println(e);
         }
+        Display.setTitle("Voxel Dungeon");
         Game game = new Game();
         try {
             game.init();
         } catch (IOException e) {
             System.out.println(e);
         }
+        int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            long startTime = System.currentTimeMillis();
             game.render();
-            game.update();
+            game.update(delta);
             Display.update();
             Display.sync(FRAME_RATE);
+            long endTime = System.currentTimeMillis();
+            delta = (int)(endTime - startTime);
         }
         Display.destroy();
         System.exit(0);
@@ -49,9 +54,7 @@ public class Game {
     private int VBOVertexHandle;
     private int VBOColorHandle;
 
-    public Game() {
-        camera = new Camera(this);
-    }
+    public Game() { }
     
     private void init() throws IOException {
         this.initialize3D();
@@ -59,11 +62,6 @@ public class Game {
         world = new World(16,16);
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
-    }
-    
-    public void update() {
-        camera.update();
-        world.render(vertices,colorVertices);
     }
     
     public void render() {
@@ -99,6 +97,12 @@ public class Game {
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
         GL11.glPopMatrix();
+
+        camera = new Camera(this);
+    }
+    
+    public void update(int delta) {
+        camera.update(delta);
     }
 
     public void clearScreen() {
