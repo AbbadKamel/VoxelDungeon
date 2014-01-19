@@ -1,5 +1,6 @@
-package game;
+package game.world;
 
+import game.Camera;
 import java.io.IOException;
 
 public class World {

@@ -1,5 +1,6 @@
 package game;
 
+import game.world.World;
 import game.resource.ResourceLibrary;
 import java.io.IOException;
 import org.lwjgl.LWJGLException;

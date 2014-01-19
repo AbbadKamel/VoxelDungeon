@@ -1,4 +1,4 @@
-package game;
+package game.world;
 
 import java.io.IOException;
 
@@ -30,8 +30,10 @@ public class Chunk {
         int [][] height = new int[SIZE][SIZE];
         int r = (int) (Math.random()*3);
         
-        if (r==2)
+        if (r==2) {
             generateCaves();
+            return;
+        }
         
         if(r==0) {
             for (int i = 0; i < SIZE; i++) {
