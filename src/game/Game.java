@@ -33,8 +33,13 @@ public class Game {
         }
         int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            System.out.println(delta);
             long startTime = System.currentTimeMillis();
-            game.render();
+            try {
+                game.render();
+            } catch(IOException e) {
+                System.out.println(e);
+            }
             game.update(delta);
             Display.update();
             Display.sync(FRAME_RATE);
@@ -58,7 +63,7 @@ public class Game {
         camera.update(delta);
     }
     
-    public void render() {
+    public void render() throws IOException {
         clearScreen();
         camera.translatePostion();
         world.render();

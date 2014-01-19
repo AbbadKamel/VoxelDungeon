@@ -37,28 +37,28 @@ public class Camera {
     }
 
     public void updateVector(int delta) {
-        delta = delta/20;
+        double speedMultiplier = delta/20.0;
         if (moveForward) {
-            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*delta;
-            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*delta;
+            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
+            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
         }
         if (moveBackward) {
-            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*delta;
-            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*delta;
+            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
+            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
         }
         if (strafeLeft) {
-            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed)*delta;
-            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed)*delta;
+            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed)*speedMultiplier;
+            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed)*speedMultiplier;
         }
         if (strafeRight) {
-            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed)*delta;
-            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed)*delta;
+            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed)*speedMultiplier;
+            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed)*speedMultiplier;
         }
         if (moveUp) {
-            vector.y += (float) (speed)*delta;
+            vector.y += (float) (speed)*speedMultiplier;
         }
         if (moveDown) {
-            vector.y -= (float) (speed)*delta;
+            vector.y -= (float) (speed)*speedMultiplier;
         }
     }
 
