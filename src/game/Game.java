@@ -2,21 +2,30 @@ package game;
 
 import game.resource.ResourceLibrary;
 import java.io.IOException;
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.glu.GLU;
+//import org.newdawn.slick.opengl.Texture;
 
 public class Game {
 
     private final static int width = 800;
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
-    private Camera camera;
-    private Chunk testingChunk = new Chunk();
+    public Camera camera;
+    private World world;
 
+    private int VBOVertexHandle;
+    private int VBOColorHandle;
+    
+    //private Texture t;
+    
     public static void main(String[] args) {
         try {
             Display.setDisplayMode(new DisplayMode(width,height));
@@ -45,10 +54,12 @@ public class Game {
     }
     
     private void init() throws IOException {
-        this.initialize3D();
+        //createVBO();
+        initialize3D();
         ResourceLibrary.init();
-        //textureFloor = ResourceLibrary.getDirt();
-        testingChunk.makeChunk();
+        //t = ResourceLibrary.getDirt();
+        world = new World();
+        System.out.println("World initialized.");
     }
     
     public void update() {
@@ -58,7 +69,23 @@ public class Game {
     public void render() {
         clearScreen();
         camera.translatePostion();
-        testingChunk.render();
+        //world.render();
+        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(3*24*16*64*16);
+        VertexPositionData.put(world.getVertexPositions());
+        VertexPositionData.flip();
+        
+        //FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
+        //VertexColorData.flip();
+        //VertexColorData.put(world.getVertexColorData());
+        
+        GL11.glPushMatrix();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
+        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
+        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
+        //GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
+        GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
+        GL11.glPopMatrix();
+        
     }
 
     public void clearScreen() {
@@ -73,6 +100,10 @@ public class Game {
         GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
         GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
+        
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+        
         GL11.glMatrixMode(GL11.GL_PROJECTION); // Sets matrix mode to displaying pixels.
         GL11.glLoadIdentity(); // Loads the above matrix mode.
         
@@ -81,5 +112,59 @@ public class Game {
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
+    }
+
+    private void createVBO() {
+        VBOColorHandle = GL15.glGenBuffers();
+        VBOVertexHandle = GL15.glGenBuffers();
+        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
+        VertexPositionData.put(new float[] {
+                        1.0f, 1.0f, -1.0f,
+                        -1.0f, 1.0f, -1.0f,
+                        -1.0f, 1.0f, 1.0f,
+                        1.0f, 1.0f, 1.0f,
+
+                        1.0f, -1.0f, 1.0f,
+                        -1.0f, -1.0f, 1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        1.0f, -1.0f, -1.0f,
+
+                        1.0f, 1.0f, 1.0f,
+                        -1.0f, 1.0f, 1.0f,
+                        -1.0f, -1.0f, 1.0f,
+                        1.0f, -1.0f, 1.0f,
+
+                        1.0f, -1.0f, -1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        -1.0f, 1.0f, -1.0f,
+                        1.0f, 1.0f, -1.0f,
+
+                        -1.0f, 1.0f, 1.0f,
+                        -1.0f, 1.0f, -1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        -1.0f, -1.0f, 1.0f,
+
+                        1.0f, 1.0f, -1.0f,
+                        1.0f, 1.0f, 1.0f,
+                        1.0f, -1.0f, 1.0f,
+                        1.0f, -1.0f, -1.0f
+                        });
+        VertexPositionData.flip();
+        
+        //IntBuffer textureId;
+        //GL11.glGenTextures(1,textureId);
+        
+        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
+        VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
+        VertexColorData.flip();
+        
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexPositionData,
+                        GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexColorData,
+                        GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 }
