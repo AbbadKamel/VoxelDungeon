@@ -10,6 +10,7 @@ public class Camera {
     private Vector3f vector = new Vector3f();
     private Vector3f rotation = new Vector3f();
     private Vector3f vectorPrevious = new Vector3f();
+    private static Vector3f cameraPos = new Vector3f();
     private boolean moveForward = false;
     private boolean moveBackward = false;
     private boolean strafeLeft = false;
@@ -18,6 +19,10 @@ public class Camera {
     private boolean moveDown = false;
     private static final float speed = 0.3f;
     private Game game;
+    
+    public static float getCamX() { return cameraPos.x; }
+    public static float getCamY() { return cameraPos.y; }
+    public static float getCamZ() { return cameraPos.z; }
 
     public Camera(Game game) {
         this.game = game;
@@ -69,6 +74,9 @@ public class Camera {
         vectorPrevious.x = vector.x;
         vectorPrevious.y = vector.y;
         vectorPrevious.z = vector.z;
+        cameraPos.x += vector.x;
+        cameraPos.y += vector.y;
+        cameraPos.z += vector.z;
     }
 
     public void input() {
