@@ -32,20 +32,20 @@ public class Camera {
 
     public void updateVector() {
         if (moveForward) {
-            vector.x -= (float) (Math.sin(-rotation.y * Math.PI / 180) * speed);
-            vector.z -= (float) (Math.cos(-rotation.y * Math.PI / 180) * speed);
+            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
+            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
         }
         if (moveBackward) {
-            vector.x += (float) (Math.sin(-rotation.y * Math.PI / 180) * speed);
-            vector.z += (float) (Math.cos(-rotation.y * Math.PI / 180) * speed);
+            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
+            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
         }
         if (strafeLeft) {
-            vector.x += (float) (Math.sin((-rotation.y - 90) * Math.PI / 180) * speed);
-            vector.z += (float) (Math.cos((-rotation.y - 90) * Math.PI / 180) * speed);
+            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed);
+            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed);
         }
         if (strafeRight) {
-            vector.x += (float) (Math.sin((-rotation.y + 90) * Math.PI / 180) * speed);
-            vector.z += (float) (Math.cos((-rotation.y + 90) * Math.PI / 180) * speed);
+            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed);
+            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed);
         }
         if (moveUp) {
             vector.y += (float) (speed);
@@ -82,8 +82,8 @@ public class Camera {
 
         //Mouse Input for looking around...
         if (Mouse.isGrabbed()) {
-            float mouseDX = Mouse.getDX() * 0.8f * 0.16f;
-            float mouseDY = Mouse.getDY() * 0.8f * 0.16f;
+            float mouseDX = Mouse.getDX()*0.8f*0.16f;
+            float mouseDY = Mouse.getDY()*0.8f*0.16f;
             if (rotation.y + mouseDX >= 360) {
                 rotation.y = rotation.y + mouseDX - 360;
             } else if (rotation.y + mouseDX < 0) {

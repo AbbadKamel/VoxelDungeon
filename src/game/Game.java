@@ -3,11 +3,11 @@ package game;
 import game.resource.ResourceLibrary;
 import java.io.IOException;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.opengl.Texture;
 
 public class Game {
 
@@ -15,7 +15,6 @@ public class Game {
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
     private Camera camera;
-    private Texture textureFloor;
     private Chunk testingChunk = new Chunk();
 
     public static void main(String[] args) {
@@ -31,7 +30,7 @@ public class Game {
         } catch (IOException e) {
             System.out.println(e);
         }
-        while (!Display.isCloseRequested()) {
+        while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             game.render();
             game.update();
             Display.update();
@@ -70,7 +69,7 @@ public class Game {
     public void initialize3D() {
         GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
         GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
-        GL11.glClearColor(0.0f,0.0f,0.0f,0.0f); // BG color.
+        GL11.glClearColor(0.4f,0.6f,1.0f,0.0f); // BG color. 6698FF
         GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
         GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
