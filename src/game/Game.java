@@ -21,6 +21,8 @@ public class Game {
     private Camera camera;
     private World world;
     public ArrayList<Float> vertices = new ArrayList<Float>();
+    public ArrayList<Float> colorVertices = new ArrayList<Float>();
+
 
     public static void main(String[] args) {
         try {
@@ -45,6 +47,7 @@ public class Game {
         System.exit(0);
     }
     private int VBOVertexHandle;
+    private int VBOColorHandle;
 
     public Game() {
         camera = new Camera(this);
@@ -55,15 +58,15 @@ public class Game {
         ResourceLibrary.init();
         world = new World(16,16);
         VBOVertexHandle = GL15.glGenBuffers();
+        VBOColorHandle = GL15.glGenBuffers();
     }
     
     public void update() {
         camera.update();
-        world.render(vertices);
+        world.render(vertices,colorVertices);
     }
     
     public void render() {
-        vertices.add(Float.valueOf(0.5f));
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         float[] floats = new float[vertices.size()];
         int i = 0;
@@ -74,6 +77,16 @@ public class Game {
         VertexPositionData.put(floats);
         VertexPositionData.flip();
         
+        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.size());
+        float[] colorFloats = new float[colorVertices.size()];
+        int j = 0;
+        for (Float f : colorVertices) {
+            floats[j] = Float.intBitsToFloat(Float.floatToIntBits(f));
+            j++;
+        }
+        VertexColorData.put(floats);
+        VertexColorData.flip();
+        
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexPositionData, GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
@@ -82,6 +95,8 @@ public class Game {
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
+        GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
         GL11.glPopMatrix();
     }
@@ -100,6 +115,7 @@ public class Game {
         GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
         
         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
         
         GL11.glMatrixMode(GL11.GL_PROJECTION); // Sets matrix mode to displaying pixels.
         GL11.glLoadIdentity(); // Loads the above matrix mode.

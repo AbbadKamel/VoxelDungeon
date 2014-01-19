@@ -43,65 +43,68 @@ public class Block {
         this.chunk = chunk;
     }
     
-    private void addFloats(float a, float b, float c, ArrayList<Float> vertices) {
+    private void addFloats(float a, float b, float c, ArrayList<Float> vertices, ArrayList<Float> colorVertices) {
         vertices.add(Float.valueOf(a));
         vertices.add(Float.valueOf(b));
         vertices.add(Float.valueOf(c));
+        colorVertices.add(0f);
+        colorVertices.add(1f);
+        colorVertices.add(0f);
     }
     
-    public void render(int x, int y, int z, ArrayList<Float> vertices) {
+    public void render(int x, int y, int z, ArrayList<Float> vertices, ArrayList<Float> colorVertices) {
         if (isTransparent)
             return;
         
         texture.bind();
         // Side.
         if (!chunk.isBlock(x,y+1,z)) {
-            addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices);
-            addFloats(0.5f+x,-0.5f+z,0.5f+y,vertices);
-            addFloats(0.5f+x,0.5f+z,0.5f+y,vertices);
-            addFloats(-0.5f+x,0.5f+z,0.5f+y,vertices);
+            addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,0.5f+y,vertices,colorVertices);
         }
         
         // Opposite side to above.
         if (!chunk.isBlock(x,y-1,z)) {
-            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,vertices);
-            addFloats(-0.5f+x,0.5f+z,-0.5f+y,vertices);
-            addFloats(0.5f+x,0.5f+z,-0.5f+y,vertices);
-            addFloats(0.5f+x,-0.5f+z,-0.5f+y,vertices);
+            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,-0.5f+y,vertices,colorVertices);
         }
         
         // Top.
         if (!chunk.isBlock(x,y,z+1)) {
-            addFloats(-0.5f+x,0.5f+z,-0.5f+y,vertices);
-            addFloats(-0.5f+x,0.5f+z,0.5f+y,vertices);
-            addFloats(0.5f+x,0.5f+z,0.5f+y,vertices);
-            addFloats(0.5f+x,0.5f+z,-0.5f+y,vertices);
+            addFloats(-0.5f+x,0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,-0.5f+y,vertices,colorVertices);
             GL11.glEnd();
         }
         
         // Bottom.
         if (!chunk.isBlock(x,y,z-1)) {
-            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,vertices);
-            addFloats(0.5f+x,-0.5f+z,-0.5f+y,vertices);
-            addFloats(0.5f+x,-0.5f+z,0.5f+y,vertices);
-            addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices);
+            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);
         }
         
         // Side.
         if (!chunk.isBlock(x+1,y,z)) {
-            addFloats(0.5f+x,-0.5f+z,-0.5f+y,vertices);
-            addFloats(0.5f+x,0.5f+z,-0.5f+y,vertices);
-            addFloats(0.5f+x,0.5f+z,0.5f+y,vertices);
-            addFloats(0.5f+x,-0.5f+z,0.5f+y,vertices);
+            addFloats(0.5f+x,-0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);
             GL11.glEnd();
         }
         
         // Opposite side to above.
         if (!chunk.isBlock(x-1,y,z)) {
-            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,vertices);
-            addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices);
-            addFloats(-0.5f+x,0.5f+z,0.5f+y,vertices);
-            addFloats(-0.5f+x,0.5f+z,-0.5f+y,vertices);
+            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,0.5f+y,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,-0.5f+y,vertices,colorVertices);
         }
     }
 }

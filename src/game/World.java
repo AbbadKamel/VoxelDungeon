@@ -22,35 +22,35 @@ public class World {
                 chunks[i][j] = new Chunk(i,j);
     }
     
-    public void render(ArrayList<Float> vertices) {
+    public void render(ArrayList<Float> vertices, ArrayList<Float> colorVertices) {
         int i = (int) (Camera.getCamX()/16);
         int j = (int) (Camera.getCamY()/16);
                 
         if (i<chunks.length && j<chunks[0].length && i>0 && j>0)
-            chunks[i][j].render(vertices);
+            chunks[i][j].render(vertices,colorVertices);
 
         if (i<chunks.length && (j+1)<chunks[0].length && i>0 && (j+1)>0)
-            chunks[i][j+1].render(vertices);
+            chunks[i][j+1].render(vertices,colorVertices);
 
         if (i<chunks.length && (j-1)<chunks[0].length && i>0 && (j-1)>0)
-            chunks[i][j-1].render(vertices);
+            chunks[i][j-1].render(vertices,colorVertices);
 
         if ((i+1)<chunks.length && j<chunks[0].length && (i+1)>0 && j>0)
-            chunks[i+1][j].render(vertices);
+            chunks[i+1][j].render(vertices,colorVertices);
 
         if ((i+1)<chunks.length && (j+1)<chunks[0].length && (i+1)>0 && (j+1)>0)
-            chunks[i+1][j+1].render(vertices);
+            chunks[i+1][j+1].render(vertices,colorVertices);
 
         if ((i+1)<chunks.length && (j-1)<chunks[0].length && (i+1)>0 && (j-1)>0)
-            chunks[i+1][j-1].render(vertices);
+            chunks[i+1][j-1].render(vertices,colorVertices);
 
         if ((i-1)<chunks.length && j<chunks[0].length && (i-1)>0 && j>0)
-            chunks[i-1][j].render(vertices);
+            chunks[i-1][j].render(vertices,colorVertices);
 
         if ((i-1)<chunks.length && (j+1)<chunks[0].length && (i-1)>0 && (j+1)>0)
-            chunks[i-1][j+1].render(vertices);
+            chunks[i-1][j+1].render(vertices,colorVertices);
 
         if ((i-1)<chunks.length && (j-1)<chunks[0].length && (i-1)>0 && (j-1)>0)
-            chunks[i-1][j-1].render(vertices);
+            chunks[i-1][j-1].render(vertices,colorVertices);
     }
 }
