@@ -1,6 +1,4 @@
 VoxelDungeon
 ============
 
-A voxel-based dungeon exploring game. Good luck to me!
-
-We are going to do this at code day (now), but what we already had is completely useless. We aren't cheating.
+A voxel-based dungeon exploring game. A 3d Minecraft-esque game that focuses on action, role-playing, combat, and dungeon crawling rather than building and mining. Written at Code Day Seattle.
