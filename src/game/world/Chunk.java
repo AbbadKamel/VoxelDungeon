@@ -28,7 +28,9 @@ public class Chunk {
     
     public void makeChunk() throws IOException {
         int [][] height = new int[SIZE][SIZE];
+        int [][] iHeight = new int[SIZE-8][SIZE-8];
         int r = (int) (Math.random()*3);
+        Boolean canEnter = true;
         
         if (r==2) {
             generateCaves();
@@ -83,6 +85,14 @@ public class Chunk {
 
                     double avg = ((a+b+c+d)/4);
                     height[i][j] = (int) (avg+1);
+                    
+                    int random = 3;
+                    
+                    if (i<8 && j<8)
+                    {
+                        random = (int) (2*Math.random()+2);
+                        iHeight[i][j] = random;
+                    }
                 }
             }
         } else if(r==1) {          
@@ -108,10 +118,12 @@ public class Chunk {
                     } else                 {
                         height[i][j] = (int) (1*Math.random()+1);
                     }
-
-                }
+                }   
             }
         }
+        
+        int rand = (int) (2*Math.random());
+        
         for(int i=0;i<SIZE;i++) {
             for (int j=0;j<SIZE;j++) {
                 for (int k=0;k<BEDROCK_HEIGHT+height[i][j];k++) {
@@ -121,7 +133,16 @@ public class Chunk {
                         setBlock(i,j,k,new Block(Block.DIRT));
                 }
                 for (int k=HEIGHT-1;k>=(height[i][j]+BEDROCK_HEIGHT);k--)
-                    setBlock(i,j,k,new Block(Block.BLANK));
+                    
+                    if(rand == 0) {
+                        if(i>3 && i<12 && j>3 && j<12)
+                            if (k > (height[i][j]+BEDROCK_HEIGHT+4) && 
+                                    k < (height[i][j]+BEDROCK_HEIGHT+4+iHeight[i-4][j-4]))
+                                setBlock(i,j,k,new Block(Block.DIRT));
+                    }
+                    else {
+                        setBlock(i,j,k,new Block(Block.BLANK));
+                    }
             }
         }
     }
