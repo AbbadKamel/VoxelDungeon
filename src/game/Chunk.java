@@ -60,16 +60,12 @@ public class Chunk {
         
         for(int i=0;i<16;i++) {
             for (int j=0;j<16;j++) {
-                for (int k=0;k<32+height[i][j];k++) {
-                    int type = (int)(Math.random()*2);
-                    switch (type) {
-                        case 0: blocks[i][j][k] = Block.DIRT;
-                            break;
-                        case 1: blocks[i][j][k] = Block.STONE;
-                            break;
-                        default:
-                            break;
-                    }
+                for (int k=0;k<8+height[i][j];k++) {
+                    if(k < (8+height[i][j])-4) 
+                        blocks[i][j][k] = Block.STONE;
+                    else
+                        blocks[i][j][k] = Block.DIRT;
+                    
                 }
                 for (int k=64-1;k>=height[i][j]+8;k--)
                     blocks[i][j][k] = Block.BLANK;
