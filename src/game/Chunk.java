@@ -87,19 +87,19 @@ public class Chunk {
                     double y = Math.abs(j-7);
                     double avg = ((1/(x+0.25)) + (1/(y+0.25)))/2;
                     if (x<1 && y<1) {
-                        height[i][j] = 14;
+                        height[i][j] = (int) (8*Math.random()+1);
                     } else if (x<2 && y<2) {
-                        height[i][j] = 12;
+                        height[i][j] = (int) (8*Math.random()+1);
                     } else if (x<3 && y<3) {
-                        height[i][j] = 10;
+                        height[i][j] = (int) (7*Math.random()+1);
                     } else if (x<4 && y<4) {
-                        height[i][j] = 8;
+                        height[i][j] = (int) (5*Math.random()+1);
                     } else if (x<5 && y<5) {
-                        height[i][j] = 6;
+                        height[i][j] = (int) (3*Math.random()+1);
                     } else if (x<6 && y<6) {
-                        height[i][j] = 4;
+                        height[i][j] = (int) (2*Math.random()+1);
                     } else if (x<7 && y<7) {
-                        height[i][j] = 2;
+                        height[i][j] = (int) (2*Math.random()+1);
                     } else                 {
                         height[i][j] = 0;
                     }
