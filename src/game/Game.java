@@ -71,13 +71,13 @@ public class Game {
         GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
         GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
         GL11.glClearColor(0.0f,0.0f,0.0f,0.0f); // BG color.
-        GL11.glClearDepth(1.0); // Buffer depth,allows objects to draw over things behind them.
+        GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
         GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
         GL11.glMatrixMode(GL11.GL_PROJECTION); // Sets matrix mode to displaying pixels.
         GL11.glLoadIdentity(); // Loads the above matrix mode.
         
-        // Sets default perspective location.
+        // Sets default perspective location.                       Render Distances: Min   Max
         GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,100.0f);
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.

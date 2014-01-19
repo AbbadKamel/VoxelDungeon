@@ -27,7 +27,7 @@ public class Chunk {
         for(int i=0;i<16;i++) {
             for (int j=0;j<16;j++) {
                 for (int k=0;k<64;k++) {
-                    blocks[i][j][k].render(i,j,k);
+                    blocks[i][j][k].render(i*2,j*2,k*2);
                 }
             }
         }
