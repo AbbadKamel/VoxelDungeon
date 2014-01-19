@@ -6,7 +6,7 @@ public class Chunk {
     
     private static final int SIZE = 16;
     private static final int HEIGHT = 48;
-    private static final int BEDROCK_HEIGHT = 4;
+    private static final int BEDROCK_HEIGHT = 16;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
     public final int px;

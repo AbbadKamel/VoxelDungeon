@@ -30,7 +30,7 @@ public class World {
                 chunks[i][j] = new Chunk(i,j);
     }
     
-    public void render() {
+    public void render() throws IOException {
         int i = (int) (Camera.getCamX()/16);
         int j = (int) (Camera.getCamY()/16);
                 

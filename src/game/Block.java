@@ -31,7 +31,7 @@ public class Block {
                 break;
             case GRASS_SIDE:
                 transparent = false;
-                textureName = "Grass_side";
+                textureName = "grass_side";
                 break;
             case GRASS_TOP:
                 transparent = false;

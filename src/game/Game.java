@@ -31,11 +31,15 @@ public class Game {
         } catch (IOException e) {
             System.out.println(e);
         }
+        int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            long startTime = System.currentTimeMillis();
             game.render();
-            game.update();
+            game.update(delta);
             Display.update();
             Display.sync(FRAME_RATE);
+            long endTime = System.currentTimeMillis();
+            delta = (int)(endTime - startTime);
         }
         Display.destroy();
         System.exit(0);
@@ -50,17 +54,14 @@ public class Game {
         camera = new Camera(this);
     }
     
-    public void update() {
-        camera.update();
+    public void update(int delta) {
+        camera.update(delta);
     }
     
     public void render() {
         clearScreen();
         camera.translatePostion();
-        //long startTime = System.currentTimeMillis();
         world.render();
-        //long endTime = System.currentTimeMillis();
-        //System.out.println("Render time: " + (endTime-startTime));
     }
 
     public void clearScreen() {

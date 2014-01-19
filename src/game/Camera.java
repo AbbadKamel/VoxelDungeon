@@ -30,34 +30,35 @@ public class Camera {
         Mouse.setGrabbed(true);
     }
 
-    public void update() {
+    public void update(int delta) {
         updatePrevious();
         input();
-        updateVector();
+        updateVector(delta);
     }
 
-    public void updateVector() {
+    public void updateVector(int delta) {
+        delta = delta/20;
         if (moveForward) {
-            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
-            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
+            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*delta;
+            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*delta;
         }
         if (moveBackward) {
-            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
-            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
+            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*delta;
+            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*delta;
         }
         if (strafeLeft) {
-            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed);
-            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed);
+            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed)*delta;
+            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed)*delta;
         }
         if (strafeRight) {
-            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed);
-            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed);
+            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed)*delta;
+            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed)*delta;
         }
         if (moveUp) {
-            vector.y += (float) (speed);
+            vector.y += (float) (speed)*delta;
         }
         if (moveDown) {
-            vector.y -= (float) (speed);
+            vector.y -= (float) (speed)*delta;
         }
     }
 
