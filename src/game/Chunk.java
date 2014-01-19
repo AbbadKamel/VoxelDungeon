@@ -3,7 +3,7 @@ package game;
 public class Chunk {
     
     private static final int SIZE = 16;
-    private static final int HEIGHT = 16;
+    private static final int HEIGHT = 8;
     private static final int BEDROCK_HEIGHT = 4;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
@@ -84,6 +84,9 @@ public class Chunk {
     }
     
     public void render() {
+        if (!(Camera.getCamX() > px*16 && Camera.getCamX() < (px*16 + SIZE) 
+                && Camera.getCamY() > py*16 && Camera.getCamY() < (py*16 + SIZE)))
+            return;
         for(int i=0;i<SIZE;i++) {
             for (int j=0;j<SIZE;j++) {
                 for (int k=0;k<HEIGHT;k++) {

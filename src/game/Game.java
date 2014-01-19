@@ -47,7 +47,7 @@ public class Game {
     private void init() throws IOException {
         this.initialize3D();
         ResourceLibrary.init();
-        world = new World(2,2);
+        world = new World(16,16);
     }
     
     public void update() {
