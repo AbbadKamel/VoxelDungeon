@@ -95,7 +95,7 @@ public class Chunk {
                     }
                 }
             }
-        } else if(r==1) {          
+        } else if(r==1) {
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
                     double x = Math.abs(i-7);
@@ -132,17 +132,19 @@ public class Chunk {
                     else
                         setBlock(i,j,k,new Block(Block.DIRT));
                 }
-                for (int k=HEIGHT-1;k>=(height[i][j]+BEDROCK_HEIGHT);k--)
-                    
+                for (int k=HEIGHT-1;k>=(height[i][j]+BEDROCK_HEIGHT);k--) {
                     if(rand == 0) {
-                        if(i>3 && i<12 && j>3 && j<12)
-                            if (k > (height[i][j]+BEDROCK_HEIGHT+4) && 
-                                    k < (height[i][j]+BEDROCK_HEIGHT+4+iHeight[i-4][j-4]))
-                                setBlock(i,j,k,new Block(Block.DIRT));
-                    }
-                    else {
+                        if(i>3 && i<12 && j>3 && j<12 && 
+                                k > (height[i][j]+BEDROCK_HEIGHT+4) && 
+                                k < (height[i][j]+BEDROCK_HEIGHT+4+iHeight[i-4][j-4])) {
+                            setBlock(i,j,k,new Block(Block.DIRT));
+                        } else {
+                            setBlock(i,j,k,new Block(Block.BLANK));
+                        }
+                    } else {
                         setBlock(i,j,k,new Block(Block.BLANK));
                     }
+                }
             }
         }
     }
