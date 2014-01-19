@@ -1,7 +1,7 @@
 package game;
 
-import game.world.World;
 import game.resource.ResourceLibrary;
+import game.world.World;
 import java.io.IOException;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -34,7 +34,6 @@ public class Game {
         }
         int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            System.out.println(delta);
             long startTime = System.currentTimeMillis();
             try {
                 game.render();
@@ -46,6 +45,7 @@ public class Game {
             Display.sync(FRAME_RATE);
             long endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
+            System.out.println(delta);
         }
         Display.destroy();
         System.exit(0);

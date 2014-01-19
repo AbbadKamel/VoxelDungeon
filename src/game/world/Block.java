@@ -9,9 +9,7 @@ public class Block {
     
     public static final byte DIRT = 0;
     public static final byte STONE = 1;
-    public static final byte GRASS_SIDE = 2;
-    public static final byte GRASS_TOP = 3;
-    public static final byte BLANK = 4;
+    public static final byte BLANK = 2;
     
     public Texture texture;
     public boolean isTransparent;
@@ -27,15 +25,7 @@ public class Block {
                 break;
             case STONE:
                 transparent = false;
-                textureName = "stone";
-                break;
-            case GRASS_SIDE:
-                transparent = false;
-                textureName = "grass_side";
-                break;
-            case GRASS_TOP:
-                transparent = false;
-                textureName = "grass_top";
+                textureName = "stone_top";
                 break;
             case BLANK:
                 transparent = true;
@@ -47,7 +37,6 @@ public class Block {
         
         this.texture = ResourceLibrary.getTextureByName(textureName);
         this.isTransparent = transparent;
-        
     } 
     
     public void setMyChunk(Chunk chunk) {
@@ -58,11 +47,13 @@ public class Block {
         if (isTransparent)
             return;
         
-        if (texture == ResourceLibrary.getTextureByName("dirt"))
-        {
-            this.texture = ResourceLibrary.getTextureByName("Grass_side");
+        if (texture == ResourceLibrary.getTextureByName("dirt")) {
+            this.texture = ResourceLibrary.getTextureByName("grass_side");
+        } else if (texture == ResourceLibrary.getTextureByName("stone_top")) {
+            this.texture = ResourceLibrary.getTextureByName("stone_side");
         }
         texture.bind();
+        
         // Side.
         if (!chunk.isBlock(x,y+1,z)) {
             GL11.glBegin(GL11.GL_QUADS);
@@ -76,7 +67,6 @@ public class Block {
             GL11.glVertex3f(-0.5f+x,0.5f+z,0.5f+y);
             GL11.glEnd();
         }
-        
         
         // Opposite side to above.
         if (!chunk.isBlock(x,y-1,z)) {
@@ -92,11 +82,13 @@ public class Block {
             GL11.glEnd();
         }
         
-        if (texture == ResourceLibrary.getTextureByName("Grass_side"))
-        {
+        if (texture == ResourceLibrary.getTextureByName("grass_side")) {
             this.texture = ResourceLibrary.getTextureByName("grass_top");
+        } else if (texture == ResourceLibrary.getTextureByName("stone_side")) {
+            this.texture = ResourceLibrary.getTextureByName("stone_top");
         }
         texture.bind();
+        
         // Top.
         if (!chunk.isBlock(x,y,z+1)) {
             GL11.glBegin(GL11.GL_QUADS);
@@ -111,11 +103,13 @@ public class Block {
             GL11.glEnd();
         }
         
-        if (texture == ResourceLibrary.getTextureByName("grass_top"))
-        {
-            this.texture = ResourceLibrary.getTextureByName("dirt");
+        if (texture == ResourceLibrary.getTextureByName("grass_top")) {
+            this.texture = ResourceLibrary.getTextureByName("grass_side");
+        } else if (texture == ResourceLibrary.getTextureByName("stone_top")) {
+            this.texture = ResourceLibrary.getTextureByName("stone_side");
         }
         texture.bind();
+        
         // Bottom.
         if (!chunk.isBlock(x,y,z-1)) {
             GL11.glBegin(GL11.GL_QUADS);
@@ -130,11 +124,13 @@ public class Block {
             GL11.glEnd();
         }
         
-        if (texture == ResourceLibrary.getTextureByName("dirt"))
-        {
-            this.texture = ResourceLibrary.getTextureByName("Grass_side");
+        if (texture == ResourceLibrary.getTextureByName("grass_side")) {
+            this.texture = ResourceLibrary.getTextureByName("grass_side");
+        } else if (texture == ResourceLibrary.getTextureByName("stone_side")) {
+            this.texture = ResourceLibrary.getTextureByName("stone_side");
         }
         texture.bind();
+        
         // Side.
         if (!chunk.isBlock(x+1,y,z)) {
             GL11.glBegin(GL11.GL_QUADS);

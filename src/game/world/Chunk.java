@@ -126,8 +126,72 @@ public class Chunk {
         }
     }
     
-    private void generateCaves() {
+    private void generateCaves() throws IOException {
+        double chanceOfSpace = 0.55;
+        boolean[][][] emptySpace = new boolean[16][16][16];
+        for(int i=0;i<16;i++) {
+            for (int j=0;j<16;j++) {
+                for (int k=0;k<16;k++) {
+                    //if (i==0 || j==0 || k==0 || i==15 || j==15 || k==15)
+                    //    emptySpace[i][j][k] = true;
+                    //else
+                        emptySpace[i][j][k] = Math.random() < chanceOfSpace;
+                }
+            }
+        }
+
+        int smoothTimes = 7;
+        boolean[][][] newEmptySpace = new boolean[16][16][16];
         
+        int liveAmount = 13;
+        for (int time=0;time<smoothTimes;time++) {
+            for (int x=0;x<16;x++) {
+                for (int y=0;y<16;y++) {
+                    for (int z=0;z<16;z++) {
+                        int air = 0;
+                        int stone = 0;
+
+                        for (int ox=-1;ox<2;ox++) {
+                            for (int oy=-1;oy<2;oy++) {
+                                for (int oz=-1;oz<2;oz++) {
+                                    if (x+ox<0 || x+ox>=16 || y+oy<0 || y+oy>=16 || z+oz<0 || z+oz>=16)
+                                        continue;
+                                    if (emptySpace[x+ox][y+oy][z+oz])
+                                        air++;
+                                    else
+                                        stone++;
+                                }
+                            }
+                        }
+                        if (stone >= liveAmount) {
+                            newEmptySpace[x][y][z] = false;
+                        } else if (stone == 0) {
+                            newEmptySpace[x][y][z] = false;
+                        } else {
+                            newEmptySpace[x][y][z] = true;
+                        }
+                        newEmptySpace[x][y][z] = stone >= air ? true : false;
+                    }
+                }
+            }
+        }
+        emptySpace = newEmptySpace;
+        
+        for(int i=0;i<SIZE;i++) {
+            for (int j=0;j<SIZE;j++) {
+                for (int k=0;k<HEIGHT;k++) {
+                    if (k==0)
+                        setBlock(i,j,k,new Block(Block.STONE));
+                    else if(k<16)
+                        if (emptySpace[i][j][k])
+                            setBlock(i,j,k,new Block(Block.BLANK));
+                        else
+                            setBlock(i,j,k,new Block(Block.STONE));
+                    else
+                        setBlock(i,j,k,new Block(Block.BLANK));
+                }
+            }
+        }
     }
     
     private void setBlock(int i, int j, int k, Block block) {
