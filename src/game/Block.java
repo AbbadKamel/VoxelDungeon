@@ -21,7 +21,7 @@ public class Block {
         switch (blockName) {
             case DIRT:
                 transparent = false;
-                textureName = "dirt";
+                textureName = "grass";
                 break;
             case STONE:
                 transparent = false;
