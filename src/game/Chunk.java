@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Chunk {
     
     private static final int SIZE = 16;
-    private static final int HEIGHT = 8;
+    private static final int HEIGHT = 16;
     private static final int BEDROCK_HEIGHT = 4;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
@@ -22,6 +22,7 @@ public class Chunk {
     public void makeChunk() throws IOException {
         int [][] height = new int[SIZE][SIZE];
         
+        /*
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 double[][] v = new double [4][4];
@@ -71,7 +72,17 @@ public class Chunk {
                 height[i][j] = (int) avg;
             }
         }
+        */
         
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                double x = Math.abs((i-8)/8);
+                double y = Math.abs((j-8)/8);
+                double avg = ((3*x*x - 2*x*x*x) + (3*y*y - 2*y*y*y))/2;
+                height[i][j] = (int) (4*avg);
+            }
+        }
+                
         for(int i=0;i<SIZE;i++) {
             for (int j=0;j<SIZE;j++) {
                 for (int k=0;k<BEDROCK_HEIGHT+height[i][j];k++) {
@@ -84,6 +95,15 @@ public class Chunk {
                     setBlock(i,j,k,new Block(Block.BLANK));
             }
         }
+    }
+    
+     public void makeHill() {
+        int i = (int) (Camera.getCamX()/16);
+        int j = (int) (Camera.getCamY()/16);
+        double difx = Camera.getCamX()-(World.getChunks(i, j)).px;
+        double dify = Camera.getCamY()-(World.getChunks(i,j)).py;
+        double distance = Math.sqrt(Math.pow(difx, 2)+Math.pow(dify, 2));
+        distance *= distance;
     }
     
     private void setBlock(int i, int j, int k, Block block) {

@@ -6,13 +6,17 @@ public class World {
     
     private static int width;
     private static int length;
-    private Chunk[][] chunks;
+    private static Chunk[][] chunks;
     
     public World(int x, int y) throws IOException {
         chunks = new Chunk[x][y];
         length = x;
         width = y;
         createWorld();
+    }
+    
+    public static Chunk getChunks(int i, int j) {
+        return chunks[i][j];
     }
     
     public void createWorld() throws IOException {
