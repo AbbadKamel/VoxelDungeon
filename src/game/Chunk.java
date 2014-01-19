@@ -28,7 +28,10 @@ public class Chunk {
     
     public void makeChunk() throws IOException {
         int [][] height = new int[SIZE][SIZE];
-        int r = (int) (Math.random()*2);
+        int r = (int) (Math.random()*3);
+        
+        if (r==2)
+            generateCaves();
         
         if(r==0) {
             for (int i = 0; i < SIZE; i++) {
@@ -119,6 +122,10 @@ public class Chunk {
                     setBlock(i,j,k,new Block(Block.BLANK));
             }
         }
+    }
+    
+    private void generateCaves() {
+        
     }
     
     private void setBlock(int i, int j, int k, Block block) {
