@@ -1,5 +1,7 @@
 package game;
 
+import java.io.IOException;
+
 public class Chunk {
     
     private static final int SIZE = 16;
@@ -7,16 +9,17 @@ public class Chunk {
     private static final int BEDROCK_HEIGHT = 4;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
-    private int px;
-    private int py;
+    public final int px;
+    public final int py;
     
-    public Chunk(int px, int py) {
+    public Chunk(int px, int py) throws IOException {
         this.px = px;
         this.py = py;
+        //System.out.println(this.px + " " + this.py);
         makeChunk();
     }
     
-    public void makeChunk() {
+    public void makeChunk() throws IOException {
         int [][] height = new int[SIZE][SIZE];
         
         for (int i = 0; i < SIZE; i++) {
@@ -72,25 +75,39 @@ public class Chunk {
         for(int i=0;i<SIZE;i++) {
             for (int j=0;j<SIZE;j++) {
                 for (int k=0;k<BEDROCK_HEIGHT+height[i][j];k++) {
-                    if(k < BEDROCK_HEIGHT/2-1 + height[i][j]) 
-                        blocks[i][j][k] = Block.STONE;
+                    if(k < BEDROCK_HEIGHT/2-1 + height[i][j])
+                        setBlock(i,j,k,new Block(Block.STONE));
                     else
-                        blocks[i][j][k] = Block.DIRT;
+                        setBlock(i,j,k,new Block(Block.DIRT));
                 }
                 for (int k=HEIGHT-1;k>=height[i][j]+BEDROCK_HEIGHT;k--)
-                    blocks[i][j][k] = Block.BLANK;
+                    setBlock(i,j,k,new Block(Block.BLANK));
             }
         }
     }
     
+    private void setBlock(int i, int j, int k, Block block) {
+        block.setMyChunk(this);
+        blocks[i][j][k] = block;
+    }
+    
     public void render() {
-        
-        for(int i=0;i<SIZE;i++) {
-            for (int j=0;j<SIZE;j++) {
-                for (int k=0;k<HEIGHT;k++) {
+        for(int i=0;i<SIZE;i++)
+            for (int j=0;j<SIZE;j++)
+                for (int k=0;k<HEIGHT;k++)
                     blocks[i][j][k].render(i+16*px,j+16*py,k);
-                }
-            }
+    }
+    
+    public boolean isBlock(int x, int y, int z) {
+        //System.out.println(px + " " + py);
+        //System.out.println(x + " " + y);
+        //System.out.println();
+        if (x<px*16 || y<py*16 || x>px*16+15 || y>py*16+15) {
+            return false;
         }
+        x -= px*16;
+        y -= py*16;
+        //System.out.println("Pass.");
+        return blocks[x][y][z].isTransparent;
     }
 }

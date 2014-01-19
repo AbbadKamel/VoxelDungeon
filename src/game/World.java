@@ -1,19 +1,21 @@
 package game;
 
+import java.io.IOException;
+
 public class World {
     
     private static int width;
     private static int length;
     private Chunk[][] chunks;
     
-    public World(int x, int y) {
+    public World(int x, int y) throws IOException {
         chunks = new Chunk[x][y];
         length = x;
         width = y;
         createWorld();
     }
     
-    public void createWorld() {
+    public void createWorld() throws IOException {
         for (int i=0;i<chunks.length;i++)
             for (int j=0;j<chunks[0].length;j++)
                 chunks[i][j] = new Chunk(i,j);

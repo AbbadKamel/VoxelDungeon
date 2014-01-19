@@ -28,10 +28,10 @@ public class Camera {
     }
 
     public void update() {
-        System.out.println(cameraPos.x);
-        System.out.println(cameraPos.z);
-        System.out.println(cameraPos.y);
-        System.out.println();
+        //System.out.println(cameraPos.x);
+        //System.out.println(cameraPos.z);
+        //System.out.println(cameraPos.y);
+        //System.out.println();
         updatePrevious();
         input();
         updateVector();
