@@ -66,7 +66,7 @@ public class Block {
         }
         
         // Opposite side to above.
-        if (!chunk.isBlock(x+1,y,z+1)) {
+        if (!chunk.isBlock(x,y-1,z)) {
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.5f,0.0f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
@@ -94,7 +94,7 @@ public class Block {
         }
         
         // Bottom.
-        if (!chunk.isBlock(x,y+1,z+1)) {
+        if (!chunk.isBlock(x,y,z-1)) {
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.5f,0.5f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
@@ -108,7 +108,7 @@ public class Block {
         }
         
         // Side.
-        if (!chunk.isBlock(x+1,y+1,z)) {
+        if (!chunk.isBlock(x+1,y,z)) {
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.5f,0.0f);
             GL11.glVertex3f(0.5f+x,-0.5f+z,-0.5f+y);
@@ -122,7 +122,7 @@ public class Block {
         }
         
         // Opposite side to above.
-        if (!chunk.isBlock(x+1,y,z+1)) {
+        if (!chunk.isBlock(x-1,y,z)) {
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.0f,0.0f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);

@@ -99,11 +99,11 @@ public class Chunk {
     }
     
     public boolean isBlock(int x, int y, int z) {
-        if (x<px*16 || y<py*16 || x>px*16+15 || y>py*16+15) {
-            return false;
-        }
         x -= px*16;
         y -= py*16;
-        return blocks[x][y][z].isTransparent;
+        if (x<0 || y<0 || z<0 || x>15 || y>15 || z>HEIGHT-1) {
+            return false;
+        }
+        return !blocks[x][y][z].isTransparent;
     }
 }
