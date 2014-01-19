@@ -6,10 +6,6 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 public class Block {
-
-    //DIRT("dirt", false),
-    //STONE("stone", false),
-    //BLANK("blank", true);
     
     public static final byte DIRT = 0;
     public static final byte STONE = 1;
