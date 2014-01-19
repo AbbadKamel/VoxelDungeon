@@ -53,11 +53,18 @@ public class Camera {
                 dy += 2.0f;
             }
         }
-        System.out.println(dy);
         vector.y += dy;
         if (moveForward) {
-            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
-            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
+            if (!world.isBlock((int)(vector.x-Math.sin(-rotation.y*Math.PI/180)*speed),(int)vector.z+16,(int)vector.y+1)) {
+                vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
+            } else {
+                //System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQ");
+            }
+            if (!world.isBlock((int)vector.x,(int)(vector.z-Math.cos(-rotation.y*Math.PI/180)*speed)-16,(int)vector.y+1)) {
+                vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
+            } else {
+                //System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQ");
+            }
         }
         if (moveBackward) {
             vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
@@ -74,7 +81,7 @@ public class Camera {
         if (moveDown) {
             vector.y -= (float) (speed);
         }
-        System.out.println(vector);
+        //System.out.println(vector);
     }
 
     public void translatePostion() {

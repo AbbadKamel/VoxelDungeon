@@ -4,14 +4,10 @@ import java.io.IOException;
 
 public class World {
     
-    private static int width;
-    private static int length;
     private static Chunk[][] chunks;
     
     public World(int x, int y) throws IOException {
         chunks = new Chunk[x][y];
-        length = x;
-        width = y;
         createWorld();
     }
     
@@ -20,7 +16,12 @@ public class World {
     }
     
     public int getHeight(int x, int y) {
+        //if  (x/16>0 && y/16>0 && x/16<chunks.length && )
         return chunks[x/16][y/16].getHeight(x%16,y%16);
+    }
+    
+    public boolean isBlock(int x, int y, int z) {
+        return chunks[x/16][y/16].isBlock(x,y,z);
     }
     
     public void createWorld() throws IOException {

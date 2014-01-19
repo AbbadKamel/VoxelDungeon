@@ -57,10 +57,10 @@ public class Game {
     public void render() {
         clearScreen();
         camera.translatePostion();
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
         world.render();
-        long endTime = System.currentTimeMillis();
-        System.out.println("Render time: " + (endTime-startTime));
+        //long endTime = System.currentTimeMillis();
+        //System.out.println("Render time: " + (endTime-startTime));
     }
 
     public void clearScreen() {
