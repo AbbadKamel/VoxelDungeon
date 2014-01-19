@@ -45,7 +45,6 @@ public class Game {
             Display.sync(FRAME_RATE);
             long endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
-            System.out.println(delta);
         }
         Display.destroy();
         System.exit(0);

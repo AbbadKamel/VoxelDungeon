@@ -29,7 +29,7 @@ public class Chunk {
     public void makeChunk() throws IOException {
         int [][] height = new int[SIZE][SIZE];
         int [][] iHeight = new int[SIZE-8][SIZE-8];
-        int r = (int) (Math.random()*3);
+        int r = (int) (Math.random()*7);
         Boolean canEnter = true;
         
         if (r==2) {
@@ -37,7 +37,7 @@ public class Chunk {
             return;
         }
         
-        if(r==0) {
+        if(r==0 || r==3 || r==4) {
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
                     double[][] v = new double [4][4];
@@ -95,7 +95,7 @@ public class Chunk {
                     }
                 }
             }
-        } else if(r==1) {
+        } else if(r==1 || r==5 || r==6) {
             for (int i = 0; i < SIZE; i++) {
                 for (int j = 0; j < SIZE; j++) {
                     double x = Math.abs(i-7);
