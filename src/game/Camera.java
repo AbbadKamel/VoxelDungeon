@@ -18,14 +18,12 @@ public class Camera {
     private boolean moveUp = false;
     private boolean moveDown = false;
     private static final float speed = 0.3f;
-    private Game game;
     
     public static float getCamX() { return cameraPos.x; }
-    public static float getCamY() { return cameraPos.y; }
-    public static float getCamZ() { return cameraPos.z; }
+    public static float getCamY() { return cameraPos.z; }
+    public static float getCamZ() { return cameraPos.y; }
 
     public Camera(Game game) {
-        this.game = game;
         Mouse.setGrabbed(true);
     }
 
@@ -58,12 +56,6 @@ public class Camera {
         if (moveDown) {
             vector.y -= (float) (speed);
         }
-        Chunk currentChunk;
-        for (int i=0;i<16;i++) {
-            for (int j=0;j<16;j++) {
-                
-            }
-        }
     }
 
     public void translatePostion() {
@@ -80,9 +72,9 @@ public class Camera {
         vectorPrevious.x = vector.x;
         vectorPrevious.y = vector.y;
         vectorPrevious.z = vector.z;
-        cameraPos.x += vector.x;
-        cameraPos.y += vector.y;
-        cameraPos.z += vector.z;
+        cameraPos.x = vector.x;
+        cameraPos.y = vector.y;
+        cameraPos.z = vector.z;
     }
 
     public void input() {

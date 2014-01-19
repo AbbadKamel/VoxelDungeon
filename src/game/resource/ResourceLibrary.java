@@ -16,14 +16,16 @@ public class ResourceLibrary {
         stone = Loader.createTexture("stone");
     }
 
-    public static Texture getTextureByName(String name) {
+    public static Texture getTextureByName(String name) throws IOException {
         switch (name) {
             case "dirt":
                 return dirt;
             case "stone":
                 return stone;
-            default:
+            case "blank":
                 return null;
+            default:
+                throw new IOException("Unhandled case @ getTextureByName().");
         }
     }
 }

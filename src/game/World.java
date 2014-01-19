@@ -1,35 +1,56 @@
 package game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class World {
     
-    Chunk[][] chunks = new Chunk[16][16];
+    private static int width;
+    private static int length;
+    private Chunk[][] chunks;
     
-    public World() {
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 1; j++) {
-                chunks[i][j] = new Chunk();
-            }
-        }
+    public World(int x, int y) throws IOException {
+        chunks = new Chunk[x][y];
+        length = x;
+        width = y;
+        createWorld();
     }
     
-    public Chunk getChunk(int x, int y) {
-        return chunks[x][y];
+    public void createWorld() throws IOException {
+        for (int i=0;i<chunks.length;i++)
+            for (int j=0;j<chunks[0].length;j++)
+                chunks[i][j] = new Chunk(i,j);
     }
     
-    public float[] getVertexPositions() {
-        float[] vertices = new float[3*24*16*64*16];
-        ArrayList<Float> verticesList = new ArrayList<Float>();
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 1; j++) {
-                verticesList.addAll(chunks[i][j].render(i,j));
-            }
-        }
-        int i = 0;
-        for (Float f : verticesList) {
-            vertices[i] = f;
-        }
-        return vertices;
+    public void render(ArrayList<Float> vertices) {
+        int i = (int) (Camera.getCamX()/16);
+        int j = (int) (Camera.getCamY()/16);
+                
+        if (i<chunks.length && j<chunks[0].length && i>0 && j>0)
+            chunks[i][j].render(vertices);
+
+        if (i<chunks.length && (j+1)<chunks[0].length && i>0 && (j+1)>0)
+            chunks[i][j+1].render(vertices);
+
+        if (i<chunks.length && (j-1)<chunks[0].length && i>0 && (j-1)>0)
+            chunks[i][j-1].render(vertices);
+
+        if ((i+1)<chunks.length && j<chunks[0].length && (i+1)>0 && j>0)
+            chunks[i+1][j].render(vertices);
+
+        if ((i+1)<chunks.length && (j+1)<chunks[0].length && (i+1)>0 && (j+1)>0)
+            chunks[i+1][j+1].render(vertices);
+
+        if ((i+1)<chunks.length && (j-1)<chunks[0].length && (i+1)>0 && (j-1)>0)
+            chunks[i+1][j-1].render(vertices);
+
+        if ((i-1)<chunks.length && j<chunks[0].length && (i-1)>0 && j>0)
+            chunks[i-1][j].render(vertices);
+
+        if ((i-1)<chunks.length && (j+1)<chunks[0].length && (i-1)>0 && (j+1)>0)
+            chunks[i-1][j+1].render(vertices);
+
+        if ((i-1)<chunks.length && (j-1)<chunks[0].length && (i-1)>0 && (j-1)>0)
+            chunks[i-1][j-1].render(vertices);
     }
 }
