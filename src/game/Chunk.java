@@ -1,17 +1,28 @@
 package game;
 
 public class Chunk {
-    Block[][][] blocks = new Block[16][16][64];
+    
+    private static final int SIZE = 16;
+    private static final int HEIGHT = 16;
+    private static final int BEDROCK_HEIGHT = 4;
+    
+    private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
+    private int px;
+    private int py;
+    
+    public Chunk(int px, int py) {
+        this.px = px;
+        this.py = py;
+        makeChunk();
+    }
     
     public void makeChunk() {
+        int [][] height = new int[SIZE][SIZE];
         
-        int [][] height = new int[16][16];
-        
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
                 double[][] v = new double [4][4];
-                for (int l = 0; l < 4; l++)
-                {
+                for (int l = 0; l < 4; l++) {
                     int k = (int) (4*Math.random());
                     switch (k) {
                         case 0: v[l][0] = 1;
@@ -58,26 +69,25 @@ public class Chunk {
             }
         }
         
-        for(int i=0;i<16;i++) {
-            for (int j=0;j<16;j++) {
-                for (int k=0;k<8+height[i][j];k++) {
-                    if(k < (8+height[i][j])-4) 
+        for(int i=0;i<SIZE;i++) {
+            for (int j=0;j<SIZE;j++) {
+                for (int k=0;k<BEDROCK_HEIGHT+height[i][j];k++) {
+                    if(k < BEDROCK_HEIGHT/2-1 + height[i][j]) 
                         blocks[i][j][k] = Block.STONE;
                     else
                         blocks[i][j][k] = Block.DIRT;
-                    
                 }
-                for (int k=64-1;k>=height[i][j]+8;k--)
+                for (int k=HEIGHT-1;k>=height[i][j]+BEDROCK_HEIGHT;k--)
                     blocks[i][j][k] = Block.BLANK;
             }
         }
     }
     
     public void render() {
-        for(int i=0;i<16;i++) {
-            for (int j=0;j<16;j++) {
-                for (int k=0;k<64;k++) {
-                    blocks[i][j][k].render(i,j,k);
+        for(int i=0;i<SIZE;i++) {
+            for (int j=0;j<SIZE;j++) {
+                for (int k=0;k<HEIGHT;k++) {
+                    blocks[i][j][k].render(i+16*px,j+16*py,k);
                 }
             }
         }

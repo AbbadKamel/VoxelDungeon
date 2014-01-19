@@ -15,7 +15,7 @@ public class Game {
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
     private Camera camera;
-    private Chunk testingChunk = new Chunk();
+    private World world;
 
     public static void main(String[] args) {
         try {
@@ -47,8 +47,7 @@ public class Game {
     private void init() throws IOException {
         this.initialize3D();
         ResourceLibrary.init();
-        //textureFloor = ResourceLibrary.getDirt();
-        testingChunk.makeChunk();
+        world = new World(2,2);
     }
     
     public void update() {
@@ -58,7 +57,7 @@ public class Game {
     public void render() {
         clearScreen();
         camera.translatePostion();
-        testingChunk.render();
+        world.render();
     }
 
     public void clearScreen() {
