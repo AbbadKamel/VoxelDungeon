@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Chunk {
     
     private static final int SIZE = 16;
-    private static final int HEIGHT = 32;
+    private static final int HEIGHT = 48;
     private static final int BEDROCK_HEIGHT = 4;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
@@ -119,15 +119,6 @@ public class Chunk {
                     setBlock(i,j,k,new Block(Block.BLANK));
             }
         }
-    }
-    
-     public void makeHill() {
-        int i = (int) (Camera.getCamX()/16);
-        int j = (int) (Camera.getCamY()/16);
-        double difx = Camera.getCamX()-(World.getChunks(i, j)).px;
-        double dify = Camera.getCamY()-(World.getChunks(i,j)).py;
-        double distance = Math.sqrt(Math.pow(difx, 2)+Math.pow(dify, 2));
-        distance *= distance;
     }
     
     private void setBlock(int i, int j, int k, Block block) {

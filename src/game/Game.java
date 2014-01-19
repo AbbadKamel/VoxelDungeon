@@ -47,7 +47,7 @@ public class Game {
         this.initialize3D();
         ResourceLibrary.init();
         world = new World(16,16);
-        camera = new Camera(this,world);
+        camera = new Camera(this);
     }
     
     public void update() {
