@@ -20,6 +20,7 @@ public class Camera {
     private static final float speed = 0.3f;
     private World world;
     private int dy = 0;
+    private int duration = 0;
     
     public static float getCamX() { return cameraPos.x; }
     public static float getCamY() { return cameraPos.z; }
@@ -34,24 +35,22 @@ public class Camera {
     }
 
     public void update() {
-        //System.out.println(cameraPos);
         updatePrevious();
         input();
         updateVector();
     }
 
     public void updateVector() {
-        //System.out.println(world.getHeight(Math.round(vector.x),Math.round(vector.z)));
-        //System.out.println(dy);
+        duration++;
+        vector.y -= 0.01f*duration;
         if (vector.y-0.001f>world.getHeight(Math.round(vector.x),Math.round(vector.z))) {
-            System.out.println("Fallin'");
             dy -= 0.1f;
         } else if (vector.y+0.001f<world.getHeight(Math.round(vector.x),Math.round(vector.z))) {
+            dy = 0;
             vector.y = world.getHeight(Math.round(vector.x),Math.round(vector.z))-0.002f;
-            //System.out.println("Standin'");
+            duration = 0;
             if (moveUp) {
-                //System.out.println("Jumpin'");
-                dy += 5.0f;
+                dy += 2.0f;
             }
         }
         System.out.println(dy);
