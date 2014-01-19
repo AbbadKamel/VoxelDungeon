@@ -18,22 +18,44 @@ public class Camera {
     private boolean moveUp = false;
     private boolean moveDown = false;
     private static final float speed = 0.3f;
+    private World world;
+    private int dy = 0;
     
     public static float getCamX() { return cameraPos.x; }
     public static float getCamY() { return cameraPos.z; }
     public static float getCamZ() { return cameraPos.y; }
 
-    public Camera(Game game) {
+    public Camera(Game game, World world) {
+        this.world = world;
+        vector.x = 32;
+        vector.y = 8;
+        vector.z = 32;
         Mouse.setGrabbed(true);
     }
 
     public void update() {
+        //System.out.println(cameraPos);
         updatePrevious();
         input();
         updateVector();
     }
 
     public void updateVector() {
+        //System.out.println(world.getHeight(Math.round(vector.x),Math.round(vector.z)));
+        //System.out.println(dy);
+        if (vector.y-0.001f>world.getHeight(Math.round(vector.x),Math.round(vector.z))) {
+            System.out.println("Fallin'");
+            dy -= 0.1f;
+        } else if (vector.y+0.001f<world.getHeight(Math.round(vector.x),Math.round(vector.z))) {
+            vector.y = world.getHeight(Math.round(vector.x),Math.round(vector.z))-0.002f;
+            //System.out.println("Standin'");
+            if (moveUp) {
+                //System.out.println("Jumpin'");
+                dy += 5.0f;
+            }
+        }
+        System.out.println(dy);
+        vector.y += dy;
         if (moveForward) {
             vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed);
             vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed);
@@ -50,12 +72,10 @@ public class Camera {
             vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed);
             vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed);
         }
-        if (moveUp) {
-            vector.y += (float) (speed);
-        }
         if (moveDown) {
             vector.y -= (float) (speed);
         }
+        System.out.println(vector);
     }
 
     public void translatePostion() {
@@ -64,8 +84,8 @@ public class Camera {
         GL11.glRotatef(rotation.y, 0, 1, 0);
         GL11.glRotatef(rotation.z, 0, 0, 1);
         
-        // -vector.y-2.4f means that your y is your feet, and y+2.4 is your head.
-        GL11.glTranslatef(-vector.x, -vector.y - 2.4f, -vector.z);
+        // 2.0 is your height.
+        GL11.glTranslatef(-vector.x, -vector.y-2.0f, -vector.z);
     }
 
     public void updatePrevious() {

@@ -19,6 +19,10 @@ public class World {
         return chunks[i][j];
     }
     
+    public int getHeight(int x, int y) {
+        return chunks[x/16][y/16].getHeight(x%16,y%16);
+    }
+    
     public void createWorld() throws IOException {
         for (int i=0;i<chunks.length;i++)
             for (int j=0;j<chunks[0].length;j++)

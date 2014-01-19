@@ -15,8 +15,15 @@ public class Chunk {
     public Chunk(int px, int py) throws IOException {
         this.px = px;
         this.py = py;
-        //System.out.println(this.px + " " + this.py);
         makeChunk();
+    }
+    
+    public int getHeight(int x, int y) {
+        int heightCounter = 0;
+        while(!blocks[x][y][heightCounter].isTransparent) {
+            heightCounter++;
+        }
+        return heightCounter;
     }
     
     public void makeChunk() throws IOException {

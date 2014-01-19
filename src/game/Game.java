@@ -24,6 +24,7 @@ public class Game {
         } catch (LWJGLException e) {
             System.out.println(e);
         }
+        Display.setTitle("Voxel Dungeon");
         Game game = new Game();
         try {
             game.init();
@@ -40,14 +41,13 @@ public class Game {
         System.exit(0);
     }
 
-    public Game() {
-        camera = new Camera(this);
-    }
+    public Game() { }
     
     private void init() throws IOException {
         this.initialize3D();
         ResourceLibrary.init();
         world = new World(16,16);
+        camera = new Camera(this,world);
     }
     
     public void update() {
