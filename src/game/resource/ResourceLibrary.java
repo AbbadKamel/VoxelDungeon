@@ -39,7 +39,7 @@ public class ResourceLibrary {
             case "blank":
                 return null;
             default:
-                throw new IOException("Unhandled case @ getTextureByName().");
+                throw new IOException("Unhandled case @ getTextureByName(): " + name + ".");
         }
     }
 }

@@ -26,7 +26,7 @@ public class Block {
                 break;
             case STONE:
                 transparent = false;
-                textureName = "stone";
+                textureName = "stone_top";
                 break;
             case BLANK:
                 transparent = true;
@@ -56,7 +56,7 @@ public class Block {
         if (isTransparent)
             return;
         
-        texture.bind();
+        //texture.bind();
         // Side.
         if (!chunk.isBlock(x,y+1,z)) {
             addFloats(-0.5f+x,-0.5f+z,0.5f+y,vertices,colorVertices);

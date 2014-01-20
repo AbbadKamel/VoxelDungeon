@@ -1,7 +1,6 @@
 package game;
 
 import game.resource.ResourceLibrary;
-import game.world.World;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ public class Game {
     private final static int FRAME_RATE = 60;
     private Camera camera;
     private World world;
-    public ArrayList<Float> vertices = new ArrayList<Float>();
-    public ArrayList<Float> colorVertices = new ArrayList<Float>();
+    public ArrayList<Float> vertices;
+    public ArrayList<Float> colorVertices;
 
     public static void main(String[] args) {
         try {
@@ -31,7 +30,7 @@ public class Game {
         } catch (LWJGLException e) {
             System.out.println(e);
         }
-        Display.setTitle("Voxel Dungeon");
+        Display.setTitle("Voxel Dungeons");
         Game game = new Game();
         try {
             game.init();
@@ -41,12 +40,17 @@ public class Game {
         int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             long startTime = System.currentTimeMillis();
-            game.render();
+            try {
+                game.render();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
             game.update(delta);
             Display.update();
             Display.sync(FRAME_RATE);
             long endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
+            System.out.println(delta);
         }
         Display.destroy();
         System.exit(0);
@@ -57,14 +61,59 @@ public class Game {
     public Game() { }
     
     private void init() throws IOException {
+        vertices = new ArrayList<Float>();
+        colorVertices = new ArrayList<Float>();
         this.initialize3D();
         ResourceLibrary.init();
         world = new World(16,16);
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
+        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
+        VertexPositionData.put(new float[] {
+                        1.0f, 1.0f, -1.0f,
+                        -1.0f, 1.0f, -1.0f,
+                        -1.0f, 1.0f, 1.0f,
+                        1.0f, 1.0f, 1.0f,
+
+                        1.0f, -1.0f, 1.0f,
+                        -1.0f, -1.0f, 1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        1.0f, -1.0f, -1.0f,
+
+                        1.0f, 1.0f, 1.0f,
+                        -1.0f, 1.0f, 1.0f,
+                        -1.0f, -1.0f, 1.0f,
+                        1.0f, -1.0f, 1.0f,
+
+                        1.0f, -1.0f, -1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        -1.0f, 1.0f, -1.0f,
+                        1.0f, 1.0f, -1.0f,
+
+                        -1.0f, 1.0f, 1.0f,
+                        -1.0f, 1.0f, -1.0f,
+                        -1.0f, -1.0f, -1.0f,
+                        -1.0f, -1.0f, 1.0f,
+
+                        1.0f, 1.0f, -1.0f,
+                        1.0f, 1.0f, 1.0f,
+                        1.0f, -1.0f, 1.0f,
+                        1.0f, -1.0f, -1.0f
+                        });
+        VertexPositionData.flip();
+        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
+        VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
+        VertexColorData.flip();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
     }
     
-    public void render() {
+    public void render() throws IOException {
+        world.render(vertices,colorVertices);
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         float[] floats = new float[vertices.size()];
         int i = 0;
@@ -95,7 +144,7 @@ public class Game {
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
-        GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
+        GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size());
         GL11.glPopMatrix();
 
         camera = new Camera(this);
