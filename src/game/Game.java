@@ -148,6 +148,14 @@ public class Game {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexPositionData, GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        
+        GL11.glPushMatrix();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
+        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
+        GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
+        GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size());
+        GL11.glPopMatrix();
     }
 
     public void clearScreen() {
