@@ -71,6 +71,7 @@ public class Game {
     public Game() { }
     
     private void init() throws IOException {
+        world = new World(16,16);
         Camera.init();
         vertices = new ArrayList<Float>();
         colorVertices = new ArrayList<Float>();
