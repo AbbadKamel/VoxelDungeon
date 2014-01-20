@@ -1,11 +1,7 @@
-package game;
 
-import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -14,99 +10,90 @@ import org.lwjgl.util.glu.GLU;
 
 public class Game {
 
-    private final static int width = 800;
-    private final static int height = 600;
-    private final static int FRAME_RATE = 60;
-    private Camera camera;
-    public ArrayList<Float> vertices;
-    public ArrayList<Float> colorVertices;
-
-    public static void main(String[] args) {
-        try {
-            Display.setDisplayMode(new DisplayMode(width,height));
-            Display.create();
-        } catch (LWJGLException e) {
-            System.out.println(e);
-        }
-        Display.setTitle("Voxel Dungeon");
-        Game game = new Game();
-        try {
-            game.init();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        int delta = 0;
-        while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            game.clearScreen();
-            long startTime = System.currentTimeMillis();
-            game.render();
-            game.update(delta);
-            Display.update();
-            Display.sync(FRAME_RATE);
-            long endTime = System.currentTimeMillis();
-            delta = (int)(endTime - startTime);
-            System.out.println(delta);
-        }
-        Display.destroy();
-        System.exit(0);
-    }
     private int VBOVertexHandle;
     private int VBOColorHandle;
-
-    public Game() { }
     
-    private void init() throws IOException {
-        camera = new Camera(this);
-        vertices = new ArrayList<Float>();
-        colorVertices = new ArrayList<Float>();
-        this.initialize3D();
-        VBOVertexHandle = GL15.glGenBuffers();
-        VBOColorHandle = GL15.glGenBuffers();
-        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
-        VertexPositionData.put(new float[] {
-                        1.0f, 1.0f, -1.0f,
-                        -1.0f, 1.0f, -1.0f,
-                        -1.0f, 1.0f, 1.0f,
-                        1.0f, 1.0f, 1.0f,
-
-                        1.0f, -1.0f, 1.0f,
-                        -1.0f, -1.0f, 1.0f,
-                        -1.0f, -1.0f, -1.0f,
-                        1.0f, -1.0f, -1.0f,
-
-                        1.0f, 1.0f, 1.0f,
-                        -1.0f, 1.0f, 1.0f,
-                        -1.0f, -1.0f, 1.0f,
-                        1.0f, -1.0f, 1.0f,
-
-                        1.0f, -1.0f, -1.0f,
-                        -1.0f, -1.0f, -1.0f,
-                        -1.0f, 1.0f, -1.0f,
-                        1.0f, 1.0f, -1.0f,
-
-                        -1.0f, 1.0f, 1.0f,
-                        -1.0f, 1.0f, -1.0f,
-                        -1.0f, -1.0f, -1.0f,
-                        -1.0f, -1.0f, 1.0f,
-
-                        1.0f, 1.0f, -1.0f,
-                        1.0f, 1.0f, 1.0f,
-                        1.0f, -1.0f, 1.0f,
-                        1.0f, -1.0f, -1.0f
-                        });
-        VertexPositionData.flip();
-        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
-        VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
-        VertexColorData.flip();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+    public static void main(String[] args) throws LWJGLException {
+        Game r = new Game();
+        r.Start();
     }
     
-    public void render() {
+    public void Start() {
+        try {
+            CreateWindow();
+            InitGL();
+
+            Run();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+    DisplayMode displayMode;
+
+    private void CreateWindow() throws Exception {
+        Display.setFullscreen(false);
+        DisplayMode d[] = Display.getAvailableDisplayModes();
+        for (int i = 0; i < d.length; i++) {
+            if (d[i].getWidth() == 640 && d[i].getHeight() == 480
+                    && d[i].getBitsPerPixel() == 32) {
+                displayMode = d[i];
+                break;
+            }
+        }
+        Display.setDisplayMode(displayMode);
+        Display.setTitle("LWJGL COMP4");
+        Display.create();
+    }
+
+    private void InitGL() {
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glClearDepth(1.0);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+
+        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glLoadIdentity();
+
+        GLU.gluPerspective(45.0f, (float) displayMode.getWidth()
+                / (float) displayMode.getHeight(), 0.1f, 300.0f);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+    }
+
+    private void Run() {
+        CreateVBO();
+        float RotateYaw = 0;
+        while (!Display.isCloseRequested()) {
+            try {
+                GL11.glClear(GL11.GL_COLOR_BUFFER_BIT
+                        | GL11.GL_DEPTH_BUFFER_BIT);
+                GL11.glLoadIdentity();
+
+                GL11.glTranslatef((float) Math.sin(RotateYaw / 180 * Math.PI), 0f, -4f); // Move Right 1.5 Units And Into
+                // The
+                GL11.glRotatef(45f, 0.4f, 1.0f, 0.1f);
+                GL11.glRotatef(RotateYaw, 1f, 1.0f, 1f);
+                RotateYaw += 2;
+                DrawVBO();
+                // Render();
+                Display.update();
+                Display.sync(60);
+            } catch (Exception e) {
+
+            }
+        }
+        Display.destroy();
+
+    }
+
+    private void DrawVBO() {
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
@@ -115,34 +102,49 @@ public class Game {
         GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
         GL11.glPopMatrix();
     }
-    
-    public void update(int delta) {
-        camera.update(delta);
-    }
 
-    public void clearScreen() {
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glLoadIdentity();
-    }
+    private void CreateVBO() {
+        VBOColorHandle = GL15.glGenBuffers();
+        VBOVertexHandle = GL15.glGenBuffers();
+        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
+        VertexPositionData.put(new float[]{
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, -1.0f
+        });
+        VertexPositionData.flip();
+        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
+        VertexColorData.put(new float[]{1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,});
+        VertexColorData.flip();
 
-    public void initialize3D() {
-        GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
-        GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
-        //GL11.glClearColor(0.4f,0.6f,1.0f,0.0f); // BG color. 6698FF
-        GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
-        GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
-        GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
-        
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
-        
-        GL11.glMatrixMode(GL11.GL_PROJECTION); // Sets matrix mode to displaying pixels.
-        GL11.glLoadIdentity(); // Loads the above matrix mode.
-        
-        // Sets default perspective location.                       Render Distances: Min   Max
-        GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,300.0f);
-        
-        GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
-        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexPositionData,
+                GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, VertexColorData,
+                GL15.GL_STATIC_DRAW);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 }
