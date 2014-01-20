@@ -60,7 +60,7 @@ public class Game {
             Display.sync(FRAME_RATE);
             long endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
-            System.out.println(delta);
+            System.out.println("Overall: " + delta);
         }
         Display.destroy();
         System.exit(0);
@@ -81,7 +81,15 @@ public class Game {
     }
     
     public void render() throws IOException {
+        long startTime;
+        long endTime;
+        
+    startTime = System.currentTimeMillis();
         world.render(vertices,colorVertices);
+    endTime = System.currentTimeMillis();
+    System.out.println("Creating vertices and color vertices: " + (endTime-startTime));
+        
+    startTime = System.currentTimeMillis();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         float[] floats = new float[vertices.size()];
         int i = 0;
@@ -91,8 +99,15 @@ public class Game {
         }
         VertexPositionData.put(floats);
         VertexPositionData.flip();
+        endTime = System.currentTimeMillis();
+        System.out.println("Adding vertices to float buffer: " + (endTime-startTime));
         
+        startTime = System.currentTimeMillis();
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.size());
+        endTime = System.currentTimeMillis();
+        System.out.println("Initializing float buffer: " + (endTime-startTime));
+        
+        startTime = System.currentTimeMillis();
         float[] colorFloats = new float[colorVertices.size()];
         int j = 0;
         for (Float f : colorVertices) {
@@ -101,14 +116,20 @@ public class Game {
         }
         VertexColorData.put(colorFloats);
         VertexColorData.flip();
+        endTime = System.currentTimeMillis();
+        System.out.println("Filling float buffer: " + (endTime-startTime));
         
+        startTime = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+        endTime = System.currentTimeMillis();
+        System.out.println("Binding vertices: " + (endTime-startTime));
         
+        startTime = System.currentTimeMillis();
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
@@ -116,6 +137,8 @@ public class Game {
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size()/3);
         GL11.glPopMatrix();
+        endTime = System.currentTimeMillis();
+        System.out.println("Drawing: " + (endTime-startTime));
     }
 
     public void clearScreen() {
