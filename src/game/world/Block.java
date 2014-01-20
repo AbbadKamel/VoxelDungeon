@@ -53,10 +53,9 @@ public class Block {
             this.texture = ResourceLibrary.getTextureByName("stone_side");
         }
         texture.bind();
-        
+        GL11.glBegin(GL11.GL_QUADS);
         // Side.
         if (!chunk.isBlock(x,y+1,z)) {
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.0f,0.0f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,0.5f+y);
             GL11.glTexCoord2d(0.5f,0.0f);
@@ -65,12 +64,10 @@ public class Block {
             GL11.glVertex3f(0.5f+x,0.5f+z,0.5f+y);
             GL11.glTexCoord2d(0.0f,0.5f);
             GL11.glVertex3f(-0.5f+x,0.5f+z,0.5f+y);
-            GL11.glEnd();
         }
         
         // Opposite side to above.
         if (!chunk.isBlock(x,y-1,z)) {
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.5f,0.0f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
             GL11.glTexCoord2d(0.5f,0.5f);
@@ -79,19 +76,18 @@ public class Block {
             GL11.glVertex3f(0.5f+x,0.5f+z,-0.5f+y);
             GL11.glTexCoord2d(0.0f,0.0f);
             GL11.glVertex3f(0.5f+x,-0.5f+z,-0.5f+y);
-            GL11.glEnd();
         }
-        
+        GL11.glEnd();
+
         if (texture == ResourceLibrary.getTextureByName("grass_side")) {
             this.texture = ResourceLibrary.getTextureByName("grass_top");
         } else if (texture == ResourceLibrary.getTextureByName("stone_side")) {
             this.texture = ResourceLibrary.getTextureByName("stone_top");
         }
         texture.bind();
-        
+        GL11.glBegin(GL11.GL_QUADS);
         // Top.
         if (!chunk.isBlock(x,y,z+1)) {
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.0f,0.5f);
             GL11.glVertex3f(-0.5f+x,0.5f+z,-0.5f+y);
             GL11.glTexCoord2d(0.0f,0.0f);
@@ -100,19 +96,17 @@ public class Block {
             GL11.glVertex3f(0.5f+x,0.5f+z,0.5f+y);
             GL11.glTexCoord2d(0.5f,0.5f);
             GL11.glVertex3f(0.5f+x,0.5f+z,-0.5f+y);
-            GL11.glEnd();
         }
-        
+        GL11.glEnd();
         if (texture == ResourceLibrary.getTextureByName("grass_top")) {
             this.texture = ResourceLibrary.getTextureByName("grass_side");
         } else if (texture == ResourceLibrary.getTextureByName("stone_top")) {
             this.texture = ResourceLibrary.getTextureByName("stone_side");
         }
         texture.bind();
-        
+        GL11.glBegin(GL11.GL_QUADS);
         // Bottom.
         if (!chunk.isBlock(x,y,z-1)) {
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.5f,0.5f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
             GL11.glTexCoord2d(0.0f,0.5f);
@@ -121,19 +115,17 @@ public class Block {
             GL11.glVertex3f(0.5f+x,-0.5f+z,0.5f+y);
             GL11.glTexCoord2d(0.5f,0.0f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,0.5f+y);
-            GL11.glEnd();
         }
-        
+        GL11.glEnd();
         if (texture == ResourceLibrary.getTextureByName("grass_side")) {
             this.texture = ResourceLibrary.getTextureByName("grass_side");
         } else if (texture == ResourceLibrary.getTextureByName("stone_side")) {
             this.texture = ResourceLibrary.getTextureByName("stone_side");
         }
         texture.bind();
-        
+        GL11.glBegin(GL11.GL_QUADS);
         // Side.
         if (!chunk.isBlock(x+1,y,z)) {
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.5f,0.0f);
             GL11.glVertex3f(0.5f+x,-0.5f+z,-0.5f+y);
             GL11.glTexCoord2d(0.5f,0.5f);
@@ -142,12 +134,10 @@ public class Block {
             GL11.glVertex3f(0.5f+x,0.5f+z,0.5f+y);
             GL11.glTexCoord2d(0.0f,0.0f);
             GL11.glVertex3f(0.5f+x,-0.5f+z,0.5f+y);
-            GL11.glEnd();
         }
         
         // Opposite side to above.
         if (!chunk.isBlock(x-1,y,z)) {
-            GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2d(0.0f,0.0f);
             GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
             GL11.glTexCoord2d(0.5f,0.0f);
@@ -156,7 +146,7 @@ public class Block {
             GL11.glVertex3f(-0.5f+x,0.5f+z,0.5f+y);
             GL11.glTexCoord2d(0.0f,0.5f);
             GL11.glVertex3f(-0.5f+x,0.5f+z,-0.5f+y);
-            GL11.glEnd();
         }
+        GL11.glEnd();
     }
 }
