@@ -1,3 +1,4 @@
+package game;
 
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
