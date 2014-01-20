@@ -1,4 +1,4 @@
-package game;
+package game.world;
 
 import game.resource.ResourceLibrary;
 import java.io.IOException;
