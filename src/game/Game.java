@@ -17,7 +17,6 @@ public class Game {
     private final static int width = 800;
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
-    private Camera camera;
     public ArrayList<Float> vertices;
     public ArrayList<Float> colorVertices;
 
@@ -37,15 +36,23 @@ public class Game {
         }
         int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            game.clearScreen();
+            /*
+             * In the tutorial, it works when done like this.
+             *
+             * GL11.glTranslatef((float)Math.sin(RotateYaw/180*Math.PI), 0f, -4f);
+             * GL11.glRotatef(45f, 0.4f, 1.0f, 0.1f);
+             * GL11.glRotatef(RotateYaw, 1f, 1.0f, 1f)
+            */
+            //GL11.glTranslatef(0f, 0f, -4f);
             long startTime = System.currentTimeMillis();
+            game.clearScreen();
+            Camera.update(delta);
             game.render();
-            game.update(delta);
             Display.update();
             Display.sync(FRAME_RATE);
             long endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
-            System.out.println(delta);
+            //System.out.println(delta);
         }
         Display.destroy();
         System.exit(0);
@@ -56,7 +63,7 @@ public class Game {
     public Game() { }
     
     private void init() throws IOException {
-        camera = new Camera(this);
+        Camera.init();
         vertices = new ArrayList<Float>();
         colorVertices = new ArrayList<Float>();
         this.initialize3D();
@@ -64,36 +71,36 @@ public class Game {
         VBOColorHandle = GL15.glGenBuffers();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
         VertexPositionData.put(new float[] {
-                        1.0f, 1.0f, -1.0f,
-                        -1.0f, 1.0f, -1.0f,
-                        -1.0f, 1.0f, 1.0f,
-                        1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, -1.0f,
+                -1.0f, 1.0f, -1.0f,
+                -1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
 
-                        1.0f, -1.0f, 1.0f,
-                        -1.0f, -1.0f, 1.0f,
-                        -1.0f, -1.0f, -1.0f,
-                        1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f, 1.0f,
+                -1.0f, -1.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f,
+                1.0f, -1.0f, -1.0f,
 
-                        1.0f, 1.0f, 1.0f,
-                        -1.0f, 1.0f, 1.0f,
-                        -1.0f, -1.0f, 1.0f,
-                        1.0f, -1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
+                -1.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, 1.0f,
+                1.0f, -1.0f, 1.0f,
 
-                        1.0f, -1.0f, -1.0f,
-                        -1.0f, -1.0f, -1.0f,
-                        -1.0f, 1.0f, -1.0f,
-                        1.0f, 1.0f, -1.0f,
+                1.0f, -1.0f, -1.0f,
+                -1.0f, -1.0f, -1.0f,
+                -1.0f, 1.0f, -1.0f,
+                1.0f, 1.0f, -1.0f,
 
-                        -1.0f, 1.0f, 1.0f,
-                        -1.0f, 1.0f, -1.0f,
-                        -1.0f, -1.0f, -1.0f,
-                        -1.0f, -1.0f, 1.0f,
+                -1.0f, 1.0f, 1.0f,
+                -1.0f, 1.0f, -1.0f,
+                -1.0f, -1.0f, -1.0f,
+                -1.0f, -1.0f, 1.0f,
 
-                        1.0f, 1.0f, -1.0f,
-                        1.0f, 1.0f, 1.0f,
-                        1.0f, -1.0f, 1.0f,
-                        1.0f, -1.0f, -1.0f
-                        });
+                1.0f, 1.0f, -1.0f,
+                1.0f, 1.0f, 1.0f,
+                1.0f, -1.0f, 1.0f,
+                1.0f, -1.0f, -1.0f
+        });
         VertexPositionData.flip();
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
         VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
@@ -114,10 +121,6 @@ public class Game {
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
         GL11.glPopMatrix();
-    }
-    
-    public void update(int delta) {
-        camera.update(delta);
     }
 
     public void clearScreen() {
