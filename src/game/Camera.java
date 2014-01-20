@@ -17,16 +17,13 @@ public class Camera {
     private boolean strafeRight = false;
     private boolean moveUp = false;
     private boolean moveDown = false;
-    private static final float speed = 0.3f;
+    private static final float speed = 30.3f;
     
     public static float getCamX() { return cameraPos.x; }
     public static float getCamY() { return cameraPos.z; }
     public static float getCamZ() { return cameraPos.y; }
 
     public Camera(Game game) {
-        vector.x = 32;
-        vector.y = 8;
-        vector.z = 32;
         Mouse.setGrabbed(true);
     }
 
@@ -60,13 +57,17 @@ public class Camera {
         if (moveDown) {
             vector.y -= (float) (speed)*speedMultiplier;
         }
+        translatePosition();
     }
 
-    public void translatePostion() {
+    public void translatePosition() {
         // This is the code that changes 3D perspective to the camera's perspective.
         GL11.glRotatef(rotation.x, 1, 0, 0);
         GL11.glRotatef(rotation.y, 0, 1, 0);
         GL11.glRotatef(rotation.z, 0, 0, 1);
+        
+        System.out.println(vector);
+        System.out.println(rotation);
         
         // -vector.y-2.4f means that your y is your feet, and y+2.4 is your head.
         GL11.glTranslatef(-vector.x, -vector.y - 2.4f, -vector.z);
