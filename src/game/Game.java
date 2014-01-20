@@ -166,7 +166,7 @@ public class Game {
     public void initialize3D() {
         GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
         GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
-        //GL11.glClearColor(0.4f,0.6f,1.0f,0.0f); // BG color. 6698FF
+        GL11.glClearColor(0.4f,0.6f,1.0f,0.0f); // BG color. 6698FF
         GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Depth testing (see above).
         GL11.glDepthFunc(GL11.GL_LEQUAL); // Type of depth testing.
