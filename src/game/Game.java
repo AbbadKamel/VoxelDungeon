@@ -69,14 +69,12 @@ public class Game {
         this.initialize3D();
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
+    }
+    
+    public void render() {
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(24 * 3);
         VertexPositionData.put(new float[] {
-                1.0f, 1.0f, -1.0f,
-                -1.0f, 1.0f, -1.0f,
-                -1.0f, 1.0f, 1.0f,
-                1.0f, 1.0f, 1.0f,
-
-                1.0f, -1.0f, 1.0f,
+                (float)(Math.random()), -1.0f, 1.0f,
                 -1.0f, -1.0f, 1.0f,
                 -1.0f, -1.0f, -1.0f,
                 1.0f, -1.0f, -1.0f,
@@ -103,7 +101,7 @@ public class Game {
         });
         VertexPositionData.flip();
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(24 * 3);
-        VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
+        VertexColorData.put(new float[] { 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1,1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, });
         VertexColorData.flip();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STATIC_DRAW);
@@ -111,15 +109,13 @@ public class Game {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
-    }
-    
-    public void render() {
+        
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
-        GL11.glDrawArrays(GL11.GL_QUADS, 0, 24);
+        GL11.glDrawArrays(GL11.GL_QUADS, 0, 20);
         GL11.glPopMatrix();
     }
 
