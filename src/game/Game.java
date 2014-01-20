@@ -40,14 +40,6 @@ public class Game {
         }
         int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            /*
-             * In the tutorial, it works when done like this.
-             *
-             * GL11.glTranslatef((float)Math.sin(RotateYaw/180*Math.PI), 0f, -4f);
-             * GL11.glRotatef(45f, 0.4f, 1.0f, 0.1f);
-             * GL11.glRotatef(RotateYaw, 1f, 1.0f, 1f)
-            */
-            //GL11.glTranslatef(0f, 0f, -4f);
             long startTime = System.currentTimeMillis();
             game.clearScreen();
             Camera.update(delta);
@@ -60,7 +52,7 @@ public class Game {
             Display.sync(FRAME_RATE);
             long endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
-            System.out.println("Overall: " + delta);
+            System.out.println("Overall: " + delta + "\n");
         }
         Display.destroy();
         System.exit(0);
@@ -83,16 +75,24 @@ public class Game {
     public void render() throws IOException {
         long st;
         long et;
-        
+                
+        vertices.clear();
+        colorVertices.clear();
+
+        st = System.currentTimeMillis();
         world.render(vertices,colorVertices);
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Getting vertices from world.");
         
+        System.out.println("Vertices: " + vertices.size());
+
         st = System.currentTimeMillis();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         et = System.currentTimeMillis();
         System.out.println((et-st) + ": Creating position buffer.");
         
         st = System.currentTimeMillis();
-        float[] floats = new float[vertices.size()];
+        float[] floats = new float[colorVertices.size()];
         int i = 0;
         for (Float f : vertices) {
             floats[i] = f;
