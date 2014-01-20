@@ -89,7 +89,7 @@ public class Game {
         st = System.currentTimeMillis();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Create position buffer.");
+        System.out.println((et-st) + ": Creating position buffer.");
         
         st = System.currentTimeMillis();
         float[] floats = new float[vertices.size()];
@@ -99,22 +99,22 @@ public class Game {
             i++;
         }
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Create position array.");
+        System.out.println((et-st) + ": Creating position array.");
         
         st = System.currentTimeMillis();
         VertexPositionData.put(floats);
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Add position array to buffer.");
+        System.out.println((et-st) + ": Adding position array to buffer.");
         
         st = System.currentTimeMillis();
         VertexPositionData.flip();
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Flip position buffer.");
+        System.out.println((et-st) + ": Flipping position buffer.");
         
         st = System.currentTimeMillis();
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.size());
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Create color buffer.");
+        System.out.println((et-st) + ": Creating color buffer.");
         
         st = System.currentTimeMillis();
         float[] colorFloats = new float[colorVertices.size()];
@@ -124,17 +124,17 @@ public class Game {
             j++;
         }
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Create color array.");
+        System.out.println((et-st) + ": Creating color array.");
         
         st = System.currentTimeMillis();
         VertexColorData.put(colorFloats);
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Add color array to buffer.");
+        System.out.println((et-st) + ": Adding color array to buffer.");
         
         st = System.currentTimeMillis();
         VertexColorData.flip();
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Flip color buffer.");
+        System.out.println((et-st) + ": Flipping color buffer.");
         
         st = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
@@ -144,7 +144,7 @@ public class Game {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Bind buffers.");
+        System.out.println((et-st) + ": Binding buffers.");
         
         st = System.currentTimeMillis();
         GL11.glPushMatrix();
@@ -155,7 +155,7 @@ public class Game {
         GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size()/3);
         GL11.glPopMatrix();
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Draw bound buffers.");
+        System.out.println((et-st) + ": Drawing bound buffers.");
     }
 
     public void clearScreen() {
