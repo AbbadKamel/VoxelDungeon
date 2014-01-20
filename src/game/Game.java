@@ -81,55 +81,72 @@ public class Game {
     }
     
     public void render() throws IOException {
-        long startTime;
-        long endTime;
+        long st;
+        long et;
         
-    startTime = System.currentTimeMillis();
         world.render(vertices,colorVertices);
-    endTime = System.currentTimeMillis();
-    System.out.println("Creating vertices and color vertices: " + (endTime-startTime));
         
-    startTime = System.currentTimeMillis();
+        st = System.currentTimeMillis();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Create position buffer.");
+        
+        st = System.currentTimeMillis();
         float[] floats = new float[vertices.size()];
         int i = 0;
         for (Float f : vertices) {
             floats[i] = f;
             i++;
         }
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Create position array.");
+        
+        st = System.currentTimeMillis();
         VertexPositionData.put(floats);
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Add position array to buffer.");
+        
+        st = System.currentTimeMillis();
         VertexPositionData.flip();
-        endTime = System.currentTimeMillis();
-        System.out.println("Adding vertices to float buffer: " + (endTime-startTime));
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Flip position buffer.");
         
-        startTime = System.currentTimeMillis();
+        st = System.currentTimeMillis();
         FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.size());
-        endTime = System.currentTimeMillis();
-        System.out.println("Initializing float buffer: " + (endTime-startTime));
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Create color buffer.");
         
-        startTime = System.currentTimeMillis();
+        st = System.currentTimeMillis();
         float[] colorFloats = new float[colorVertices.size()];
         int j = 0;
         for (Float f : colorVertices) {
             colorFloats[j] = f;
             j++;
         }
-        VertexColorData.put(colorFloats);
-        VertexColorData.flip();
-        endTime = System.currentTimeMillis();
-        System.out.println("Filling float buffer: " + (endTime-startTime));
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Create color array.");
         
-        startTime = System.currentTimeMillis();
+        st = System.currentTimeMillis();
+        VertexColorData.put(colorFloats);
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Add color array to buffer.");
+        
+        st = System.currentTimeMillis();
+        VertexColorData.flip();
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Flip color buffer.");
+        
+        st = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
-        endTime = System.currentTimeMillis();
-        System.out.println("Binding vertices: " + (endTime-startTime));
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Bind buffers.");
         
-        startTime = System.currentTimeMillis();
+        st = System.currentTimeMillis();
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
@@ -137,8 +154,8 @@ public class Game {
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size()/3);
         GL11.glPopMatrix();
-        endTime = System.currentTimeMillis();
-        System.out.println("Drawing: " + (endTime-startTime));
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Draw bound buffers.");
     }
 
     public void clearScreen() {
