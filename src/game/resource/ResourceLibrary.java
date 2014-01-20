@@ -11,11 +11,12 @@ public class ResourceLibrary {
     private static Texture grass_side = null;
     private static Texture grass_top = null;
     
-    public static Texture getDirt() { return dirt; }
-    public static Texture getStone_top() { return stone_top; }
-    public static Texture getGrass_side() { return grass_side; }
-    public static Texture getGrass_top() { return grass_top; }
-    
+    public static final byte STONE_SIDE = 1;
+    public static final byte STONE_TOP = 2;
+    public static final byte GRASS_SIDE = 3;
+    public static final byte GRASS_TOP = 4;
+    public static final byte DIRT = 5;
+
     public static void init() throws IOException {
         dirt = Loader.createTexture("dirt");
         stone_top = Loader.createTexture("stone_top");
@@ -24,20 +25,18 @@ public class ResourceLibrary {
         grass_top = Loader.createTexture("grass_top");
     }
 
-    public static Texture getTextureByName(String name) throws IOException {
-        switch (name) {
-            case "dirt":
+    public static Texture getTexture(byte id) throws IOException {
+        switch (id) {
+            case DIRT:
                 return dirt;
-            case "stone_side":
+            case STONE_SIDE:
                 return stone_side;
-            case "stone_top":
+            case STONE_TOP:
                 return stone_top;
-            case "grass_side":
+            case GRASS_SIDE:
                 return grass_side;
-            case "grass_top":
+            case GRASS_TOP:
                 return grass_top;
-            case "blank":
-                return null;
             default:
                 throw new IOException("Unhandled case @ getTextureByName().");
         }

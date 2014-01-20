@@ -20,7 +20,7 @@ public class Chunk {
     
     public int getHeight(int x, int y) {
         int heightCounter = 0;
-        while(!blocks[x][y][heightCounter].isTransparent) {
+        while(!blocks[x][y][heightCounter].isTransparent()) {
             heightCounter++;
         }
         return heightCounter;
@@ -130,14 +130,14 @@ public class Chunk {
                     if(k < BEDROCK_HEIGHT)
                         setBlock(i,j,k,new Block(Block.STONE));
                     else
-                        setBlock(i,j,k,new Block(Block.DIRT));
+                        setBlock(i,j,k,new Block(Block.GRASS));
                 }
                 for (int k=HEIGHT-1;k>=(height[i][j]+BEDROCK_HEIGHT);k--) {
                     if(rand == 0) {
                         if(i>3 && i<12 && j>3 && j<12 && 
                                 k > (height[i][j]+BEDROCK_HEIGHT+4) && 
                                 k < (height[i][j]+BEDROCK_HEIGHT+4+iHeight[i-4][j-4])) {
-                            setBlock(i,j,k,new Block(Block.DIRT));
+                            setBlock(i,j,k,new Block(Block.GRASS));
                         } else {
                             setBlock(i,j,k,new Block(Block.BLANK));
                         }
@@ -236,6 +236,6 @@ public class Chunk {
         if (x<0 || y<0 || z<0 || x>15 || y>15 || z>HEIGHT-1) {
             return false;
         }
-        return !blocks[x][y][z].isTransparent;
+        return !blocks[x][y][z].isTransparent();
     }
 }
