@@ -7,4 +7,6 @@ Made by Shreyas and Masilan.
 
 Example of what is currently rendering:
 
-![Example of random rendering](https://raw.github.com/anubiann00b/VoxelDungeon/VBO-testing/resources/vbo-testing example.png)
+![Example 1](https://raw.github.com/anubiann00b/VoxelDungeon/VBO-testing/resources/run/1.png)
+
+![Example 2](https://raw.github.com/anubiann00b/VoxelDungeon/VBO-testing/resources/run/2.png)

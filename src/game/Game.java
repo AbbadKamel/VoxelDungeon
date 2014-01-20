@@ -128,7 +128,7 @@ public class Game {
         float[] floats = new float[vertices.size()];
         int i = 0;
         for (Float f : vertices) {
-            floats[i] = Float.intBitsToFloat(Float.floatToIntBits(f));
+            floats[i] = f;
             i++;
         }
         VertexPositionData.put(floats);
