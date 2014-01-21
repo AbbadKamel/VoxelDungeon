@@ -9,6 +9,9 @@ public class Chunk {
     private static final int HEIGHT = 48;
     private static final int BEDROCK_HEIGHT = 16;
     
+    private ArrayList<Float> vertexPositionDataCache = new ArrayList<Float>(1);
+    private ArrayList<Float> vertexColorDataCache = new ArrayList<Float>(1);
+    
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
     public final int px;
     public final int py;
@@ -31,7 +34,6 @@ public class Chunk {
         int [][] height = new int[SIZE][SIZE];
         int [][] iHeight = new int[SIZE-8][SIZE-8];
         int r = (int) (Math.random()*7);
-        Boolean canEnter = true;
         
         if (r==2) {
             generateCaves();
@@ -156,10 +158,7 @@ public class Chunk {
         for(int i=0;i<16;i++) {
             for (int j=0;j<16;j++) {
                 for (int k=0;k<16;k++) {
-                    //if (i==0 || j==0 || k==0 || i==15 || j==15 || k==15)
-                    //    emptySpace[i][j][k] = true;
-                    //else
-                        emptySpace[i][j][k] = Math.random() < chanceOfSpace;
+                    emptySpace[i][j][k] = Math.random() < chanceOfSpace;
                 }
             }
         }
@@ -187,14 +186,11 @@ public class Chunk {
                                 }
                             }
                         }
-                        if (stone >= liveAmount) {
+                        if (stone >= liveAmount)
                             newEmptySpace[x][y][z] = false;
-                        } else if (stone == 0) {
-                            newEmptySpace[x][y][z] = false;
-                        } else {
-                            newEmptySpace[x][y][z] = true;
-                        }
-                        newEmptySpace[x][y][z] = stone >= air ? true : false;
+                        else
+                            newEmptySpace[x][y][z] = stone != 0;
+                        newEmptySpace[x][y][z] = stone >= air;
                     }
                 }
             }
@@ -224,11 +220,14 @@ public class Chunk {
     }
     
     public void render(ArrayList<Float> vertices, ArrayList<Float> colorVertices) throws IOException {
-        for(int i=0;i<SIZE;i++)
-            for (int j=0;j<SIZE;j++)
-                for (int k=0;k<HEIGHT;k++)
-                    blocks[i][j][k].render(i+16*px,j+16*py,k,vertices,colorVertices);
-                    
+        if (vertexPositionDataCache.size()<1 && vertexColorDataCache.size()<1) {
+            for(int i=0;i<SIZE;i++)
+                for (int j=0;j<SIZE;j++)
+                    for (int k=0;k<HEIGHT;k++)
+                        blocks[i][j][k].render(i+16*px,j+16*py,k,vertexPositionDataCache,vertexColorDataCache);
+        }
+        vertices.addAll(vertexPositionDataCache);
+        colorVertices.addAll(vertexColorDataCache);
     }
     
     public boolean isBlock(int x, int y, int z) {
