@@ -12,15 +12,22 @@ public class Chunk {
     private ArrayList<Float> vertexPositionDataCache = new ArrayList<Float>(1);
     private ArrayList<Float> vertexColorDataCache = new ArrayList<Float>(1);
     
+    private World world;
+    
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
 
     public final int px;
     public final int py;
     
-    public Chunk(int px, int py) throws IOException {
+    public Chunk(int px, int py, World world) throws IOException {
         this.px = px;
         this.py = py;
+        this.world = world;
         makeChunk();
+    }
+    
+    public Block getBlock(int x, int y, int z) {
+        return blocks[x][y][z];
     }
     
     public int getHeight(int x, int y) {
@@ -221,12 +228,11 @@ public class Chunk {
     }
     
     public void render(ArrayList<Float> vertices, ArrayList<Float> colorVertices) throws IOException {
-        if (vertexPositionDataCache.size()<1 && vertexColorDataCache.size()<1) {
+        if (vertexPositionDataCache.size()<1 && vertexColorDataCache.size()<1)
             for(int i=0;i<SIZE;i++)
                 for (int j=0;j<SIZE;j++)
                     for (int k=HEIGHT-1;k>=0;k--)
                         blocks[i][j][k].render(i+16*px,j+16*py,k,vertexPositionDataCache,vertexColorDataCache);
-        }
         vertices.addAll(vertexPositionDataCache);
         colorVertices.addAll(vertexColorDataCache);
     }
@@ -234,9 +240,18 @@ public class Chunk {
     public boolean isBlock(int x, int y, int z) {
         x -= px*16;
         y -= py*16;
-        if (x<0 || y<0 || z<0 || x>15 || y>15 || z>HEIGHT-1) {
+        if (x<0&&px==0 || y<0&&py==0 || z<0 || x>15&&px>=world.getWidth()-1 || y>15&&py>=world.getWidth()-1 || z>HEIGHT-1) {
             return false;
         }
-        return !blocks[x][y][z].isTransparent();
+        if (x<0) {
+            return !world.getChunk(px-1,py).getBlock(15,y,z).isTransparent();
+        } else if (y<0) {
+            return !world.getChunk(px,py-1).getBlock(x,15,z).isTransparent();
+        } else if (x>15) {
+            return !world.getChunk(px+1,py).getBlock(0,y,z).isTransparent();
+        } else if (y>15) {
+            return !world.getChunk(px,py+1).getBlock(x,0,z).isTransparent();
+        }
+        return !getBlock(x,y,z).isTransparent();
     }
 }
