@@ -18,7 +18,6 @@ public class Game {
     private final static int width = 800;
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
-    private Camera camera;
     private World world;
 
     public ArrayList<Float> vertices;
@@ -41,6 +40,7 @@ public class Game {
         int delta = 0;
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             long startTime = System.currentTimeMillis();
+            
             game.clearScreen();
             Camera.update(delta);
             try {
@@ -49,8 +49,13 @@ public class Game {
                 System.out.println(e);
             }
             Display.update();
-            Display.sync(FRAME_RATE);
+            
             long endTime = System.currentTimeMillis();
+            System.out.println("Actual (No VSync): " + (endTime - startTime));
+            
+            Display.sync(FRAME_RATE);
+            
+            endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
             System.out.println("Overall: " + delta + "\n");
         }

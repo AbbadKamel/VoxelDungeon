@@ -13,6 +13,7 @@ public class Chunk {
     private ArrayList<Float> vertexColorDataCache = new ArrayList<Float>(1);
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
+
     public final int px;
     public final int py;
     
@@ -223,7 +224,7 @@ public class Chunk {
         if (vertexPositionDataCache.size()<1 && vertexColorDataCache.size()<1) {
             for(int i=0;i<SIZE;i++)
                 for (int j=0;j<SIZE;j++)
-                    for (int k=0;k<HEIGHT;k++)
+                    for (int k=HEIGHT-1;k>=0;k--)
                         blocks[i][j][k].render(i+16*px,j+16*py,k,vertexPositionDataCache,vertexColorDataCache);
         }
         vertices.addAll(vertexPositionDataCache);

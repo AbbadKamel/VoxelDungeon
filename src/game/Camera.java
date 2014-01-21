@@ -62,7 +62,6 @@ public class Camera {
         GL11.glRotatef(rotation.x, 1, 0, 0);
         GL11.glRotatef(rotation.y, 0, 1, 0);
         GL11.glRotatef(rotation.z, 0, 0, 1);
-        
         // You're 2 units tall.
         GL11.glTranslatef(-vector.x, -vector.y - 2.0f, -vector.z);
     }
@@ -78,15 +77,17 @@ public class Camera {
 
         //Mouse Input for looking around...
         if (Mouse.isGrabbed()) {
-            float mouseDX = Mouse.getDX()*0.8f*0.16f;
-            float mouseDY = Mouse.getDY()*0.8f*0.16f;
+            float mouseDX = Mouse.getDX()*0.128f;
+            float mouseDY = Mouse.getDY()*0.128f;
+            
             if (rotation.y + mouseDX >= 360) {
-                rotation.y = rotation.y + mouseDX - 360;
+                rotation.y += mouseDX - 360;
             } else if (rotation.y + mouseDX < 0) {
-                rotation.y = 360 - rotation.y + mouseDX;
+                rotation.y += 360 + mouseDX;
             } else {
                 rotation.y += mouseDX;
             }
+            
             if (rotation.x - mouseDY >= -89 && rotation.x - mouseDY <= 89) {
                 rotation.x += -mouseDY;
             } else if (rotation.x - mouseDY < -89) {
