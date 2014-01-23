@@ -27,4 +27,25 @@ public class Vector {
     public Vector add(Vector other) {
         return new Vector(this.x+other.x,this.y+other.y,this.z+other.z);
     }
+
+    public void set(Vector other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.z = other.z;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (other==null)
+            return false;
+        if (!other.getClass().isInstance(this))
+            return false;
+        Vector otherVector = (Vector) other;
+        return otherVector.x==x && otherVector.y==y && otherVector.z==z;
+    }
+    
+    @Override
+    public String toString() {
+        return "[" + x + ", " + y + ", " + z + "]";
+    }
 }
