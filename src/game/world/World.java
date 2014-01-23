@@ -40,35 +40,6 @@ public class World {
         for (int q=0;q<chunks.length;q++)
             for (int qq=0;qq<chunks[0].length;qq++)
                 chunks[q][qq].render(vertices,colorVertices);
-        
-        /*
-        if (i<chunks.length && j<chunks[0].length && i>=0 && j>=0)
-            chunks[i][j].render(vertices,colorVertices);
-
-        if (i<chunks.length && (j+1)<chunks[0].length && i>=0 && (j+1)>=0)
-            chunks[i][j+1].render(vertices,colorVertices);
-
-        if (i<chunks.length && (j-1)<chunks[0].length && i>=0 && (j-1)>=0)
-            chunks[i][j-1].render(vertices,colorVertices);
-
-        if ((i+1)<chunks.length && j<chunks[0].length && (i+1)>=0 && j>=0)
-            chunks[i+1][j].render(vertices,colorVertices);
-
-        if ((i+1)<chunks.length && (j+1)<chunks[0].length && (i+1)>=0 && (j+1)>=0)
-            chunks[i+1][j+1].render(vertices,colorVertices);
-
-        if ((i+1)<chunks.length && (j-1)<chunks[0].length && (i+1)>=0 && (j-1)>=0)
-            chunks[i+1][j-1].render(vertices,colorVertices);
-
-        if ((i-1)<chunks.length && j<chunks[0].length && (i-1)>=0 && j>=0)
-            chunks[i-1][j].render(vertices,colorVertices);
-
-        if ((i-1)<chunks.length && (j+1)<chunks[0].length && (i-1)>=0 && (j+1)>=0)
-            chunks[i-1][j+1].render(vertices,colorVertices);
-
-        if ((i-1)<chunks.length && (j-1)<chunks[0].length && (i-1)>=0 && (j-1)>=0)
-            chunks[i-1][j-1].render(vertices,colorVertices);
-        */
     }
 
     public int getWidth() {

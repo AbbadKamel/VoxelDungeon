@@ -8,10 +8,7 @@ public class Chunk {
     private static final int SIZE = 16;
     private static final int HEIGHT = 48;
     private static final int BEDROCK_HEIGHT = 16;
-    
-    private ArrayList<Float> vertexPositionDataCache = new ArrayList<Float>(1);
-    private ArrayList<Float> vertexColorDataCache = new ArrayList<Float>(1);
-    
+        
     private World world;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
@@ -228,13 +225,10 @@ public class Chunk {
     }
     
     public void render(ArrayList<Float> vertices, ArrayList<Float> colorVertices) throws IOException {
-        if (vertexPositionDataCache.size()<1 && vertexColorDataCache.size()<1)
-            for(int i=0;i<SIZE;i++)
-                for (int j=0;j<SIZE;j++)
-                    for (int k=HEIGHT-1;k>=0;k--)
-                        blocks[i][j][k].render(i+16*px,j+16*py,k,vertexPositionDataCache,vertexColorDataCache);
-        vertices.addAll(vertexPositionDataCache);
-        colorVertices.addAll(vertexColorDataCache);
+        for(int i=0;i<SIZE;i++)
+            for (int j=0;j<SIZE;j++)
+                for (int k=HEIGHT-1;k>=0;k--)
+                    blocks[i][j][k].render(i+16*px,j+16*py,k,vertices,colorVertices);
     }
     
     public boolean isBlock(int x, int y, int z) {

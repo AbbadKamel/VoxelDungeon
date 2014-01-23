@@ -1,9 +1,9 @@
 package game.world;
 
+import game.Camera;
 import game.resource.ResourceLibrary;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 public class Block {
@@ -76,12 +76,11 @@ public class Block {
         }
         
         // Top.
-        if (!chunk.isBlock(x,y,z+1)) {
+        if (Camera.getCamZ()>z && !chunk.isBlock(x,y,z+1)) {
             addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            GL11.glEnd();
         }
         
         if (type == GRASS) {
@@ -95,7 +94,7 @@ public class Block {
         }
         
         // Side.
-        if (!chunk.isBlock(x,y+1,z)) {
+        if (Camera.getCamY()>y && !chunk.isBlock(x,y+1,z)) {
             addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
@@ -103,7 +102,7 @@ public class Block {
         }
         
         // Opposite side to above.
-        if (!chunk.isBlock(x,y-1,z)) {
+        if (Camera.getCamY()<y && !chunk.isBlock(x,y-1,z)) {
             addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
@@ -111,16 +110,15 @@ public class Block {
         }
         
         // Side.
-        if (!chunk.isBlock(x+1,y,z)) {
+        if (Camera.getCamX()>x && !chunk.isBlock(x+1,y,z)) {
             addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            GL11.glEnd();
         }
         
         // Opposite side to above.
-        if (!chunk.isBlock(x-1,y,z)) {
+        if (Camera.getCamX()<x && !chunk.isBlock(x-1,y,z)) {
             addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
@@ -128,7 +126,7 @@ public class Block {
         }
         
         // Bottom.
-        if (!chunk.isBlock(x,y,z-1)) {
+        if (Camera.getCamZ()<z && !chunk.isBlock(x,y,z-1)) {
             addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
