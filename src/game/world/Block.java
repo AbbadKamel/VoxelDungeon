@@ -2,8 +2,8 @@ package game.world;
 
 import game.Camera;
 import game.resource.ResourceLibrary;
+import game.util.FloatArray;
 import java.io.IOException;
-import java.util.ArrayList;
 import org.newdawn.slick.opengl.Texture;
 
 public class Block {
@@ -48,16 +48,16 @@ public class Block {
     }
     
     private void addFloats(float x, float y, float z, float r, float g, float b,
-            ArrayList<Float> vertices, ArrayList<Float> colorVertices) {
-        vertices.add(Float.valueOf(x));
-        vertices.add(Float.valueOf(y));
-        vertices.add(Float.valueOf(z));
+            FloatArray vertices, FloatArray colorVertices) {
+        vertices.add(x);
+        vertices.add(y);
+        vertices.add(z);
         colorVertices.add(r);
         colorVertices.add(g);
         colorVertices.add(b);
     }
     
-    public void render(int x, int y, int z, ArrayList<Float> vertices, ArrayList<Float> colorVertices) {
+    public void render(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         if (isTransparent)
             return;
         

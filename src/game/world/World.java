@@ -1,8 +1,7 @@
 package game.world;
 
-import game.Camera;
+import game.util.FloatArray;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class World {
     
@@ -33,13 +32,10 @@ public class World {
                 chunks[i][j] = new Chunk(i,j,this);
     }
     
-    public void render(ArrayList<Float> vertices, ArrayList<Float> colorVertices) throws IOException {
-        int i = (int) (Camera.getCamX()/16);
-        int j = (int) (Camera.getCamY()/16);
-        
-        for (int q=0;q<chunks.length;q++)
-            for (int qq=0;qq<chunks[0].length;qq++)
-                chunks[q][qq].render(vertices,colorVertices);
+    public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {        
+        for (int i=0;i<chunks.length;i++)
+            for (int j=0;j<chunks[0].length;j++)
+                chunks[i][j].render(vertices,colorVertices);
     }
 
     public int getWidth() {

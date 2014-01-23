@@ -1,9 +1,9 @@
 package game;
 
+import game.util.FloatArray;
 import game.world.World;
 import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -20,8 +20,8 @@ public class Game {
     private final static int FRAME_RATE = 60;
     private World world;
 
-    public ArrayList<Float> vertices;
-    public ArrayList<Float> colorVertices;
+    public FloatArray vertices;
+    public FloatArray colorVertices;
 
     public static void main(String[] args) {
         try {
@@ -81,8 +81,8 @@ public class Game {
     private void init() throws IOException {
         world = new World(8,8);
         Camera.init();
-        vertices = new ArrayList<Float>();
-        colorVertices = new ArrayList<Float>();
+        vertices = new FloatArray(1000000);
+        colorVertices = new FloatArray(1000000);
         this.initialize3D();
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
@@ -105,7 +105,7 @@ public class Game {
             System.out.println((et-st) + ": Getting vertices from world.");
         }
 
-        System.out.println("Vertices: " + vertices.size());
+        System.out.println("Vertices: " + vertices.getPos());
 
         st = System.currentTimeMillis();
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
@@ -113,17 +113,7 @@ public class Game {
         System.out.println((et-st) + ": Creating position buffer.");
         
         st = System.currentTimeMillis();
-        float[] floats = new float[colorVertices.size()];
-        int i = 0;
-        for (Float f : vertices) {
-            floats[i] = f;
-            i++;
-        }
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Creating position array.");
-        
-        st = System.currentTimeMillis();
-        VertexPositionData.put(floats);
+        VertexPositionData.put(vertices.getValues());
         et = System.currentTimeMillis();
         System.out.println((et-st) + ": Adding position array to buffer.");
         
@@ -138,17 +128,7 @@ public class Game {
         System.out.println((et-st) + ": Creating color buffer.");
         
         st = System.currentTimeMillis();
-        float[] colorFloats = new float[colorVertices.size()];
-        int j = 0;
-        for (Float f : colorVertices) {
-            colorFloats[j] = f;
-            j++;
-        }
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Creating color array.");
-        
-        st = System.currentTimeMillis();
-        VertexColorData.put(colorFloats);
+        VertexColorData.put(colorVertices.getArr());
         et = System.currentTimeMillis();
         System.out.println((et-st) + ": Adding color array to buffer.");
         
@@ -159,10 +139,10 @@ public class Game {
         
         st = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STREAM_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STREAM_DRAW);//GL_STREAM_DRAW
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         et = System.currentTimeMillis();
         System.out.println((et-st) + ": Binding buffers.");

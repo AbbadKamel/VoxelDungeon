@@ -26,6 +26,7 @@ public class Camera {
     
     public static void update(int delta) {
         oldPosition.set(position);
+        System.out.println(position);
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();

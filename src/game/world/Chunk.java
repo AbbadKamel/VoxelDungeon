@@ -1,14 +1,14 @@
 package game.world;
 
+import game.util.FloatArray;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Chunk {
     
     private static final int SIZE = 16;
     private static final int HEIGHT = 48;
     private static final int BEDROCK_HEIGHT = 16;
-        
+    
     private World world;
     
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
@@ -224,7 +224,7 @@ public class Chunk {
         blocks[i][j][k] = block;
     }
     
-    public void render(ArrayList<Float> vertices, ArrayList<Float> colorVertices) throws IOException {
+    public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {
         for(int i=0;i<SIZE;i++)
             for (int j=0;j<SIZE;j++)
                 for (int k=HEIGHT-1;k>=0;k--)
