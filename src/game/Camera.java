@@ -19,10 +19,6 @@ public class Camera {
         Mouse.setGrabbed(true);
     }
     
-    public void getAngleTo(int x,int y,int z) {
-        
-    }
-    
     public static void update(int delta) {
         updateRotation(delta);
         updatePosition(delta);

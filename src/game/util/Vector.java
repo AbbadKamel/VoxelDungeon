@@ -24,7 +24,7 @@ public class Vector {
         this.z = z;
     }
     
-    public Vector add(Vector v1, Vector v2) {
-        return new Vector(v1.x+v2.x,v1.y+v2.y,v1.z+v2.z);
+    public Vector add(Vector other) {
+        return new Vector(this.x+other.x,this.y+other.y,this.z+other.z);
     }
 }
