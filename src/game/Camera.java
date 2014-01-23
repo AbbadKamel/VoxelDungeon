@@ -75,11 +75,9 @@ public class Camera {
     }
     
     public static void updatePerspective() {
-        // This is the code that changes 3D perspective to the camera's perspective.
         GL11.glRotatef(rotation.x(),1,0,0);
         GL11.glRotatef(rotation.y(),0,0,1);
         GL11.glRotatef(rotation.z(),0,1,0);
-        // You're 2 units tall.
         GL11.glTranslatef(-vector.x(),-vector.z()-2.0f,-vector.y());
     }
 }
