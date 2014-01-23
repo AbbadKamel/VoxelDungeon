@@ -1,10 +1,8 @@
 package game.world;
 
 import game.Camera;
-import game.resource.ResourceLibrary;
 import game.util.FloatArray;
 import java.io.IOException;
-import org.newdawn.slick.opengl.Texture;
 
 public class Block {
     
@@ -12,8 +10,6 @@ public class Block {
     public static final byte STONE = 1;
     public static final byte BLANK = 2;
     
-    private Texture textureTop;
-    private Texture textureSide;
     private boolean isTransparent;
     private Chunk chunk;
     private byte type;
@@ -25,18 +21,12 @@ public class Block {
         switch (blockName) {
             case GRASS:
                 isTransparent = false;
-                textureTop = ResourceLibrary.getTexture(ResourceLibrary.GRASS_TOP);
-                textureSide = ResourceLibrary.getTexture(ResourceLibrary.GRASS_SIDE);
                 break;
             case STONE:
                 isTransparent = false;
-                textureTop = ResourceLibrary.getTexture(ResourceLibrary.STONE_TOP);
-                textureSide = ResourceLibrary.getTexture(ResourceLibrary.STONE_SIDE);
                 break;
             case BLANK:
                 isTransparent = true;
-                textureTop = null;
-                textureSide = null;
                 break;
             default:
                 throw new IOException("Unhandled case @ Block constructor.");
