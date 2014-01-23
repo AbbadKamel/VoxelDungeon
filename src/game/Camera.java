@@ -7,19 +7,25 @@ import org.lwjgl.opengl.GL11;
 
 public class Camera {
 
-    private static Vector vector = new Vector();
+    private static Vector position = new Vector();
+    private static Vector oldPosition = new Vector();
     private static Vector rotation = new Vector();
     private static final float speed = 0.015f;
     
-    public static float getCamX() { return vector.x(); }
-    public static float getCamY() { return vector.y(); }
-    public static float getCamZ() { return vector.z(); }
+    public static float getCamX() { return position.x(); }
+    public static float getCamY() { return position.y(); }
+    public static float getCamZ() { return position.z()+2; }
 
     public static void init() {
         Mouse.setGrabbed(true);
     }
     
+    public static boolean hasNotMoved() {
+        return oldPosition.equals(position);
+    }
+    
     public static void update(int delta) {
+        oldPosition.set(position);
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();
@@ -27,25 +33,25 @@ public class Camera {
 
     public static void updatePosition(int delta) {
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            vector.setX(vector.x()-(float)(Math.sin(-rotation.z()*Math.PI/180)*speed*delta));
-            vector.setY(vector.y()-(float)(Math.cos(-rotation.z()*Math.PI/180)*speed*delta));
+            position.setX(position.x()-(float)(Math.sin(-rotation.z()*Math.PI/180)*speed*delta));
+            position.setY(position.y()-(float)(Math.cos(-rotation.z()*Math.PI/180)*speed*delta));
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            vector.setX(vector.x()+(float)(Math.sin(-rotation.z()*Math.PI/180)*speed*delta));
-            vector.setY(vector.y()+(float)(Math.cos(-rotation.z()*Math.PI/180)*speed*delta));
+            position.setX(position.x()+(float)(Math.sin(-rotation.z()*Math.PI/180)*speed*delta));
+            position.setY(position.y()+(float)(Math.cos(-rotation.z()*Math.PI/180)*speed*delta));
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            vector.setX(vector.x()+(float)(Math.sin((-rotation.z()-90)*Math.PI/180)*speed*delta));
-            vector.setY(vector.y()+(float)(Math.cos((-rotation.z()-90)*Math.PI/180)*speed*delta));
+            position.setX(position.x()+(float)(Math.sin((-rotation.z()-90)*Math.PI/180)*speed*delta));
+            position.setY(position.y()+(float)(Math.cos((-rotation.z()-90)*Math.PI/180)*speed*delta));
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            vector.setX(vector.x()+(float)(Math.sin((-rotation.z()+90)*Math.PI/180)*speed*delta));
-            vector.setY(vector.y()+(float)(Math.cos((-rotation.z()+90)*Math.PI/180)*speed*delta));
+            position.setX(position.x()+(float)(Math.sin((-rotation.z()+90)*Math.PI/180)*speed*delta));
+            position.setY(position.y()+(float)(Math.cos((-rotation.z()+90)*Math.PI/180)*speed*delta));
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
-            vector.setZ(vector.z()+(float)(speed*delta));
+            position.setZ(position.z()+(float)(speed*delta));
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            vector.setZ(vector.z()-(float)(speed*delta));
+            position.setZ(position.z()-(float)(speed*delta));
     }
 
     public static void updateRotation(int delta) {
@@ -74,6 +80,6 @@ public class Camera {
         GL11.glRotatef(rotation.x(),1,0,0);
         GL11.glRotatef(rotation.y(),0,0,1);
         GL11.glRotatef(rotation.z(),0,1,0);
-        GL11.glTranslatef(-vector.x(),-vector.z()-2.0f,-vector.y());
+        GL11.glTranslatef(-position.x(),-position.z()-2.0f,-position.y());
     }
 }

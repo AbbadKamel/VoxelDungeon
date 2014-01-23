@@ -38,6 +38,17 @@ public class Game {
             System.out.println(e);
         }
         int delta = 0;
+        /*
+        Font awtFont = new Font("Times New Roman", Font.BOLD, 24) {};
+        UnicodeFont font = new UnicodeFont(awtFont);
+        font.getEffects().add(new ColorEffect(java.awt.Color.white));
+        font.addAsciiGlyphs();
+        try {
+            font.loadGlyphs();
+        } catch (SlickException e) {
+            System.out.println("Failed to load font: " + e);
+        }
+        */
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             long startTime = System.currentTimeMillis();
             
@@ -79,16 +90,21 @@ public class Game {
     
     public void render() throws IOException {
         long st;
-        long et;
-                
-        vertices.clear();
-        colorVertices.clear();
-
-        st = System.currentTimeMillis();
-        world.render(vertices,colorVertices);
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Getting vertices from world.");
+        long et;        
         
+        if (!Camera.hasNotMoved()) {
+            st = System.currentTimeMillis();
+            vertices.clear();
+            colorVertices.clear();
+            et = System.currentTimeMillis();
+            System.out.println((et-st) + ": Clearing old arraylists.");
+            
+            st = System.currentTimeMillis();
+            world.render(vertices,colorVertices);
+            et = System.currentTimeMillis();
+            System.out.println((et-st) + ": Getting vertices from world.");
+        }
+
         System.out.println("Vertices: " + vertices.size());
 
         st = System.currentTimeMillis();
@@ -143,10 +159,10 @@ public class Game {
         
         st = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexPositionData,GL15.GL_DYNAMIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOColorHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_DYNAMIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         et = System.currentTimeMillis();
         System.out.println((et-st) + ": Binding buffers.");
