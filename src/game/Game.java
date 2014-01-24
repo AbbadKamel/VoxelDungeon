@@ -113,7 +113,7 @@ public class Game {
         System.out.println((et-st) + ": Creating position buffer.");
         
         st = System.currentTimeMillis();
-        float[] floats = new float[colorVertices.size()];
+        float[] floats = new float[vertices.size()];
         int i = 0;
         for (Float f : vertices) {
             floats[i] = f;
