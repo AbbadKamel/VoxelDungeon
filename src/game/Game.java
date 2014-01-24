@@ -29,7 +29,6 @@ public class Game {
      * 2 is fps and delta.
      * 3 is shortened print statements.
      * 4 is complete print statements.
-     *
      */
     public byte debugLevel = 4;
 
