@@ -22,6 +22,16 @@ public class Game {
 
     public FloatArray vertices;
     public FloatArray colorVertices;
+    
+    /*
+     * 0 is none.
+     * 1 is fps.
+     * 2 is fps and delta.
+     * 3 is shortened print statements.
+     * 4 is complete print statements.
+     *
+     */
+    public byte debugLevel = 4;
 
     public static void main(String[] args) {
         try {
@@ -68,7 +78,7 @@ public class Game {
             
             endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
-            System.out.println("Overall: " + delta + "\n");
+            System.out.println("Overall: " + delta + " | FPS: " + 1000/delta + "\n");
         }
         Display.destroy();
         System.exit(0);
