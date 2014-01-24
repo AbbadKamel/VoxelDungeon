@@ -57,4 +57,8 @@ public class Vector {
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]";
     }
+
+    public float getMagnitude() {
+        return (float) Math.sqrt(x*x+y*y+z*z);
+    }
 }

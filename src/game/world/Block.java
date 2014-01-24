@@ -2,6 +2,7 @@ package game.world;
 
 import game.Camera;
 import game.util.FloatArray;
+import game.util.Frustum;
 import java.io.IOException;
 
 public class Block {
@@ -49,6 +50,9 @@ public class Block {
     
     public void render(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         if (isTransparent)
+            return;
+        
+        if (Frustum.isCubeInFrustum(x,y,z))
             return;
         
         float r = 0;

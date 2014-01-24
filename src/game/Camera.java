@@ -15,7 +15,23 @@ public class Camera {
     public static float getCamX() { return position.x(); }
     public static float getCamY() { return position.y(); }
     public static float getCamZ() { return position.z()+2; }
-
+    
+    public static float getDistance(float x, float y, float z) {
+        return new Vector(x-position.x(),y-position.y(),z-position.z()).getMagnitude();
+    }
+    
+    public static float getFacingHoriz() {
+        return (270+rotation.z())%360;
+    }
+    
+    public static float getRelativeDirectionHoriz(int x, int y) {
+        return (float) (getFacingHoriz() - Math.atan2(position.y()-y,position.x()-x));
+    }
+    
+    public static float getFacingVert() {
+        return -rotation.x();
+    }
+    
     public static void init() {
         Mouse.setGrabbed(true);
     }
@@ -26,7 +42,7 @@ public class Camera {
     
     public static void update(int delta) {
         oldPosition.set(position);
-        System.out.println(position);
+        System.out.println(getFacingHoriz());
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();

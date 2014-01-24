@@ -1,6 +1,7 @@
 package game;
 
 import game.util.FloatArray;
+import game.util.Frustum;
 import game.world.World;
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -113,6 +114,8 @@ public class Game {
             et = System.currentTimeMillis();
             System.out.println((et-st) + ": Getting vertices from world.");
         }
+        
+        Frustum.updateFrustum();
 
         System.out.println("Vertices: " + vertices.getPos());
 
