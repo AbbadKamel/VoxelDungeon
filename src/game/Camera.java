@@ -10,6 +10,7 @@ public class Camera {
     private static Vector position = new Vector();
     private static Vector oldPosition = new Vector();
     private static Vector rotation = new Vector();
+    private static Vector oldRotation = new Vector();
     private static final float speed = 0.015f;
     
     public static float getCamX() { return position.x(); }
@@ -37,11 +38,12 @@ public class Camera {
     }
     
     public static boolean hasNotMoved() {
-        return oldPosition.equals(position);
+        return oldPosition.equals(position) && rotation.equals(oldRotation);
     }
     
     public static void update(int delta) {
         oldPosition.set(position);
+        oldRotation.set(rotation);
         System.out.println(getFacingHoriz());
         updateRotation(delta);
         updatePosition(delta);
