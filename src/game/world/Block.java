@@ -52,7 +52,7 @@ public class Block {
         if (isTransparent)
             return;
         
-        if (Frustum.isCubeInFrustum(x,y,z))
+        if (!Frustum.isCubeInFrustum(x,y,z))
             return;
         
         float r = 0;

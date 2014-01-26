@@ -1,6 +1,7 @@
 package game.util;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -8,18 +9,18 @@ public class Frustum {
 
     private static float[][] frustum = new float[6][4];
     
-    public static boolean isPointInFrustum(float x, float y, float z) {
+    public static boolean isPointInFrustum(float x, float z, float y) {
        for(int p=0;p<6;p++)
           if(frustum[p][0]*x + frustum[p][1]*y + frustum[p][2]*z + frustum[p][3]<=0)
              return false;
        return true;
     }
     
-    public static boolean isCubeInFrustum(float x, float y, float z) {
-        return isCubeInFrustum(x,y,z,0.5f);
+    public static boolean isCubeInFrustum(float x, float z, float y) {
+        return isCubeInFrustum(x,z,y,0.5f);
     }
     
-    public static boolean isCubeInFrustum(float x, float y, float z, float size) {
+    public static boolean isCubeInFrustum(float x, float z, float y, float size) {
        for(int p=0;p<6;p++) {
           if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
              continue;
@@ -62,6 +63,12 @@ public class Frustum {
         
         for (int i=0;i<fbModelview.capacity();i++)
             modl[i] = fbModelview.get(i);
+        
+        fbProjection.flip();
+        fbModelview.flip();
+        
+        System.out.println(Arrays.toString(proj));
+        System.out.println(Arrays.toString(modl));
         
         /* Combine the two matrices (multiply projection by modelview) */
         clip[ 0] = modl[ 0] * proj[ 0] + modl[ 1] * proj[ 4] + modl[ 2] * proj[ 8] + modl[ 3] * proj[12];

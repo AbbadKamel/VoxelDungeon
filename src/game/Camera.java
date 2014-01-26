@@ -44,7 +44,6 @@ public class Camera {
     public static void update(int delta) {
         oldPosition.set(position);
         oldRotation.set(rotation);
-        System.out.println(getFacingHoriz());
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();
