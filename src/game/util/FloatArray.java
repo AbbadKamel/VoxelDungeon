@@ -29,9 +29,12 @@ public class FloatArray {
     }
     
     public void add(float element) {
-        if (pos>=arr.length)
-            throw new ArrayIndexOutOfBoundsException("Attempting to write to position "
-                    + pos + " of " + arr.length + ".");
+        if (pos>=arr.length) {
+            System.out.println("ERROR: ARRAY OVERFLOW. INCREASING SIZE." + pos + " of " + arr.length + ".");
+            arr = Arrays.copyOf(arr,pos+10);
+            //throw new ArrayIndexOutOfBoundsException("Attempting to write to position "
+                    //+ pos + " of " + arr.length + ".");
+        }
         addNoCheck(element);
     }
     
@@ -46,7 +49,7 @@ public class FloatArray {
     
     public void addAll(FloatArray other) {
         for (int i=0;i<other.pos;i++) {
-            addNoCheck(other.element(i));
+            add(other.element(i));
         }
     }
     
