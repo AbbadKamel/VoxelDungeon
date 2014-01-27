@@ -1,9 +1,9 @@
 package game.world;
 
-import game.resource.ResourceLibrary;
+import game.Camera;
+import game.util.FloatArray;
+import game.util.Frustum;
 import java.io.IOException;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
 
 public class Block {
     
@@ -11,8 +11,6 @@ public class Block {
     public static final byte STONE = 1;
     public static final byte BLANK = 2;
     
-    private Texture textureTop;
-    private Texture textureSide;
     private boolean isTransparent;
     private Chunk chunk;
     private byte type;
@@ -24,18 +22,12 @@ public class Block {
         switch (blockName) {
             case GRASS:
                 isTransparent = false;
-                textureTop = ResourceLibrary.getTexture(ResourceLibrary.GRASS_TOP);
-                textureSide = ResourceLibrary.getTexture(ResourceLibrary.GRASS_SIDE);
                 break;
             case STONE:
                 isTransparent = false;
-                textureTop = ResourceLibrary.getTexture(ResourceLibrary.STONE_TOP);
-                textureSide = ResourceLibrary.getTexture(ResourceLibrary.STONE_SIDE);
                 break;
             case BLANK:
                 isTransparent = true;
-                textureTop = null;
-                textureSide = null;
                 break;
             default:
                 throw new IOException("Unhandled case @ Block constructor.");
@@ -46,84 +38,93 @@ public class Block {
         this.chunk = chunk;
     }
     
-    public void render(int x, int y, int z) throws IOException {
+    private void addFloats(float x, float y, float z, float r, float g, float b,
+            FloatArray vertices, FloatArray colorVertices) {
+        vertices.add(x);
+        vertices.add(y);
+        vertices.add(z);
+        colorVertices.add(r);
+        colorVertices.add(g);
+        colorVertices.add(b);
+    }
+    
+    public void render(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         if (isTransparent)
             return;
         
-        textureSide.bind();
-        GL11.glBegin(GL11.GL_QUADS);
-        // Side.
-        if (!chunk.isBlock(x,y+1,z)) {
-            GL11.glTexCoord2d(0.0f,0.0f);
-            GL11.glVertex3f(-0.5f+x,-0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.0f);
-            GL11.glVertex3f(0.5f+x,-0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.5f);
-            GL11.glVertex3f(0.5f+x,0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.5f);
-            GL11.glVertex3f(-0.5f+x,0.5f+z,0.5f+y);
+        if (!Frustum.isCubeInFrustum(x,y,z))
+            return;
+        
+        float r = 0;
+        float g = 0;
+        float b = 0;
+        
+        if (type == GRASS) {
+            r = 0.09f;
+            g = 0.9f;
+            b = 0.09f;
+        } else if (type == STONE) {
+            r = 0.4f;
+            g = 0.4f;
+            b = 0.4f;
         }
         
-        // Opposite side to above.
-        if (!chunk.isBlock(x,y-1,z)) {
-            GL11.glTexCoord2d(0.5f,0.0f);
-            GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.5f);
-            GL11.glVertex3f(-0.5f+x,0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.5f);
-            GL11.glVertex3f(0.5f+x,0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.0f);
-            GL11.glVertex3f(0.5f+x,-0.5f+z,-0.5f+y);
-        }
-        // Bottom.
-        if (!chunk.isBlock(x,y,z-1)) {
-            GL11.glTexCoord2d(0.5f,0.5f);
-            GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.5f);
-            GL11.glVertex3f(0.5f+x,-0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.0f);
-            GL11.glVertex3f(0.5f+x,-0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.0f);
-            GL11.glVertex3f(-0.5f+x,-0.5f+z,0.5f+y);
-        }
-        // Side.
-        if (!chunk.isBlock(x+1,y,z)) {
-            GL11.glTexCoord2d(0.5f,0.0f);
-            GL11.glVertex3f(0.5f+x,-0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.5f);
-            GL11.glVertex3f(0.5f+x,0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.5f);
-            GL11.glVertex3f(0.5f+x,0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.0f);
-            GL11.glVertex3f(0.5f+x,-0.5f+z,0.5f+y);
-        }
-        
-        // Opposite side to above.
-        if (!chunk.isBlock(x-1,y,z)) {
-            GL11.glTexCoord2d(0.0f,0.0f);
-            GL11.glVertex3f(-0.5f+x,-0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.0f);
-            GL11.glVertex3f(-0.5f+x,-0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.5f);
-            GL11.glVertex3f(-0.5f+x,0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.5f);
-            GL11.glVertex3f(-0.5f+x,0.5f+z,-0.5f+y);
-        }
-        GL11.glEnd();
-
-        textureTop.bind();
-        GL11.glBegin(GL11.GL_QUADS);
         // Top.
-        if (!chunk.isBlock(x,y,z+1)) {
-            GL11.glTexCoord2d(0.0f,0.5f);
-            GL11.glVertex3f(-0.5f+x,0.5f+z,-0.5f+y);
-            GL11.glTexCoord2d(0.0f,0.0f);
-            GL11.glVertex3f(-0.5f+x,0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.0f);
-            GL11.glVertex3f(0.5f+x,0.5f+z,0.5f+y);
-            GL11.glTexCoord2d(0.5f,0.5f);
-            GL11.glVertex3f(0.5f+x,0.5f+z,-0.5f+y);
+        if (Camera.getCamZ()>z && !chunk.isBlock(x,y,z+1)) {
+            addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
         }
-        GL11.glEnd();
+        
+        if (type == GRASS) {
+            r = 0.06f;
+            g = 0.6f;
+            b = 0.06f;
+        } else if (type == STONE) {
+            r = 0.2f;
+            g = 0.2f;
+            b = 0.2f;
+        }
+        
+        // Side.
+        if (Camera.getCamY()>y && !chunk.isBlock(x,y+1,z)) {
+            addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+        }
+        
+        // Opposite side to above.
+        if (Camera.getCamY()<y && !chunk.isBlock(x,y-1,z)) {
+            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+        }
+        
+        // Side.
+        if (Camera.getCamX()>x && !chunk.isBlock(x+1,y,z)) {
+            addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+        }
+        
+        // Opposite side to above.
+        if (Camera.getCamX()<x && !chunk.isBlock(x-1,y,z)) {
+            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+        }
+        
+        // Bottom.
+        if (Camera.getCamZ()<z && !chunk.isBlock(x,y,z-1)) {
+            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+        }
     }
 }

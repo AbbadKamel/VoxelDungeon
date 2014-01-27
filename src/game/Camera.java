@@ -1,113 +1,103 @@
 package game;
 
+import game.util.Vector;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 
-    private Vector3f vector = new Vector3f();
-    private Vector3f rotation = new Vector3f();
-    private Vector3f vectorPrevious = new Vector3f();
-    private static Vector3f cameraPos = new Vector3f();
-    private boolean moveForward = false;
-    private boolean moveBackward = false;
-    private boolean strafeLeft = false;
-    private boolean strafeRight = false;
-    private boolean moveUp = false;
-    private boolean moveDown = false;
-    private static final float speed = 0.3f;
+    private static Vector position = new Vector();
+    private static Vector oldPosition = new Vector();
+    private static Vector rotation = new Vector();
+    private static Vector oldRotation = new Vector();
+    private static final float speed = 0.015f;
     
-    public static float getCamX() { return cameraPos.x; }
-    public static float getCamY() { return cameraPos.z; }
-    public static float getCamZ() { return cameraPos.y; }
-
-    public Camera(Game game) {
-        vector.x = 32;
-        vector.y = 8;
-        vector.z = 32;
+    public static float getCamX() { return position.x(); }
+    public static float getCamY() { return position.y(); }
+    public static float getCamZ() { return position.z()+2; }
+    
+    public static float getDistance(float x, float y, float z) {
+        return new Vector(x-position.x(),y-position.y(),z-position.z()).getMagnitude();
+    }
+    
+    public static float getFacingHoriz() {
+        return (270+rotation.z())%360;
+    }
+    
+    public static float getRelativeDirectionHoriz(int x, int y) {
+        return (float) (getFacingHoriz() - Math.atan2(position.y()-y,position.x()-x));
+    }
+    
+    public static float getFacingVert() {
+        return -rotation.x();
+    }
+    
+    public static void init() {
         Mouse.setGrabbed(true);
     }
-
-    public void update(int delta) {
-        updatePrevious();
-        input();
-        updateVector(delta);
+    
+    public static boolean hasNotMoved() {
+        return oldPosition.equals(position) && rotation.equals(oldRotation);
+    }
+    
+    public static void update(int delta) {
+        oldPosition.set(position);
+        oldRotation.set(rotation);
+        updateRotation(delta);
+        updatePosition(delta);
+        updatePerspective();
     }
 
-    public void updateVector(int delta) {
-        double speedMultiplier = delta/20.0;
-        if (moveForward) {
-            vector.x -= (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
-            vector.z -= (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
+    public static void updatePosition(int delta) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            position.setX(position.x()-(float)(Math.sin(-rotation.z()*Math.PI/180)*speed*delta));
+            position.setY(position.y()-(float)(Math.cos(-rotation.z()*Math.PI/180)*speed*delta));
         }
-        if (moveBackward) {
-            vector.x += (float) (Math.sin(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
-            vector.z += (float) (Math.cos(-rotation.y*Math.PI/180)*speed)*speedMultiplier;
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            position.setX(position.x()+(float)(Math.sin(-rotation.z()*Math.PI/180)*speed*delta));
+            position.setY(position.y()+(float)(Math.cos(-rotation.z()*Math.PI/180)*speed*delta));
         }
-        if (strafeLeft) {
-            vector.x += (float) (Math.sin((-rotation.y-90)*Math.PI/180)*speed)*speedMultiplier;
-            vector.z += (float) (Math.cos((-rotation.y-90)*Math.PI/180)*speed)*speedMultiplier;
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            position.setX(position.x()+(float)(Math.sin((-rotation.z()-90)*Math.PI/180)*speed*delta));
+            position.setY(position.y()+(float)(Math.cos((-rotation.z()-90)*Math.PI/180)*speed*delta));
         }
-        if (strafeRight) {
-            vector.x += (float) (Math.sin((-rotation.y + 90)*Math.PI/180) * speed)*speedMultiplier;
-            vector.z += (float) (Math.cos((-rotation.y + 90)*Math.PI/180) * speed)*speedMultiplier;
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            position.setX(position.x()+(float)(Math.sin((-rotation.z()+90)*Math.PI/180)*speed*delta));
+            position.setY(position.y()+(float)(Math.cos((-rotation.z()+90)*Math.PI/180)*speed*delta));
         }
-        if (moveUp) {
-            vector.y += (float) (speed)*speedMultiplier;
-        }
-        if (moveDown) {
-            vector.y -= (float) (speed)*speedMultiplier;
-        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
+            position.setZ(position.z()+(float)(speed*delta));
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            position.setZ(position.z()-(float)(speed*delta));
     }
 
-    public void translatePostion() {
-        // This is the code that changes 3D perspective to the camera's perspective.
-        GL11.glRotatef(rotation.x, 1, 0, 0);
-        GL11.glRotatef(rotation.y, 0, 1, 0);
-        GL11.glRotatef(rotation.z, 0, 0, 1);
-        
-        // -vector.y-2.4f means that your y is your feet, and y+2.4 is your head.
-        GL11.glTranslatef(-vector.x, -vector.y - 2.4f, -vector.z);
-    }
-
-    public void updatePrevious() {
-        vectorPrevious.x = vector.x;
-        vectorPrevious.y = vector.y;
-        vectorPrevious.z = vector.z;
-        cameraPos.x = vector.x;
-        cameraPos.y = vector.y;
-        cameraPos.z = vector.z;
-    }
-
-    public void input() {
-        //Keyboard Input for Movement
-        moveForward = Keyboard.isKeyDown(Keyboard.KEY_W);
-        moveBackward = Keyboard.isKeyDown(Keyboard.KEY_S);
-        strafeLeft = Keyboard.isKeyDown(Keyboard.KEY_A);
-        strafeRight = Keyboard.isKeyDown(Keyboard.KEY_D);
-        moveUp = Keyboard.isKeyDown(Keyboard.KEY_SPACE);
-        moveDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
-
+    public static void updateRotation(int delta) {
         //Mouse Input for looking around...
         if (Mouse.isGrabbed()) {
-            float mouseDX = Mouse.getDX()*0.8f*0.16f;
-            float mouseDY = Mouse.getDY()*0.8f*0.16f;
-            if (rotation.y + mouseDX >= 360) {
-                rotation.y = rotation.y + mouseDX - 360;
-            } else if (rotation.y + mouseDX < 0) {
-                rotation.y = 360 - rotation.y + mouseDX;
-            } else {
-                rotation.y += mouseDX;
-            }
-            if (rotation.x - mouseDY >= -89 && rotation.x - mouseDY <= 89) {
-                rotation.x += -mouseDY;
-            } else if (rotation.x - mouseDY < -89) {
-                rotation.x = -89;
-            } else if (rotation.x - mouseDY > 89) {
-                rotation.x = 89;
-            }
+            float mouseDX = Mouse.getDX()*0.128f;
+            float mouseDY = Mouse.getDY()*0.128f;
+            
+            if (rotation.z()+mouseDX>=360)
+                rotation.setZ(rotation.z()+mouseDX-360);
+            else if (rotation.z()+mouseDX<0)
+                rotation.setZ(rotation.z()+mouseDX+360);
+            else
+                rotation.setZ(rotation.z()+mouseDX);
+            
+            if (rotation.x()-mouseDY>=-89&&rotation.x()-mouseDY<=89)
+                rotation.setX(rotation.x()-mouseDY);
+            else if (rotation.x()-mouseDY<-89)
+                rotation.setX(-89);
+            else if (rotation.x()-mouseDY>89)
+                rotation.setX(89);
         }
+    }
+    
+    public static void updatePerspective() {
+        GL11.glRotatef(rotation.x(),1,0,0);
+        GL11.glRotatef(rotation.y(),0,0,1);
+        GL11.glRotatef(rotation.z(),0,1,0);
+        GL11.glTranslatef(-position.x(),-position.z()-2.0f,-position.y());
     }
 }

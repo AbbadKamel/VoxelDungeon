@@ -1,5 +1,6 @@
 package game.world;
 
+import game.util.FloatArray;
 import java.io.IOException;
 
 public class Chunk {
@@ -8,14 +9,22 @@ public class Chunk {
     private static final int HEIGHT = 48;
     private static final int BEDROCK_HEIGHT = 16;
     
+    private World world;
+    
     private Block[][][] blocks = new Block[SIZE][SIZE][HEIGHT];
+
     public final int px;
     public final int py;
     
-    public Chunk(int px, int py) throws IOException {
+    public Chunk(int px, int py, World world) throws IOException {
         this.px = px;
         this.py = py;
+        this.world = world;
         makeChunk();
+    }
+    
+    public Block getBlock(int x, int y, int z) {
+        return blocks[x][y][z];
     }
     
     public int getHeight(int x, int y) {
@@ -30,7 +39,6 @@ public class Chunk {
         int [][] height = new int[SIZE][SIZE];
         int [][] iHeight = new int[SIZE-8][SIZE-8];
         int r = (int) (Math.random()*7);
-        Boolean canEnter = true;
         
         if (r==2) {
             generateCaves();
@@ -155,10 +163,7 @@ public class Chunk {
         for(int i=0;i<16;i++) {
             for (int j=0;j<16;j++) {
                 for (int k=0;k<16;k++) {
-                    //if (i==0 || j==0 || k==0 || i==15 || j==15 || k==15)
-                    //    emptySpace[i][j][k] = true;
-                    //else
-                        emptySpace[i][j][k] = Math.random() < chanceOfSpace;
+                    emptySpace[i][j][k] = Math.random() < chanceOfSpace;
                 }
             }
         }
@@ -186,14 +191,11 @@ public class Chunk {
                                 }
                             }
                         }
-                        if (stone >= liveAmount) {
+                        if (stone >= liveAmount)
                             newEmptySpace[x][y][z] = false;
-                        } else if (stone == 0) {
-                            newEmptySpace[x][y][z] = false;
-                        } else {
-                            newEmptySpace[x][y][z] = true;
-                        }
-                        newEmptySpace[x][y][z] = stone >= air ? true : false;
+                        else
+                            newEmptySpace[x][y][z] = stone != 0;
+                        newEmptySpace[x][y][z] = stone >= air;
                     }
                 }
             }
@@ -222,20 +224,28 @@ public class Chunk {
         blocks[i][j][k] = block;
     }
     
-    public void render() throws IOException {
+    public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {
         for(int i=0;i<SIZE;i++)
             for (int j=0;j<SIZE;j++)
-                for (int k=0;k<HEIGHT;k++)
-                    blocks[i][j][k].render(i+16*px,j+16*py,k);
-                    
+                for (int k=HEIGHT-1;k>=0;k--)
+                    blocks[i][j][k].render(i+16*px,j+16*py,k,vertices,colorVertices);
     }
     
     public boolean isBlock(int x, int y, int z) {
         x -= px*16;
         y -= py*16;
-        if (x<0 || y<0 || z<0 || x>15 || y>15 || z>HEIGHT-1) {
+        if (x<0&&px==0 || y<0&&py==0 || z<0 || x>15&&px>=world.getWidth()-1 || y>15&&py>=world.getWidth()-1 || z>HEIGHT-1) {
             return false;
         }
-        return !blocks[x][y][z].isTransparent();
+        if (x<0) {
+            return !world.getChunk(px-1,py).getBlock(15,y,z).isTransparent();
+        } else if (y<0) {
+            return !world.getChunk(px,py-1).getBlock(x,15,z).isTransparent();
+        } else if (x>15) {
+            return !world.getChunk(px+1,py).getBlock(0,y,z).isTransparent();
+        } else if (y>15) {
+            return !world.getChunk(px,py+1).getBlock(x,0,z).isTransparent();
+        }
+        return !getBlock(x,y,z).isTransparent();
     }
 }
