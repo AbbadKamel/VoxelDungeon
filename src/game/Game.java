@@ -107,18 +107,20 @@ public class Game {
         long st;
         long et;
         
-        st = System.currentTimeMillis();
-        Frustum.updateFrustum();
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Updating Frustum.");
-        
-        vertices.clear();
-        colorVertices.clear();
-        
-        st = System.currentTimeMillis();
-        world.render(vertices,colorVertices);
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Getting vertices from world.");
+        if (!Camera.hasNotMoved()) {
+            st = System.currentTimeMillis();
+            Frustum.updateFrustum();
+            et = System.currentTimeMillis();
+            System.out.println((et-st) + ": Updating Frustum.");
+
+            vertices.clear();
+            colorVertices.clear();
+
+            st = System.currentTimeMillis();
+            world.render(vertices,colorVertices);
+            et = System.currentTimeMillis();
+            System.out.println((et-st) + ": Getting vertices from world.");
+        }
         
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.capacity());
         VertexPositionData.put(vertices.getValues());
