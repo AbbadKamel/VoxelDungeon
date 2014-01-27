@@ -10,22 +10,40 @@ public class Camera {
     private static Vector position = new Vector();
     private static Vector oldPosition = new Vector();
     private static Vector rotation = new Vector();
+    private static Vector oldRotation = new Vector();
     private static final float speed = 0.015f;
     
     public static float getCamX() { return position.x(); }
     public static float getCamY() { return position.y(); }
     public static float getCamZ() { return position.z()+2; }
-
+    
+    public static float getDistance(float x, float y, float z) {
+        return new Vector(x-position.x(),y-position.y(),z-position.z()).getMagnitude();
+    }
+    
+    public static float getFacingHoriz() {
+        return (270+rotation.z())%360;
+    }
+    
+    public static float getRelativeDirectionHoriz(int x, int y) {
+        return (float) (getFacingHoriz() - Math.atan2(position.y()-y,position.x()-x));
+    }
+    
+    public static float getFacingVert() {
+        return -rotation.x();
+    }
+    
     public static void init() {
         Mouse.setGrabbed(true);
     }
     
     public static boolean hasNotMoved() {
-        return oldPosition.equals(position);
+        return oldPosition.equals(position) && rotation.equals(oldRotation);
     }
     
     public static void update(int delta) {
         oldPosition.set(position);
+        oldRotation.set(rotation);
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();

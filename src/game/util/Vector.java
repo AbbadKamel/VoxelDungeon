@@ -43,9 +43,22 @@ public class Vector {
         Vector otherVector = (Vector) other;
         return otherVector.x==x && otherVector.y==y && otherVector.z==z;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 61 * hash + Float.floatToIntBits(this.x);
+        hash = 61 * hash + Float.floatToIntBits(this.y);
+        hash = 61 * hash + Float.floatToIntBits(this.z);
+        return hash;
+    }
     
     @Override
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]";
+    }
+
+    public float getMagnitude() {
+        return (float) Math.sqrt(x*x+y*y+z*z);
     }
 }
