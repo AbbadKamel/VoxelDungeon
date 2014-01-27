@@ -92,8 +92,8 @@ public class Game {
     private void init() throws IOException {
         world = new World(8,8);
         Camera.init();
-        vertices = new FloatArray(1000000);
-        colorVertices = new FloatArray(1000000);
+        vertices = new FloatArray(600000);
+        colorVertices = new FloatArray(600000);
         this.initialize3D();
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
@@ -104,10 +104,7 @@ public class Game {
         long et;
         
         if (!Camera.hasNotMoved()) {
-            st = System.currentTimeMillis();
             Frustum.updateFrustum();
-            et = System.currentTimeMillis();
-            System.out.println((et-st) + ": Updating Frustum.");
 
             vertices.clear();
             colorVertices.clear();
@@ -138,7 +135,6 @@ public class Game {
         et = System.currentTimeMillis();
         System.out.println((et-st) + ": Binding buffers.");
         
-        st = System.currentTimeMillis();
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
@@ -146,8 +142,6 @@ public class Game {
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size()/3);
         GL11.glPopMatrix();
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Drawing bound buffers.");
     }
 
     public void clearScreen() {
