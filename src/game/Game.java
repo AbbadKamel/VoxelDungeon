@@ -39,7 +39,7 @@ public class Game {
             Display.setDisplayMode(new DisplayMode(width,height));
             Display.create();
         } catch (LWJGLException e) {
-            //System.out.println(e);
+            System.out.println(e);
         }
         Display.setTitle("Voxel Dungeons");
         Game game = new Game();
@@ -57,11 +57,7 @@ public class Game {
         try {
             font.loadGlyphs();
         } catch (SlickException e) {
-<<<<<<< HEAD
             System.out.println("Failed to load font: " + e);
-=======
-            //System.out.println("Failed to load font: " + e);
->>>>>>> VBO-frustum-culling
         }
         */
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {

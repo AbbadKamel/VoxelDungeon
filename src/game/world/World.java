@@ -1,6 +1,7 @@
 package game.world;
 
 import game.util.FloatArray;
+import game.util.Frustum;
 import java.io.IOException;
 
 public class World {
@@ -32,10 +33,12 @@ public class World {
                 chunks[i][j] = new Chunk(i,j,this);
     }
     
-    public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {        
+    public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {
         for (int i=0;i<chunks.length;i++)
             for (int j=0;j<chunks[0].length;j++)
-                chunks[i][j].render(vertices,colorVertices);
+                if (Frustum.isCubeInFrustum(i*16+8,j*16+8,8,8) || Frustum.isCubeInFrustum(i*16+8,j*16+8,24,8)
+                         || Frustum.isCubeInFrustum(i*16+8,j*16+8,40,8))
+                    chunks[i][j].render(vertices,colorVertices);
     }
 
     public int getWidth() {
