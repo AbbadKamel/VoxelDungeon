@@ -6,9 +6,9 @@ public class Vector {
     private float y;
     private float z;
     
-    public float x() { return x; }
-    public float y() { return y; }
-    public float z() { return z; }
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getZ() { return z; }
     
     public void setX(float x) { this.x = x; }
     public void setY(float y) { this.y = y; }
