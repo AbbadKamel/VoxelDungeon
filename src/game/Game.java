@@ -5,6 +5,7 @@ import game.util.Frustum;
 import game.world.World;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -38,14 +39,14 @@ public class Game {
             Display.setDisplayMode(new DisplayMode(width,height));
             Display.create();
         } catch (LWJGLException e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
         Display.setTitle("Voxel Dungeons");
         Game game = new Game();
         try {
             game.init();
         } catch (IOException e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
         int delta = 0;
         /*
@@ -56,7 +57,7 @@ public class Game {
         try {
             font.loadGlyphs();
         } catch (SlickException e) {
-            System.out.println("Failed to load font: " + e);
+            //System.out.println("Failed to load font: " + e);
         }
         */
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -100,54 +101,30 @@ public class Game {
     
     public void render() throws IOException {
         long st;
-        long et;        
+        long et;
         
-        if (!Camera.hasNotMoved()) {
-            st = System.currentTimeMillis();
-            vertices.clear();
-            colorVertices.clear();
-            et = System.currentTimeMillis();
-            System.out.println((et-st) + ": Clearing old arraylists.");
-            
-            st = System.currentTimeMillis();
-            world.render(vertices,colorVertices);
-            et = System.currentTimeMillis();
-            System.out.println((et-st) + ": Getting vertices from world.");
-        }
-        
+        st = System.currentTimeMillis();
         Frustum.updateFrustum();
-
-        System.out.println("Vertices: " + vertices.getPos());
-
-        st = System.currentTimeMillis();
-        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Creating position buffer.");
+        System.out.println((et-st) + ": Updating Frustum.");
+        
+        vertices.clear();
+        colorVertices.clear();
         
         st = System.currentTimeMillis();
+        world.render(vertices,colorVertices);
+        et = System.currentTimeMillis();
+        System.out.println((et-st) + ": Getting vertices from world.");
+        
+        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.capacity());
         VertexPositionData.put(vertices.getValues());
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Adding position array to buffer.");
-        
-        st = System.currentTimeMillis();
         VertexPositionData.flip();
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Flipping position buffer.");
         
-        st = System.currentTimeMillis();
-        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.size());
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Creating color buffer.");
-        
-        st = System.currentTimeMillis();
+        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.capacity());
         VertexColorData.put(colorVertices.getArr());
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Adding color array to buffer.");
-        
-        st = System.currentTimeMillis();
         VertexColorData.flip();
-        et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Flipping color buffer.");
+        
+        System.out.println("Vertices: " + vertices.getPos() + ": " + Arrays.toString(colorVertices.getNumValues(24)));
         
         st = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);

@@ -16,8 +16,12 @@ public class FloatArray {
         return arr;
     }
     
-    public int size() {
+    public int capacity() {
         return arr.length;
+    }
+    
+    public int size() {
+        return pos;
     }
     
     public int getPos() {
@@ -53,5 +57,9 @@ public class FloatArray {
 
     public float element(int pos) {
         return arr[pos];
+    }
+
+    public float[] getNumValues(int i) {
+        return Arrays.copyOf(arr,i);
     }
 }

@@ -1,7 +1,6 @@
 package game.util;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -66,10 +65,7 @@ public class Frustum {
         
         fbProjection.flip();
         fbModelview.flip();
-        
-        System.out.println(Arrays.toString(proj));
-        System.out.println(Arrays.toString(modl));
-        
+                
         /* Combine the two matrices (multiply projection by modelview) */
         clip[ 0] = modl[ 0] * proj[ 0] + modl[ 1] * proj[ 4] + modl[ 2] * proj[ 8] + modl[ 3] * proj[12];
         clip[ 1] = modl[ 0] * proj[ 1] + modl[ 1] * proj[ 5] + modl[ 2] * proj[ 9] + modl[ 3] * proj[13];
