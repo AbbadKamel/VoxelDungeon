@@ -63,9 +63,6 @@ public class Frustum {
         for (int i=0;i<fbModelview.capacity();i++)
             modl[i] = fbModelview.get(i);
         
-        fbProjection.flip();
-        fbModelview.flip();
-                
         /* Combine the two matrices (multiply projection by modelview) */
         clip[ 0] = modl[ 0] * proj[ 0] + modl[ 1] * proj[ 4] + modl[ 2] * proj[ 8] + modl[ 3] * proj[12];
         clip[ 1] = modl[ 0] * proj[ 1] + modl[ 1] * proj[ 5] + modl[ 2] * proj[ 9] + modl[ 3] * proj[13];
