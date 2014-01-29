@@ -67,9 +67,9 @@ public class Camera {
             position.setY(position.getY()+(float)(Math.cos((-rotation.getZ()+90)*Math.PI/180)*speed*delta));
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
-            position.setZ(position.getZ()+(float)(speed*delta));
+            position.setZ(position.getZ()+speed*delta);
         if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-            position.setZ(position.getZ()-(float)(speed*delta));
+            position.setZ(position.getZ()-speed*delta);
     }
 
     public static void updateRotation(int delta) {
