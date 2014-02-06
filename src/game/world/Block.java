@@ -9,7 +9,7 @@ public class Block {
     
     public static final byte GRASS = 0;
     public static final byte STONE = 1;
-    public static final byte BLANK = 2;
+    public static final byte AIR = 2;
     
     private boolean isTransparent;
     private Chunk chunk;
@@ -26,7 +26,7 @@ public class Block {
             case STONE:
                 isTransparent = false;
                 break;
-            case BLANK:
+            case AIR:
                 isTransparent = true;
                 break;
             default:
