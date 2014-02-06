@@ -40,17 +40,6 @@ public class Game {
             //System.out.println(e);
         }
         int delta = 0;
-        /*
-        Font awtFont = new Font("Times New Roman", Font.BOLD, 24) {};
-        UnicodeFont font = new UnicodeFont(awtFont);
-        font.getEffects().add(new ColorEffect(java.awt.Color.white));
-        font.addAsciiGlyphs();
-        try {
-            font.loadGlyphs();
-        } catch (SlickException e) {
-            System.out.println("Failed to load font: " + e);
-        }
-        */
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             long startTime = System.currentTimeMillis();
             
@@ -106,12 +95,12 @@ public class Game {
             System.out.println((et-st) + ": Getting vertices from world.");
         }
         
-        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.capacity());
+        FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         VertexPositionData.put(vertices.getValues());
         VertexPositionData.flip();
         
-        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.capacity());
-        VertexColorData.put(colorVertices.getArr());
+        FloatBuffer VertexColorData = BufferUtils.createFloatBuffer(colorVertices.size());
+        VertexColorData.put(colorVertices.getValues());
         VertexColorData.flip();
         
         System.out.println("Vertices: " + vertices.getPos() + ": " + Arrays.toString(colorVertices.getNumValues(24)));

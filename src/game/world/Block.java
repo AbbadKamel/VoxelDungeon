@@ -47,14 +47,20 @@ public class Block {
         colorVertices.add(g);
         colorVertices.add(b);
     }
-    
+        
     public void render(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         if (isTransparent)
             return;
-        
-        if (!Frustum.isCubeInFrustum(x,y,z,0.5f))
-            return;
-        
+        if (Frustum.isSphereInFrustum(x,y,z,0.86602540379f))
+            renderNoChecks(x,y,z,vertices,colorVertices);
+    }
+    
+    public void renderNoFrustumCheck(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
+        if (!isTransparent)
+            renderNoChecks(x,y,z,vertices,colorVertices);
+    }
+    
+    private void renderNoChecks(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         float r = 0;
         float g = 0;
         float b = 0;

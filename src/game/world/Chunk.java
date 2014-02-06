@@ -1,6 +1,7 @@
 package game.world;
 
 import game.util.FloatArray;
+import game.util.Frustum;
 import java.io.IOException;
 
 public class Chunk {
@@ -231,6 +232,13 @@ public class Chunk {
                     blocks[i][j][k].render(i+16*px,j+16*py,k,vertices,colorVertices);
     }
     
+    public void renderNoCheck(FloatArray vertices, FloatArray colorVertices) throws IOException {
+        for(int i=0;i<SIZE;i++)
+            for (int j=0;j<SIZE;j++)
+                for (int k=HEIGHT-1;k>=0;k--)
+                    blocks[i][j][k].renderNoFrustumCheck(i+16*px,j+16*py,k,vertices,colorVertices);
+    }
+    
     public boolean isBlock(int x, int y, int z) {
         x -= px*16;
         y -= py*16;
@@ -247,5 +255,9 @@ public class Chunk {
             return !world.getChunk(px,py+1).getBlock(x,0,z).isTransparent();
         }
         return !getBlock(x,y,z).isTransparent();
+    }
+
+    public int inFrustum() {
+        return Frustum.sphereInFrustum(16*px+8, 16*py+8, 16, 16);
     }
 }

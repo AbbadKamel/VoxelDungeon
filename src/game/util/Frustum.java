@@ -15,33 +15,81 @@ public class Frustum {
        return true;
     }
     
-    public static boolean isCubeInFrustum(float x, float z, float y) {
-        return isCubeInFrustum(x,z,y,0.5f);
+    public static boolean isSphereInFrustum(float x, float z, float y, float radius) { 
+        for(int p=0;p<6;p++)
+            if(frustum[p][0]*x + frustum[p][1]*y + frustum[p][2]*z + frustum[p][3]<=-radius )
+                return false;
+        return true;
     }
+    
+    public static int sphereInFrustum(float x, float z, float y, float radius) {
+        int c = 0;
+        float d;
+
+        for(int p=0;p<6;p++) {
+           d = frustum[p][0]*x + frustum[p][1]*y + frustum[p][2]*z + frustum[p][3];
+           if(d <= -radius)
+              return 0;
+           if(d > radius)
+              c++;
+        }
+        return (c == 6) ? 2 : 1;
+    }
+    
     
     public static boolean isCubeInFrustum(float x, float z, float y, float size) {
-       for(int p=0;p<6;p++) {
-          if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x+size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x-size) + frustum[p][1]*(y+size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x+size) + frustum[p][1]*(y+size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x+size) + frustum[p][1]*(y-size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x-size) + frustum[p][1]*(y+size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
-             continue;
-          if(frustum[p][0]*(x+size) + frustum[p][1]*(y+size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
-             continue;
-          return false;
-       }
-       return true;
+        for(int p=0;p<6;p++) {
+           if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x+size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x-size) + frustum[p][1]*(y+size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x+size) + frustum[p][1]*(y+size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x+size) + frustum[p][1]*(y-size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x-size) + frustum[p][1]*(y+size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+              continue;
+           if(frustum[p][0]*(x+size) + frustum[p][1]*(y+size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+              continue;
+           return false;
+        }
+        return true;
     }
-    
+
+    public static int cubeInFrustum(float x, float z, float y, float size) {
+        int c;
+        int c2 = 0;
+
+        for(int p=0;p<6;p++) {
+            c=0;
+            if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x+size) + frustum[p][1]*(y-size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x-size) + frustum[p][1]*(y+size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x+size) + frustum[p][1]*(y+size) + frustum[p][2]*(z-size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x-size) + frustum[p][1]*(y-size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x+size) + frustum[p][1]*(y-size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x-size) + frustum[p][1]*(y+size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+                c++;
+            if(frustum[p][0]*(x+size) + frustum[p][1]*(y+size) + frustum[p][2]*(z+size) + frustum[p][3]>0)
+                c++;
+            if(c == 0)
+                return 0;
+            if(c == 8)
+                c2++;
+        }
+        return (c2 == 6) ? 2 : 1;
+    }
+
     public static void updateFrustum() {
         float[] proj = new float[16];
         float[] modl = new float[16];

@@ -1,7 +1,6 @@
 package game.world;
 
 import game.util.FloatArray;
-import game.util.Frustum;
 import java.io.IOException;
 
 public class World {
@@ -34,11 +33,20 @@ public class World {
     }
     
     public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {
-        for (int i=0;i<chunks.length;i++)
-            for (int j=0;j<chunks[0].length;j++)
-                if (Frustum.isCubeInFrustum(i*16+8,j*16+8,8,8) || Frustum.isCubeInFrustum(i*16+8,j*16+8,24,8)
-                         || Frustum.isCubeInFrustum(i*16+8,j*16+8,40,8))
+        for (int i=0;i<chunks.length;i++) {
+            for (int j=0;j<chunks[0].length;j++) {
+                int points = chunks[i][j].inFrustum();
+                if (points == 2) {
+                    // Chunk is entirely within frustum.
+                    chunks[i][j].renderNoCheck(vertices,colorVertices);
+                } else if (points == 0) {
+                    // Chunk is entirely outside frustum.
+                } else {
+                    // Chunk is partial.
                     chunks[i][j].render(vertices,colorVertices);
+                }
+            }
+        }
     }
 
     public int getWidth() {
