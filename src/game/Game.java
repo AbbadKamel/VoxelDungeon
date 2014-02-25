@@ -9,9 +9,6 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -20,12 +17,11 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class Game {
-
+    
     private final static int width = 800;
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
@@ -35,7 +31,14 @@ public class Game {
 
     public FloatArray vertices;
     public FloatArray colorVertices;
-
+    
+    private int VBOVertexHandle;
+    private int VBOColorHandle;
+    
+    private String[] info = new String[5];
+    
+    private boolean SHOW_HUD = false;
+    
     public static void main(String[] args) {
         try {
             Display.setDisplayMode(new DisplayMode(width,height));
@@ -43,29 +46,20 @@ public class Game {
         } catch (LWJGLException e) {
             System.out.println(e);
         }
-        Display.setTitle("Voxel Dungeons");
+        Display.setTitle("Voxel Dungeon");
         Game game = new Game();
-        try {
-            game.init();
-        } catch (IOException e) {
-            //System.out.println(e);
-        }
+        game.init();
         int delta = 0;
         
-        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-        font = new TrueTypeFont(awtFont, true);
-
-        // load font from file
         try {
-        InputStream inputStream = ResourceLoader.getResourceAsStream("DroidSans.ttf");
-
-        Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-        awtFont2 = awtFont2.deriveFont(24f); // set font size
-
+            InputStream inputStream = ResourceLoader.getResourceAsStream("DroidSans.ttf");
+            Font awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+            awtFont = awtFont.deriveFont(24f);
+            font = new TrueTypeFont(awtFont, true);
         } catch (FontFormatException e) {
-        e.printStackTrace();
-        } catch (IOException ex) {
-            Logger.getLogger(Game.class.getName()).log(Level.SEVERE,null,ex);
+            System.out.println("Font format exception: " + e);
+        } catch (IOException e) {
+            System.out.println("Failed to load font: " + e);
         }
         
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
@@ -74,6 +68,10 @@ public class Game {
             game.clearScreen();
             Camera.update(delta);
             try {
+                if (Keyboard.isKeyDown(Keyboard.KEY_F3))
+                    game.SHOW_HUD = true;
+                else
+                    game.SHOW_HUD = false;
                 game.render();
             } catch (IOException e) {
                 System.out.println(e);
@@ -81,23 +79,21 @@ public class Game {
             Display.update();
             
             long endTime = System.currentTimeMillis();
-            System.out.println("Actual (No VSync): " + (endTime - startTime));
+            game.info[3] = "Actual (No VSync): " + (endTime - startTime);
             
             Display.sync(FRAME_RATE);
             
             endTime = System.currentTimeMillis();
             delta = (int)(endTime - startTime);
-            System.out.println("Overall: " + delta + " | FPS: " + 1000/delta + "\n");
+            game.info[4] = "Overall: " + delta + " | FPS: " + 1000/delta + "\n";
         }
         Display.destroy();
         System.exit(0);
     }
-    private int VBOVertexHandle;
-    private int VBOColorHandle;
-
+    
     public Game() { }
     
-    private void init() throws IOException {
+    private void init() {
         Perlin p = new Perlin(128,128);
         world = new World(8,8,p);
         Camera.init();
@@ -121,8 +117,11 @@ public class Game {
             st = System.currentTimeMillis();
             world.render(vertices,colorVertices);
             et = System.currentTimeMillis();
-            System.out.println((et-st) + ": Getting vertices from world.");
+            info[0] = (et-st) + ": Getting vertices from world.";
+        } else {
+            info[0] = null;
         }
+            
         
         FloatBuffer VertexPositionData = BufferUtils.createFloatBuffer(vertices.size());
         VertexPositionData.put(vertices.getValues());
@@ -132,7 +131,7 @@ public class Game {
         VertexColorData.put(colorVertices.getValues());
         VertexColorData.flip();
         
-        System.out.println("Vertices: " + vertices.getPos() + ": " + Arrays.toString(colorVertices.getNumValues(24)));
+        info[1] = "Vertices: " + vertices.getPos();
         
         st = System.currentTimeMillis();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
@@ -142,7 +141,7 @@ public class Game {
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,VertexColorData,GL15.GL_STREAM_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
         et = System.currentTimeMillis();
-        System.out.println((et-st) + ": Binding buffers.");
+        info[2] = (et-st) + ": Binding buffers.";
         
         GL11.glPushMatrix();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
@@ -168,8 +167,13 @@ public class Game {
         
         // Render 2D.
         GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4d(0.5f,0.5f,0.5f,0.5f);
-            font.drawString(100, 50, "TEXT IS AWESOME");
+            if (SHOW_HUD) {
+                for (int i=0;i<info.length;i++) {
+                    if (info[i] == null)
+                        continue;
+                    font.drawString(10,10+25*i,info[i]);
+                }
+            }
         GL11.glEnd();
         
         // Back to 3D mode.

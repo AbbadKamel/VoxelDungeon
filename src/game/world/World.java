@@ -9,7 +9,7 @@ public class World {
     private static Chunk[][] chunks;
     private Perlin perlin;
     
-    public World(int x, int y, Perlin perlin) throws IOException {
+    public World(int x, int y, Perlin perlin) {
         chunks = new Chunk[x][y];
         this.perlin = perlin;
         createWorld();
@@ -29,7 +29,7 @@ public class World {
         return chunks[x/16][y/16].isBlock(x,y,z);
     }
     
-    public void createWorld() throws IOException {
+    public void createWorld() {
         for (int i=0;i<chunks.length;i++)
             for (int j=0;j<chunks[0].length;j++)
                 chunks[i][j] = new Chunk(i,j,this,perlin);

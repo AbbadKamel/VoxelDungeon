@@ -18,7 +18,7 @@ public class Chunk {
     public final int px;
     public final int py;
     
-    public Chunk(int px, int py, World world, Perlin perlin) throws IOException {
+    public Chunk(int px, int py, World world, Perlin perlin) {
         this.px = px;
         this.py = py;
         this.world = world;
@@ -37,7 +37,7 @@ public class Chunk {
         return heightCounter;
     }
     
-    public void makeChunk(Perlin perlin) throws IOException {
+    public void makeChunk(Perlin perlin) {
         for(int i=0;i<SIZE;i++) {
             for (int j=0;j<SIZE;j++) {
                 int x = 16*px + i;

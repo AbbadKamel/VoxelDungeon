@@ -17,7 +17,7 @@ public class Block {
     
     public boolean isTransparent() { return isTransparent; }
     
-    public Block(byte blockName) throws IOException {
+    public Block(byte blockName) {
         type = blockName;
         switch (blockName) {
             case GRASS:
@@ -30,7 +30,7 @@ public class Block {
                 isTransparent = true;
                 break;
             default:
-                throw new IOException("Unhandled case @ Block constructor.");
+                System.out.println("The program has a bug @Block:33");
         }
     }
     
