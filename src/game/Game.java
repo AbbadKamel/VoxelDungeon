@@ -4,9 +4,14 @@ import game.util.FloatArray;
 import game.util.Frustum;
 import game.util.Perlin;
 import game.world.World;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -15,6 +20,9 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class Game {
 
@@ -22,6 +30,8 @@ public class Game {
     private final static int height = 600;
     private final static int FRAME_RATE = 60;
     private World world;
+    
+    private static TrueTypeFont font;
 
     public FloatArray vertices;
     public FloatArray colorVertices;
@@ -41,6 +51,23 @@ public class Game {
             //System.out.println(e);
         }
         int delta = 0;
+        
+        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+        font = new TrueTypeFont(awtFont, true);
+
+        // load font from file
+        try {
+        InputStream inputStream = ResourceLoader.getResourceAsStream("DroidSans.ttf");
+
+        Font awtFont2 = Font.createFont(Font.TRUETYPE_FONT, inputStream);
+        awtFont2 = awtFont2.deriveFont(24f); // set font size
+
+        } catch (FontFormatException e) {
+        e.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             long startTime = System.currentTimeMillis();
             
@@ -124,6 +151,33 @@ public class Game {
         GL11.glColorPointer(3, GL11.GL_FLOAT, 0, 0L);
         GL11.glDrawArrays(GL11.GL_QUADS, 0, vertices.size()/3);
         GL11.glPopMatrix();
+        
+        // Set it to 2D mode.
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glPushMatrix();
+        GL11.glLoadIdentity();
+        GL11.glOrtho(0.0, width, height, 0.0, -1.0, 10.0);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL11.glLoadIdentity();
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        
+        // This is for the text.
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        
+        // Render 2D.
+        GL11.glBegin(GL11.GL_QUADS);
+            GL11.glColor4d(0.5f,0.5f,0.5f,0.5f);
+            font.drawString(100, 50, "TEXT IS AWESOME");
+        GL11.glEnd();
+        
+        // Back to 3D mode.
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
+        GL11.glMatrixMode(GL11.GL_PROJECTION);
+        GL11.glPopMatrix();
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
     }
 
     public void clearScreen() {
