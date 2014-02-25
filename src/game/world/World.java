@@ -1,14 +1,17 @@
 package game.world;
 
 import game.util.FloatArray;
+import game.util.Perlin;
 import java.io.IOException;
 
 public class World {
     
     private static Chunk[][] chunks;
+    private Perlin perlin;
     
-    public World(int x, int y) throws IOException {
+    public World(int x, int y, Perlin perlin) throws IOException {
         chunks = new Chunk[x][y];
+        this.perlin = perlin;
         createWorld();
     }
     
@@ -29,7 +32,7 @@ public class World {
     public void createWorld() throws IOException {
         for (int i=0;i<chunks.length;i++)
             for (int j=0;j<chunks[0].length;j++)
-                chunks[i][j] = new Chunk(i,j,this);
+                chunks[i][j] = new Chunk(i,j,this,perlin);
     }
     
     public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {

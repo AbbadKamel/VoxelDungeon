@@ -2,6 +2,7 @@ package game;
 
 import game.util.FloatArray;
 import game.util.Frustum;
+import game.util.Perlin;
 import game.world.World;
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -70,7 +71,8 @@ public class Game {
     public Game() { }
     
     private void init() throws IOException {
-        world = new World(8,8);
+        Perlin p = new Perlin(128,128);
+        world = new World(8,8,p);
         Camera.init();
         vertices = new FloatArray(600000);
         colorVertices = new FloatArray(600000);
