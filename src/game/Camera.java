@@ -41,12 +41,13 @@ public class Camera {
         return oldPosition.equals(position) && rotation.equals(oldRotation);
     }
     
-    public static void update(int delta) {
+    public static String update(int delta) {
         oldPosition.set(position);
         oldRotation.set(rotation);
         updateRotation(delta);
         updatePosition(delta);
         updatePerspective();
+        return position.toString();
     }
 
     public static void updatePosition(int delta) {

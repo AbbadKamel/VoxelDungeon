@@ -18,7 +18,7 @@ public class Perlin {
         data = new int[width][height];
         for (int i=0;i<width;i++) {
             for (int j=0;j<height;j++) {
-                data[i][j] = (int) (255*(noise(20.0*i/width,10.0*j/height,0)-1)/(2));
+                data[i][j] = (int) (255*(noise(10.0*i/width,10.0*j/height,0)-1)/(2));
             }
         }
         

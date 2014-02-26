@@ -35,7 +35,7 @@ public class Game {
     private int VBOVertexHandle;
     private int VBOColorHandle;
     
-    private String[] info = new String[5];
+    private String[] info = new String[6];
     
     private boolean SHOW_HUD = true;
     
@@ -66,7 +66,7 @@ public class Game {
             long startTime = System.currentTimeMillis();
             
             game.clearScreen();
-            Camera.update(delta);
+            game.info[5] = Camera.update(delta);
             try {
                 game.SHOW_HUD = !Keyboard.isKeyDown(Keyboard.KEY_F3);
                 game.render();
@@ -94,8 +94,8 @@ public class Game {
         Perlin p = new Perlin(128,128);
         world = new World(8,8,p);
         Camera.init();
-        vertices = new FloatArray(600000);
-        colorVertices = new FloatArray(600000);
+        vertices = new FloatArray(6000000);
+        colorVertices = new FloatArray(6000000);
         this.initialize3D();
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
@@ -205,5 +205,6 @@ public class Game {
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
+        GL11.glEnable(GL11.GL_CULL_FACE);
     }
 }

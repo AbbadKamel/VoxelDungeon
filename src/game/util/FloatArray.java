@@ -29,12 +29,12 @@ public class FloatArray {
     }
     
     public void add(float element) {
-        if (pos>=arr.length) {
-            System.out.println("ERROR: ARRAY OVERFLOW. INCREASING SIZE." + pos + " of " + arr.length + ".");
-            arr = Arrays.copyOf(arr,pos+10);
+        //if (pos>=arr.length) {
+            //System.out.println("ERROR: ARRAY OVERFLOW. INCREASING SIZE." + pos + " of " + arr.length + ".");
+            //arr = Arrays.copyOf(arr,pos+10);
             //throw new ArrayIndexOutOfBoundsException("Attempting to write to position "
                     //+ pos + " of " + arr.length + ".");
-        }
+        //}
         addNoCheck(element);
     }
     

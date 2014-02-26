@@ -26,13 +26,17 @@ public class World {
     }
     
     public boolean isBlock(int x, int y, int z) {
-        return chunks[x/16][y/16].isBlock(x,y,z);
+        return chunks[(x>127?127:x)/16][(y>127?127:y)/16].isBlockNoCheck((x+16)%16,(y+16)%16,(z+16)%16);
     }
     
     public void createWorld() {
         for (int i=0;i<chunks.length;i++)
             for (int j=0;j<chunks[0].length;j++)
                 chunks[i][j] = new Chunk(i,j,this,perlin);
+        
+        for (int i=0;i<chunks.length;i++)
+            for (int j=0;j<chunks[0].length;j++)
+                chunks[i][j].init();
     }
     
     public void render(FloatArray vertices, FloatArray colorVertices) throws IOException {

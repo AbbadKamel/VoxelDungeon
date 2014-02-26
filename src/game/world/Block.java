@@ -3,7 +3,6 @@ package game.world;
 import game.Camera;
 import game.util.FloatArray;
 import game.util.Frustum;
-import java.io.IOException;
 
 public class Block {
     
@@ -14,6 +13,33 @@ public class Block {
     private boolean isTransparent;
     private Chunk chunk;
     private byte type;
+    
+    boolean zpxp;
+    boolean zpyp;
+
+    boolean zpxn;
+    boolean zpyn;
+
+    boolean znxp;
+    boolean znyp;
+
+    boolean znxn;
+    boolean znyn;
+
+    boolean zpxpyp;
+    boolean zpxnyp;
+    boolean zpxpyn;
+    boolean zpxnyn;
+
+    boolean znxpyp;
+    boolean znxnyp;
+    boolean znxpyn;
+    boolean znxnyn;
+
+    boolean xpyp;
+    boolean xnyp;
+    boolean xpyn;
+    boolean xnyn;
     
     public boolean isTransparent() { return isTransparent; }
     
@@ -31,7 +57,37 @@ public class Block {
                 break;
             default:
                 System.out.println("The program has a bug @Block:33");
+                System.exit(-1);
         }
+    }
+    
+    public void init(int x, int y, int z) {
+        zpxp = chunk.isBlock(x+1,y,z+1);
+        zpyp = chunk.isBlock(x,y+1,z+1);
+
+        zpxn = chunk.isBlock(x-1,y,z+1);
+        zpyn = chunk.isBlock(x,y-1,z+1);
+
+        znxp = chunk.isBlock(x+1,y,z-1);
+        znyp = chunk.isBlock(x,y+1,z-1);
+
+        znxn = chunk.isBlock(x-1,y,z-1);
+        znyn = chunk.isBlock(x,y-1,z-1);
+
+        zpxpyp = chunk.isBlock(x+1,y+1,z+1);
+        zpxnyp = chunk.isBlock(x-1,y+1,z+1);
+        zpxpyn = chunk.isBlock(x+1,y-1,z+1);
+        zpxnyn = chunk.isBlock(x-1,y-1,z+1);
+
+        znxpyp = chunk.isBlock(x+1,y+1,z-1);
+        znxnyp = chunk.isBlock(x-1,y+1,z-1);
+        znxpyn = chunk.isBlock(x+1,y-1,z-1);
+        znxnyn = chunk.isBlock(x-1,y-1,z-1);
+
+        xpyp = chunk.isBlock(x+1,y+1,z);
+        xnyp = chunk.isBlock(x-1,y+1,z);
+        xpyn = chunk.isBlock(x+1,y-1,z);
+        xnyn = chunk.isBlock(x-1,y-1,z);
     }
     
     public void setMyChunk(Chunk chunk) {
@@ -47,7 +103,15 @@ public class Block {
         colorVertices.add(g);
         colorVertices.add(b);
     }
-        
+    
+    private void addVertex(float x, float y, float z, float r, float g, float b,
+            FloatArray vertices, FloatArray colorVertices, float level) {
+        r = r-level/8;
+        g = g-level/8;
+        b = b-level/8;
+        addFloats(x,y,z,r,g,b,vertices,colorVertices);
+    }
+    
     public void render(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         if (isTransparent)
             return;
@@ -58,6 +122,13 @@ public class Block {
     public void renderNoFrustumCheck(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
         if (!isTransparent)
             renderNoChecks(x,y,z,vertices,colorVertices);
+    }
+    
+    private int getAO(boolean side1, boolean side2, boolean corner) {
+        if(side1 && side2) {
+            return 3;
+        }
+        return (side1?1:0) + (side2?1:0) + (corner?1:0);
     }
     
     private void renderNoChecks(int x, int y, int z, FloatArray vertices, FloatArray colorVertices) {
@@ -74,19 +145,19 @@ public class Block {
             g = 0.4f;
             b = 0.4f;
         }
-        
+                
         // Top.
         if (Camera.getCamZ()>z && !chunk.isBlock(x,y,z+1)) {
-            addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
+            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
+            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyp,zpxpyp));
+            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
         }
-        
+
         if (type == GRASS) {
-            r = 0.06f;
-            g = 0.6f;
-            b = 0.06f;
+            r = 0.09f;
+            g = 0.9f;
+            b = 0.09f;
         } else if (type == STONE) {
             r = 0.2f;
             g = 0.2f;
@@ -95,18 +166,18 @@ public class Block {
         
         // Side.
         if (Camera.getCamY()>y && !chunk.isBlock(x,y+1,z)) {
-            addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
+            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyp,znxpyp));
+            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyp,zpxpyp));
+            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
         }
         
         // Opposite side to above.
         if (Camera.getCamY()<y && !chunk.isBlock(x,y-1,z)) {
-            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
+            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,znxnyn));
+            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
+            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
         }
         
         // Side.
@@ -119,18 +190,18 @@ public class Block {
         
         // Opposite side to above.
         if (Camera.getCamX()<x && !chunk.isBlock(x-1,y,z)) {
-            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
+            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
+            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
+            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
+            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
         }
         
         // Bottom.
         if (Camera.getCamZ()<z && !chunk.isBlock(x,y,z-1)) {
-            addFloats(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
+            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
+            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyp,znxpyp));
+            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
         }
     }
 }
