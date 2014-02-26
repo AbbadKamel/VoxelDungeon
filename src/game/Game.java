@@ -28,7 +28,7 @@ public class Game {
     private World world;
     
     private static TrueTypeFont font;
-
+    
     public FloatArray vertices;
     public FloatArray colorVertices;
     
@@ -37,7 +37,7 @@ public class Game {
     
     private String[] info = new String[5];
     
-    private boolean SHOW_HUD = false;
+    private boolean SHOW_HUD = true;
     
     public static void main(String[] args) {
         try {
@@ -68,10 +68,7 @@ public class Game {
             game.clearScreen();
             Camera.update(delta);
             try {
-                if (Keyboard.isKeyDown(Keyboard.KEY_F3))
-                    game.SHOW_HUD = true;
-                else
-                    game.SHOW_HUD = false;
+                game.SHOW_HUD = !Keyboard.isKeyDown(Keyboard.KEY_F3);
                 game.render();
             } catch (IOException e) {
                 System.out.println(e);
