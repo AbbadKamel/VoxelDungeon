@@ -89,13 +89,13 @@ public class Chunk {
         x -= px*16;
         y -= py*16;
         
-        if (x<0&&px<=0 || y<0&&py<=0 || x>SIZE-1&&px>=world.getWidth()-1 || y>SIZE-1&&py>=world.getWidth()-1
-                || z<0 || z>HEIGHT-1)
+        if (x<0&&px<=0 || y<0&&py<=0 || z<0 || z>HEIGHT-1
+                || x>SIZE-1&&px>=world.getWidth()-1 || y>SIZE-1&&py>=world.getWidth()-1)
             return false;
         
         try {
             return !blocks[x][y][z].isTransparent();
-        } catch (ArrayIndexOutOfBoundsException e) {}
+        } catch (ArrayIndexOutOfBoundsException e) {} // Squelch the exception
         
         if (x<0 && y<0) {
             return !world.getChunk(px-1,py-1).getBlock(15,15,z).isTransparent();
