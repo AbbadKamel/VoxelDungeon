@@ -11,7 +11,7 @@ public class Camera {
     private static Vector oldPosition = new Vector();
     private static Vector rotation = new Vector();
     private static Vector oldRotation = new Vector();
-    private static final float speed = 0.015f;
+    private static final float speed = 0.045f;
     
     public static float getCamX() { return position.getX(); }
     public static float getCamY() { return position.getY(); }
