@@ -146,25 +146,15 @@ public class Block {
             b = 0.4f;
         }
                 
-        // Top.
+        // Z Positive.
         if (Camera.getCamZ()>z && !chunk.isBlock(x,y,z+1)) {
             addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
             addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
             addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyp,zpxpyp));
             addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
         }
-
-        if (type == GRASS) {
-            r = 0.09f;
-            g = 0.9f;
-            b = 0.09f;
-        } else if (type == STONE) {
-            r = 0.2f;
-            g = 0.2f;
-            b = 0.2f;
-        }
         
-        // Side.
+        // Y positive
         if (Camera.getCamY()>y && !chunk.isBlock(x,y+1,z)) {
             addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
             addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyp,znxpyp));
@@ -172,15 +162,15 @@ public class Block {
             addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
         }
         
-        // Opposite side to above.
+        // Y negative
         if (Camera.getCamY()<y && !chunk.isBlock(x,y-1,z)) {
             addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
-            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,znxnyn));
+            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
             addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
             addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
         }
         
-        // Side.
+        // X Positive.
         if (Camera.getCamX()>x && !chunk.isBlock(x+1,y,z)) {
             addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
             addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
@@ -188,7 +178,7 @@ public class Block {
             addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
         }
         
-        // Opposite side to above.
+        // X Negative.
         if (Camera.getCamX()<x && !chunk.isBlock(x-1,y,z)) {
             addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
             addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
@@ -196,7 +186,7 @@ public class Block {
             addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
         }
         
-        // Bottom.
+        // Z Negative.
         if (Camera.getCamZ()<z && !chunk.isBlock(x,y,z-1)) {
             addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
             addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
