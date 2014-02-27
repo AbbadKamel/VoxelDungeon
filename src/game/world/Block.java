@@ -172,10 +172,10 @@ public class Block {
         
         // X Positive.
         if (Camera.getCamX()>x && !chunk.isBlock(x+1,y,z)) {
-            addFloats(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
-            addFloats(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices);
+            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
+            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
+            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyp,zpxpyp));
+            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyp,znxpyp));
         }
         
         // X Negative.
