@@ -55,7 +55,7 @@ public class Game {
             InputStream inputStream = ResourceLoader.getResourceAsStream("DroidSans.ttf");
             Font awtFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
             awtFont = awtFont.deriveFont(24f);
-            font = new TrueTypeFont(awtFont, true);
+            font = new TrueTypeFont(awtFont,true);
         } catch (FontFormatException e) {
             System.out.println("Font format exception: " + e);
         } catch (IOException e) {

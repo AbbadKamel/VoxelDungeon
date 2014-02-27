@@ -50,7 +50,7 @@ public class Chunk {
                 int x = 16*px + i;
                 int y = 16*py + j;
                 
-                int height = perlin.getNoise(x,y)/16+1;//(int)(Math.random()*2)+1;
+                int height = perlin.getNoise(x,y)/8+1;//(int)(Math.random()*2)+1;
                 
                 for (int k=0;k<BEDROCK_HEIGHT;k++)
                     setBlock(i+16*px,j+16*py,k,new Block(Block.STONE));

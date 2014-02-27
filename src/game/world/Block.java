@@ -14,32 +14,32 @@ public class Block {
     private Chunk chunk;
     private byte type;
     
-    boolean zpxp;
-    boolean zpyp;
+    private boolean zpxp;
+    private boolean zpyp;
 
-    boolean zpxn;
-    boolean zpyn;
+    private boolean zpxn;
+    private boolean zpyn;
 
-    boolean znxp;
-    boolean znyp;
+    private boolean znxp;
+    private boolean znyp;
 
-    boolean znxn;
-    boolean znyn;
+    private boolean znxn;
+    private boolean znyn;
 
-    boolean zpxpyp;
-    boolean zpxnyp;
-    boolean zpxpyn;
-    boolean zpxnyn;
+    private boolean zpxpyp;
+    private boolean zpxnyp;
+    private boolean zpxpyn;
+    private boolean zpxnyn;
 
-    boolean znxpyp;
-    boolean znxnyp;
-    boolean znxpyn;
-    boolean znxnyn;
+    private boolean znxpyp;
+    private boolean znxnyp;
+    private boolean znxpyn;
+    private boolean znxnyn;
 
-    boolean xpyp;
-    boolean xnyp;
-    boolean xpyn;
-    boolean xnyn;
+    private boolean xpyp;
+    private boolean xnyp;
+    private boolean xpyn;
+    private boolean xnyn;
     
     public boolean isTransparent() { return isTransparent; }
     
