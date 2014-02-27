@@ -63,7 +63,7 @@ public class Game {
         }
         
         while (!Display.isCloseRequested() && !Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            long startTime = System.currentTimeMillis();
+            long startTime = System.nanoTime();
             
             game.clearScreen();
             game.info[5] = Camera.update(delta);
@@ -75,14 +75,14 @@ public class Game {
             }
             Display.update();
             
-            long endTime = System.currentTimeMillis();
-            game.info[3] = "Actual (No VSync): " + (endTime - startTime);
+            long endTime = System.nanoTime();
+            game.info[3] = "Actual (No VSync): " + String.format("%.2f",(endTime - startTime)/1000000.0);
             
             Display.sync(FRAME_RATE);
             
-            endTime = System.currentTimeMillis();
-            delta = (int)(endTime - startTime);
-            game.info[4] = "Overall: " + delta + " | FPS: " + 1000/delta + "\n";
+            endTime = System.nanoTime();
+            delta = (int)((endTime - startTime)/1000000);
+            game.info[4] = "Overall: " + delta + " | FPS: " + String.format("%.2f",1000.0/(delta)) + "\n";
         }
         Display.destroy();
         System.exit(0);
