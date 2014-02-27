@@ -176,7 +176,7 @@ public class Block {
         if (Camera.getCamY()<y && !chunk.isBlock(x,y-1,z)) {
             addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
             addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,znxnyn));
-            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
+            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
             addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
         }
         
