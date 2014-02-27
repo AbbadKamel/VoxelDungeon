@@ -156,34 +156,34 @@ public class Block {
         
         // Y positive
         if (Camera.getCamY()>y && !chunk.isBlock(x,y+1,z)) {
-            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
-            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyp,znxpyp));
-            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyp,zpxpyp));
-            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
+            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znyp,xnyp,znxnyp));
+            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znyp,xpyp,znxpyp));
+            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpyp,xpyp,zpxpyp));
+            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpyp,xnyp,zpxnyp));
         }
         
         // Y negative
         if (Camera.getCamY()<y && !chunk.isBlock(x,y-1,z)) {
-            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
-            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
-            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
-            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
+            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znyn,xnyn,znxnyn));
+            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpyn,xnyn,zpxnyn));
+            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpyn,xpyn,zpxpyn));
+            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znyn,xpyn,znxpyn));
         }
         
         // X Positive.
         if (Camera.getCamX()>x && !chunk.isBlock(x+1,y,z)) {
-            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyn,znxpyn));
-            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyn,zpxpyn));
-            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,zpyp,zpxpyp));
-            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,znyp,znxpyp));
+            addVertex(0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,xpyn,znxpyn));
+            addVertex(0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,xpyn,zpxpyn));
+            addVertex(0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxp,xpyp,zpxpyp));
+            addVertex(0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxp,xpyp,znxpyp));
         }
         
         // X Negative.
         if (Camera.getCamX()<x && !chunk.isBlock(x-1,y,z)) {
-            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyn,znxnyn));
-            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,znyp,znxnyp));
-            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyp,zpxnyp));
-            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,zpyn,zpxnyn));
+            addVertex(-0.5f+x,-0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,xnyn,znxnyn));
+            addVertex(-0.5f+x,-0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(znxn,xnyp,znxnyp));
+            addVertex(-0.5f+x,0.5f+z,0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,xnyp,zpxnyp));
+            addVertex(-0.5f+x,0.5f+z,-0.5f+y,r,g,b,vertices,colorVertices,getAO(zpxn,xnyn,zpxnyn));
         }
         
         // Z Negative.

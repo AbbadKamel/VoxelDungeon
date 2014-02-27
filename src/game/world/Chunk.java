@@ -61,7 +61,7 @@ public class Chunk {
             }
         }
     }
-        
+    
     private void setBlock(int i, int j, int k, Block block) {
         block.setMyChunk(this);
         blocks[i-16*px][j-16*py][k] = block;
@@ -119,6 +119,6 @@ public class Chunk {
     }
 
     public int inFrustum() {
-        return Frustum.sphereInFrustum(16*px+8, 16*py+8, 16, 16);
+        return Frustum.sphereInFrustum(16*px+8,16*py+8,24,24);
     }
 }
