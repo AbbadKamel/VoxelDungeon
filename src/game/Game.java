@@ -94,8 +94,8 @@ public class Game {
         Perlin p = new Perlin(128,128);
         world = new World(8,8,p);
         Camera.init();
-        vertices = new FloatArray(6000000);
-        colorVertices = new FloatArray(6000000);
+        vertices = new FloatArray(200000);
+        colorVertices = new FloatArray(200000);
         this.initialize3D();
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
@@ -152,7 +152,7 @@ public class Game {
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
-        GL11.glOrtho(0.0, width, height, 0.0, -1.0, 10.0);
+        GL11.glOrtho(0.0f,width,height,0.0f,-1.0f,10.0f);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -187,7 +187,7 @@ public class Game {
     }
 
     public void initialize3D() {
-        GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
+        //GL11.glEnable(GL11.GL_TEXTURE_2D); // Allows 2D textures.
         GL11.glShadeModel(GL11.GL_SMOOTH); // Smoother textures.
         GL11.glClearColor(0.4f,0.6f,1.0f,0.0f); // BG color. 6698FF
         GL11.glClearDepth(1.0); // Buffer depth, allows objects to draw over things behind them.
@@ -201,7 +201,7 @@ public class Game {
         GL11.glLoadIdentity(); // Loads the above matrix mode.
         
         // Sets default perspective location.                       Render Distances: Min   Max
-        GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,300.0f);
+        GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,100.0f);
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
