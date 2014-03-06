@@ -94,8 +94,8 @@ public class Game {
         Perlin p = new Perlin(128,128);
         world = new World(8,8,p);
         Camera.init();
-        vertices = new FloatArray(200000);
-        colorVertices = new FloatArray(200000);
+        vertices = new FloatArray(2000000);
+        colorVertices = new FloatArray(2000000);
         this.initialize3D();
         VBOVertexHandle = GL15.glGenBuffers();
         VBOColorHandle = GL15.glGenBuffers();
@@ -201,7 +201,7 @@ public class Game {
         GL11.glLoadIdentity(); // Loads the above matrix mode.
         
         // Sets default perspective location.                       Render Distances: Min   Max
-        GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,100.0f);
+        GLU.gluPerspective(45.0f,(float)Display.getWidth()/(float)Display.getHeight(),0.1f,300.0f);
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW); // Sets the matrix to displaying objects.
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST); // Something unimportant for quality.
